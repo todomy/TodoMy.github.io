@@ -136,4 +136,4 @@ DeepSeek 从入门到精通：全面指南与实战教程
 
 通过本指南，读者可系统掌握 DeepSeek 的核心功能与高阶技巧，从基础操作到跨平台内容生成，逐步进阶为 AI 协作专家。
 
-<!-- Failed to upload "DeepSeek 入门到精通.pdf" -->
+[DeepSeek 入门到精通.pdf](https://github.com/user-attachments/files/18744604/DeepSeek.pdf)
