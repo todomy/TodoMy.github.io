@@ -1,4 +1,5 @@
-DeepSeek 从入门到精通：全面指南与实战教程
+> [!tip] 
+>DeepSeek 使用讲解
 ---
 
 ## **第一部分：DeepSeek 简介**
