@@ -10,7 +10,7 @@ on:  # 指定触发工作流的事件
 jobs:  # 定义工作流中的工作（jobs）
   build:  # 定义名为“build”的工作
     name: Generate blog  # 工作的名字
-    runs-on: ubuntu-22.04  # 指定运行环境为Ubuntu 20.04
+    runs-on: ubuntu-22.04  # 指定运行环境为Ubuntu 22.04
     if: ${{ github.event.repository.owner.id == github.event.sender.id || github.event_name == 'schedule' }}  # 条件判断，确保只有仓库所有者或计划任务触发时才执行
     permissions: write-all  # 设置权限，允许写入所有内容
     steps:  # 工作的具体步骤
@@ -59,7 +59,7 @@ jobs:  # 定义工作流中的工作（jobs）
 
   deploy:  # 定义名为“deploy”的工作
     name: Deploy blog  # 工作的名字
-    runs-on: ubuntu-20.04  # 指定运行环境为Ubuntu 20.04
+    runs-on: ubuntu-22.04  # 指定运行环境为Ubuntu 22.04
     needs: build  # 指定依赖的工作为“build”
     permissions:  # 设置权限
       contents: write  # 允许写入仓库内容
