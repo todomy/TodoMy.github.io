@@ -1,5 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Tue, 06 May 2025 07:20:20 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>个人独立宣言：自我治理十二准则</title><link>https://todomy.github.io/post/ge-ren-du-li-xuan-yan-%EF%BC%9A-zi-wo-zhi-li-shi-er-zhun-ze.html</link><description>&gt; [!TIP]
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Fri, 09 May 2025 05:48:12 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>“二五仔”的形成以及应对</title><link>https://todomy.github.io/post/%E2%80%9C-er-wu-zi-%E2%80%9D-de-xing-cheng-yi-ji-ying-dui.html</link><description>&gt; [!NOTE]
+&gt; 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的
+
+
+# 亲密关系中“息事宁人”行为的心理拆解与应对策略
+## 一、A 的潜在心理机制
+
+### （一）冲突回避型人格（Conflict Avoidance）
+- **杏仁核过度激活**：导致对负面情绪的生理性排斥。</description><guid isPermaLink="true">https://todomy.github.io/post/%E2%80%9C-er-wu-zi-%E2%80%9D-de-xing-cheng-yi-ji-ying-dui.html</guid><pubDate>Fri, 09 May 2025 05:47:41 +0000</pubDate></item><item><title>个人独立宣言：自我治理十二准则</title><link>https://todomy.github.io/post/ge-ren-du-li-xuan-yan-%EF%BC%9A-zi-wo-zhi-li-shi-er-zhun-ze.html</link><description>&gt; [!TIP]
 &gt; 个人突发奇想，参考美国独立宣言起草的个人独立宣言，文章使用DeepSeek进行优化。</description><guid isPermaLink="true">https://todomy.github.io/post/ge-ren-du-li-xuan-yan-%EF%BC%9A-zi-wo-zhi-li-shi-er-zhun-ze.html</guid><pubDate>Tue, 06 May 2025 07:19:44 +0000</pubDate></item><item><title>People公链白皮书</title><link>https://todomy.github.io/post/People-gong-lian-bai-pi-shu.html</link><description>&gt; [!TIP]
 &gt;  以上内容源于虚构，自己瞎想，让AI进行书写完成
 
