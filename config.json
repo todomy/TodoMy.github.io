@@ -10,7 +10,7 @@
     "yearColorList":["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
     "i18n":"CN",
     "script":
-        <script>
+        <script>"
         function createTOC() {
             var tocElement = document.createElement('div');
             tocElement.className = 'toc';
@@ -468,7 +468,7 @@
             new Lightbox();
           });
         })();
-        </script>
+        </script>"
     ,
     "nightTheme":"dark_colorblind",
     "bottomText":"❤️ 瞎写写请勿传播，谢谢！❤️",
