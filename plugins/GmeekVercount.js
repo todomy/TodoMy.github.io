@@ -12,5 +12,4 @@ document.addEventListener("DOMContentLoaded", function() {
     var element = document.createElement('script');
     element.src = 'https://vercount.one/js';
     document.head.appendChild(element);
-    console.log("\n %c GmeekVercount Plugins https://github.com/todomy/TodoMy.github.io \n","padding:5px 0;background:#bc4c00;color:#fff");
 });
