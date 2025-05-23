@@ -518,8 +518,6 @@ if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     readme=readme+"### :speech_balloon: %d \r\n" % commentNumSum
     readme=readme+"### :hibiscus: %d \r\n" % wordCount
     readme=readme+"### :alarm_clock: %s \r\n" % datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S')
-    readme=readme+"### Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek)\r\n"
-    readme = readme + "\r\n因为目前功能够我自己使用了，所以修改了代码流程，停止从作者库拉取更新，改为本地单机版，停留于作者v2.22版本\r\n"
     readmeFile=open(workspace_path+"/README.md","w")
     readmeFile.write(readme)
     readmeFile.close()
