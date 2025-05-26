@@ -1,13 +1,13 @@
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl'] }}">{{ blogBase['title'] }}</a></div>
 <div id="footer2">
     {%- if blogBase['filingNum']!='' -%}
-    <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a> • </span>
+    <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a></span>
     {%- endif %}
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span>
 </div>
 
 <!-- 添加返回顶部按钮 -->
-<button id="backToTop" onclick="scrollToTop()">返回顶部</button>
+<button id="backToTop" onclick="scrollToTop()">&#8593;</button>
 
 <script>
 var now=new Date();
@@ -17,7 +17,7 @@ if("{{ blogBase['startSite'] }}"!=""){
     var startSite=new Date("{{ blogBase['startSite'] }}");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
-    document.getElementById("runday").innerHTML="{{ i18n['run'] }}"+diffDay+"{{ i18n['days'] }}"+" • ";
+    document.getElementById("runday").innerHTML="{{ i18n['run'] }}"+diffDay+"{{ i18n['days'] }}";
 }
 
 // 返回顶部功能
@@ -42,6 +42,7 @@ function scrollToTop() {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    outline: none; /* 去掉按钮点击时的边框 */
 }
 
 #backToTop:hover {
