@@ -3,8 +3,11 @@
     {%- if blogBase['filingNum']!='' -%}
     <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a> • </span>
     {%- endif %}
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span>
 </div>
+
+<!-- 添加返回顶部按钮 -->
+<button id="backToTop" onclick="scrollToTop()">返回顶部</button>
 
 <script>
 var now=new Date();
@@ -16,4 +19,32 @@ if("{{ blogBase['startSite'] }}"!=""){
     var diffDay=Math.floor(diff/(1000*60*60*24));
     document.getElementById("runday").innerHTML="{{ i18n['run'] }}"+diffDay+"{{ i18n['days'] }}"+" • ";
 }
+
+// 返回顶部功能
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
 </script>
+
+<style>
+/* 添加返回顶部按钮的样式 */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#backToTop:hover {
+    background-color: #0056b3;
+}
+</style>
