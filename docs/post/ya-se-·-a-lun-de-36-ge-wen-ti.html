@@ -325,14 +325,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="circle-button" onclick="scrollToTop()">↑</div>
 
 <script>
-var now = new Date();
-document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
 
-if ("11/24/2024" != "") {
-    var startSite = new Date("11/24/2024");
-    var diff = now.getTime() - startSite.getTime();
-    var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-    document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+if("11/24/2024"!=""){
+    var startSite=new Date("11/24/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
 }
 
 // 返回顶部功能
@@ -342,17 +342,6 @@ function scrollToTop() {
         behavior: 'smooth'
     });
 }
-
-// 链接点击变色功能
-document.addEventListener('DOMContentLoaded', function() {
-    const links = document.querySelectorAll('a');
-    links.forEach(link => {
-        link.addEventListener('click', function() {
-            links.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-});
 </script>
 
 <style>
@@ -371,46 +360,11 @@ document.addEventListener('DOMContentLoaded', function() {
     align-items: center;
     cursor: pointer;
     font-size: 18px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease; /* 添加过渡效果 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .circle-button:hover {
     background-color: #0056b3;
-}
-
-/* 链接样式 */
-a {
-    text-decoration: none;
-    color: #007bff;
-    transition: color 0.3s ease; /* 添加过渡效果 */
-}
-
-a:hover {
-    color: #0056b3;
-}
-
-a.active {
-    color: #ff0000; /* 已点击的链接变红 */
-    font-weight: bold;
-}
-
-/* 文章内容样式 */
-.article-content {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: background-color 0.3s ease; /* 添加过渡效果 */
-}
-
-.article-content:hover {
-    background-color: #f5f5f5;
-}
-
-/* 文章列表样式 */
-.article-list {
-    margin-top: 20px;
 }
 </style></div>
 </body>
