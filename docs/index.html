@@ -49,11 +49,6 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     #buttonRSS{display:none;}
     .LabelTime{display:none;}
 }
-
-/* 添加点击文章变色的样式 */
-.article-active {
-    background-color: #f0f0f0; /* 浅灰色背景表示文章已被点击 */
-}
 </style>
 
 
@@ -929,16 +924,6 @@ for(var i=0;i<iconPost.length;i++){
 document.getElementById("music").setAttribute("d",value=IconList["music"]);
 
 
-
-// 添加点击文章变色功能
-document.querySelectorAll('.SideNav-item').forEach(item => {
-    item.addEventListener('click', function() {
-        // 移除其他文章的激活状态
-        document.querySelectorAll('.SideNav-item').forEach(i => i.classList.remove('article-active'));
-        // 添加当前文章的激活状态
-        this.classList.add('article-active');
-    });
-});
 </script>
 
 
