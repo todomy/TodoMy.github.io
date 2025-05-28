@@ -33,6 +33,11 @@
     #buttonRSS{display:none;}
     .LabelTime{display:none;}
 }
+
+/* 添加点击文章变色的样式 */
+.article-active {
+    background-color: #f0f0f0; /* 浅灰色背景表示文章已被点击 */
+}
 </style>
 {{ blogBase['indexStyle'] }}
 {% endblock %}
@@ -41,7 +46,7 @@
 <h1>
     <img src="{{ blogBase['avatarUrl'] }}" class="avatar circle" id="avatarImg" alt="avatar">
     {%- if blogBase['displayTitle']=='eekdai' -%}
-    <a class="blogTitle" href="https://meekdai.com">{{ blogBase['displayTitle'] }}</a>
+    <a class="blogTitle" href="{{ blogBase['homeUrl'] }}">{{ blogBase['displayTitle'] }}</a>
     {% else -%}
     <a class="blogTitle">{{ blogBase['displayTitle'] }}</a>
     {%- endif -%}
@@ -140,6 +145,16 @@ document.getElementById("{{ key }}").setAttribute("d",value=IconList["{{ key }}"
 {% for num in blogBase['singeListJson'] -%}
 document.getElementById("{{ blogBase['singeListJson'][num]['postTitle'] }}").setAttribute("d",value=IconList["{{ blogBase['singeListJson'][num]['labels'][0] }}"]);
 {%- endfor %}
+
+// 添加点击文章变色功能
+document.querySelectorAll('.SideNav-item').forEach(item => {
+    item.addEventListener('click', function() {
+        // 移除其他文章的激活状态
+        document.querySelectorAll('.SideNav-item').forEach(i => i.classList.remove('article-active'));
+        // 添加当前文章的激活状态
+        this.classList.add('article-active');
+    });
+});
 </script>
 {{ blogBase['indexScript'] }}
 {% endblock %}
