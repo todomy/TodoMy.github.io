@@ -166,6 +166,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
             font-size: 18px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease, transform 0.3s ease;
+            display: none; /* 默认不显示 */
         }
 
         .circle-button:hover {
@@ -213,6 +214,17 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
                 behavior: 'smooth'
             });
         }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY; // 获取当前滚动位置
+            var button = document.querySelector('.circle-button'); // 获取返回顶部按钮
+            if (scrollPosition > 100) { // 如果滚动距离大于100px，显示按钮
+                button.style.display = 'flex';
+            } else { // 否则隐藏按钮
+                button.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html></div>
