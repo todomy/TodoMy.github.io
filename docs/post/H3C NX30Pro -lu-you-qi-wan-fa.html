@@ -107,7 +107,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h2>刷入Easywrt系统</h2>
 <h3>开启 SSH</h3>
 <p>这一步请确保路由器能正常联网。NX30 Pro 默认开启了 telnet，默认的地址是 192.168.124.1，用户名是 H3C（全大写），密码就你设置的路由器后台密码，端口是 99。<br>
-打开 <a href="https://www.hostbuf.com/t/988.html" rel="nofollow">FinalShell</a>选择 New Host 添加，Address 填写 192.168.124.1，取消勾选 SSH，勾选 Telnet，Port 端口填写上 99。然后输入用户名和密码，输入密码不会显示，回车即可连上 Telnet。</p>
+打开<a href="https://termius.com/" rel="nofollow"> termius</a>选择 New Host 添加，Address 填写 192.168.124.1，取消勾选 SSH，勾选 Telnet，Port 端口填写上 99。然后输入用户名和密码，输入密码不会显示，回车即可连上 Telnet。</p>
 <p>然后复制下面的代码到终端里执行即可开启 SSH：</p>
 <pre class="notranslate"><code class="notranslate">curl -o /tmp/dropbear.ipk https://downloads.openwrt.org/releases/packages-19.07/aarch64_cortex-a53/base/dropbear_2019.78-2_aarch64_cortex-a53.ipk
 opkg install /tmp/dropbear.ipk
@@ -115,7 +115,7 @@ opkg install /tmp/dropbear.ipk
 /etc/init.d/dropbear start
 </code></pre>
 <h3>刷写 uboot</h3>
-<p>然后打开 WinSCP，文件协议选择 SCP，主机名 192.168.124.1，端口号 22，用户名 H3C，然后登录输入密码就能连上。登录后，将下载好的 uboot.bin 文件从左边电脑拖进右侧路由器 tmp 路径下。然后执行命令，如图所示完成了写入 uboot。（也可以直接用FinalShell上传文件）</p>
+<p>然后打开 WinSCP，文件协议选择 SCP，主机名 192.168.124.1，端口号 22，用户名 H3C，然后登录输入密码就能连上。登录后，将下载好的 uboot.bin 文件从左边电脑拖进右侧路由器 tmp 路径下。然后执行命令，如图所示完成了写入 uboot。（也可以直接用 <a href="https://www.hostbuf.com/t/988.html" rel="nofollow">FinalShell</a>上传文件和执行命令）</p>
 <pre class="notranslate"><code class="notranslate">cd /tmp
 md5sum uboot.bin
 mtd write /tmp/uboot.bin FIP
