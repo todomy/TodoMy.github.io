@@ -62,7 +62,7 @@ mtd write /tmp/uboot.bin FIP
 用户名：root
 密码：无密码
 ```
-登录路由器管理后台，和到GitHub上下载所需要的插件[链接](https://github.com/AUK9527/Are-u-ok/tree/main/apps)，下载完后，上传安装。
+登录路由器管理后台，到GitHub上下载所需要的插件[链接](https://github.com/AUK9527/Are-u-ok/tree/main/apps)，下载完后，上传安装。
 
 ![Image](https://github.com/user-attachments/assets/ad00076c-783c-4f1b-b414-8691c36521c2)
 如果提示安装失败，或者缺少依赖，可以更换镜像源，以修改/etc/opkg/distfeeds.conf 文件，修改镜像源，也可以在系统后台里进行修改配置。
