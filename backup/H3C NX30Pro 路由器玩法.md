@@ -87,5 +87,4 @@ mtd write /tmp/uboot.bin FIP
 ![Image](https://github.com/user-attachments/assets/3c2c21ce-426b-43c4-ac95-adbbf72d6a7e)
 
 ##  附件
-
-<!-- Failed to upload "H3C+NX30Pro刷机教程.zip" -->
+[软件包](https://github.com/todomy/TodoMy.github.io/tree/main/%E9%99%84%E4%BB%B6/H3C%20NX30Pro)
