@@ -86,5 +86,10 @@ mtd write /tmp/uboot.bin FIP
 
 ![Image](https://github.com/user-attachments/assets/3c2c21ce-426b-43c4-ac95-adbbf72d6a7e)
 
+##  网络加速
+系统内置了网络加速组件，支持快速转发引擎 MediaTek HNAT，全锥形 NAT，TCP 拥塞控制算法，按需选择开启有效提高网速和稳定性。
+
+![Image](https://github.com/user-attachments/assets/b477897f-9623-4414-ab4c-a37b7d973c81)
+
 ##  附件
 [软件包](https://github.com/todomy/TodoMy.github.io/tree/main/%E9%99%84%E4%BB%B6/H3C%20NX30Pro)
