@@ -66,7 +66,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     .postTitle{font-size:24px;}
 }
 </style>
-<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style>
+
 
 
 
@@ -96,25 +96,32 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>每个人都丢失过数据，如何存储数据？</p>
-</div>
-<h3>本地存储</h3>
-<p>之前用手机电脑直接存储数据，这种方案裸奔，但是使用起来比较方便，设备坏了数据丢失，这也是大部分人采取的方式</p>
-<h3>本地存储+网盘</h3>
-<p>会使用第三方网盘存储自己重要的资料，风险点在于网盘数据泄露问题比较严重，非重要的数据可以直接网盘备份一遍，隐私数据不建议网盘备份</p>
-<h3>本地存储+网盘+移动硬盘（推荐）</h3>
-<p>不重要的例如工作文件放入网盘，个人生活照片隐私文件备份到自己移动硬盘。另外一种就是大部分人重要数据都是手机数据。苹果直接用爱思助手加密全局备份，形成一个压缩包，备份在电脑跟移动硬盘里，安卓去厂商网关下载手机助手，也会有手机助手，进行一个数据备份，同理移动硬盘再备份一遍即可。<br>
-缺点：这类备份都不是实时备份。</p>
-<h3>使用NAS</h3>
-<p>我个人也使用过各类nas系统，群晖，威联通，飞牛os，里面以群晖套件最丰富产品体验最好，但是购买设备使用成本都不低，适合整个家庭跟公司使用。</p>
-<h1>总结：</h1>
-<ul>
-<li>个人数据高效使用才是第一</li>
-<li>数据安全分等级，偏重要的数据进行备份</li>
-<li>重要的数据最好<a href="https://sspai.com/post/39591" rel="nofollow">321</a>原则进行备份</li>
-<li>利用好厂家的备份工具软件进行备份（高效）</li>
-<li>不要过分数据焦虑，个人其实没有啥重要的数据</li>
-</ul></div>
+<div class="markdown-body" id="postBody">> [!TIP]
+> 每个人都丢失过数据，如何存储数据？
+### 本地存储
+
+之前用手机电脑直接存储数据，这种方案裸奔，但是使用起来比较方便，设备坏了数据丢失，这也是大部分人采取的方式
+
+### 本地存储+网盘
+
+会使用第三方网盘存储自己重要的资料，风险点在于网盘数据泄露问题比较严重，非重要的数据可以直接网盘备份一遍，隐私数据不建议网盘备份
+
+### 本地存储+网盘+移动硬盘（推荐）
+
+不重要的例如工作文件放入网盘，个人生活照片隐私文件备份到自己移动硬盘。另外一种就是大部分人重要数据都是手机数据。苹果直接用爱思助手加密全局备份，形成一个压缩包，备份在电脑跟移动硬盘里，安卓去厂商网关下载手机助手，也会有手机助手，进行一个数据备份，同理移动硬盘再备份一遍即可。
+缺点：这类备份都不是实时备份。
+
+### 使用NAS
+
+我个人也使用过各类nas系统，群晖，威联通，飞牛os，里面以群晖套件最丰富产品体验最好，但是购买设备使用成本都不低，适合整个家庭跟公司使用。
+
+# 总结：
+
+* 个人数据高效使用才是第一
+* 数据安全分等级，偏重要的数据进行备份
+* 重要的数据最好[321](https://sspai.com/post/39591)原则进行备份
+* 利用好厂家的备份工具软件进行备份（高效）
+* 不要过分数据焦虑，个人其实没有啥重要的数据</div>
 <div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
