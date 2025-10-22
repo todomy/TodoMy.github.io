@@ -725,6 +725,22 @@ class GMEEK():
         except Exception as e:
             logging.error(f"保存issue状态文件失败: {str(e)}")
     
+    def saveListJson(self, list_name):
+        """保存指定的列表JSON数据到文件"""
+        try:
+            if list_name in self.blogBase:
+                file_path = self.root_dir + f"{list_name}.json"
+                # 如果是postListJson，需要添加标签颜色字典
+                if list_name == "postListJson":
+                    self.blogBase[list_name]["labelColorDict"] = self.labelColorDict
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(self.blogBase[list_name], f, ensure_ascii=False, indent=2)
+                logging.info(f"成功保存 {list_name} 到 {file_path}")
+            else:
+                logging.warning(f"未找到 {list_name} 数据")
+        except Exception as e:
+            logging.error(f"保存 {list_name} 失败: {str(e)}")
+    
     def runAll(self):
         logging.info("====== 开始创建静态HTML ======")
         try:
