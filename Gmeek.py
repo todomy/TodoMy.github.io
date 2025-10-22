@@ -724,6 +724,10 @@ if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     print("====== update readme file ======")
     workspace_path = os.environ.get('GITHUB_WORKSPACE')
     readme="# %s :link: %s \r\n" % (blog.blogBase["title"],blog.blogBase["homeUrl"])
+    readme=readme+"\r\n## 关于这个博客\r\n"
+    readme=readme+"这是一个基于 GitHub Issues 的个人知识库和思考记录平台。\r\n"
+    readme=readme+"主要分享读书笔记、生活思考、技术探索和投资见解等内容。\r\n"
+    readme=readme+"通过 Gmeek 工具自动将 GitHub Issues 转换为静态博客页面。\r\n\r\n"
     readme=readme+"### :page_facing_up: [%d](%s/tag.html) \r\n" % (len(blog.blogBase["postListJson"])-1,blog.blogBase["homeUrl"])
     readme=readme+"### :speech_balloon: %d \r\n" % commentNumSum
     readme=readme+"### :hibiscus: %d \r\n" % wordCount
