@@ -55,7 +55,7 @@ jobs:  # 定义工作流中的工作（jobs）
         run: |
           git config --local user.email "actions@github.com"  # 设置git用户邮箱，使用默认值
           git config --local user.name "${{ github.repository_owner }}"  # 设置git用户名
-          git add docs/ postList.json blogBase.json  # 只添加需要的文件，提高效率
+          git add docs/ blogBase.json  # 只添加需要的文件，提高效率
           git add README.md || true  # 尝试添加README.md，但不失败
           git commit -a -m '🎉auto update by Gmeek action' || echo "nothing to commit"  # 提交更改或打印无提交信息
           git push || echo "nothing to push"  # 推送更改或打印无推送信息
