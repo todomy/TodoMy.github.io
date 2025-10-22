@@ -9,12 +9,23 @@ import urllib
 import requests
 import argparse
 import html
-from github import Github
+import logging
+from github import Github, GithubException
 from xpinyin import Pinyin
 from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
 from transliterate import translit
 from collections import OrderedDict
+import random
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 ######################################################################################
 i18n={"Search":"Search","switchTheme":"switch theme","home":"home","comments":"comments","run":"run ","days":" days","Previous":"Previous","Next":"Next"}
 i18nCN={"Search":"搜索","switchTheme":"切换主题","home":"首页","comments":"评论","run":"网站运行","days":"天","Previous":"上一页","Next":"下一页"}
@@ -44,48 +55,82 @@ class GMEEK():
         self.post_folder='post/'
         self.backup_dir='backup/'
         self.post_dir=self.root_dir+self.post_folder
+        self.max_retries = 3
+        self.retry_delay = 2  # 秒
+        
+        # 设置带重试机制的requests会话
+        self.session = requests.Session()
+        retry_strategy = Retry(
+            total=self.max_retries,
+            backoff_factor=self.retry_delay,
+            status_forcelist=[429, 500, 502, 503, 504]
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
+        
+        try:
+            # 添加超时和重试机制初始化GitHub连接
+            user = Github(
+                self.options.github_token,
+                timeout=30,
+                per_page=100
+            )
+            self.repo = self.get_repo(user, options.repo_name)
+            self.feed = FeedGenerator()
+            self.oldFeedString=''
 
-        user = Github(self.options.github_token)
-        self.repo = self.get_repo(user, options.repo_name)
-        self.feed = FeedGenerator()
-        self.oldFeedString=''
-
-        self.labelColorDict=json.loads('{}')
-        for label in self.repo.get_labels():
-            self.labelColorDict[label.name]='#'+label.color
-        print(self.labelColorDict)
-        self.defaultConfig()
+            self.labelColorDict=json.loads('{}')
+            for label in self.repo.get_labels():
+                self.labelColorDict[label.name]='#'+label.color
+            logging.info(f"标签颜色字典: {self.labelColorDict}")
+            self.defaultConfig()
+        except Exception as e:
+            logging.error(f"初始化失败: {str(e)}")
+            raise
         
     def cleanFile(self):
-        workspace_path = os.environ.get('GITHUB_WORKSPACE')
-        if os.path.exists(workspace_path+"/"+self.backup_dir):
-            shutil.rmtree(workspace_path+"/"+self.backup_dir)
-
-        if os.path.exists(workspace_path+"/"+self.root_dir):
-            shutil.rmtree(workspace_path+"/"+self.root_dir)
-
-        if os.path.exists(self.backup_dir):
-            shutil.rmtree(self.backup_dir)
+        try:
+            workspace_path = os.environ.get('GITHUB_WORKSPACE')
             
-        if os.path.exists(self.root_dir):
-            shutil.rmtree(self.root_dir)
+            # 清理目录
+            dirs_to_clean = []
+            if workspace_path:
+                dirs_to_clean.append(os.path.join(workspace_path, self.backup_dir))
+                dirs_to_clean.append(os.path.join(workspace_path, self.root_dir))
+            dirs_to_clean.append(self.backup_dir)
+            dirs_to_clean.append(self.root_dir)
+            
+            for dir_path in dirs_to_clean:
+                if os.path.exists(dir_path):
+                    logging.info(f"删除目录: {dir_path}")
+                    shutil.rmtree(dir_path)
 
-        os.mkdir(self.backup_dir)
-        os.mkdir(self.root_dir)
-        os.mkdir(self.post_dir)
+            # 创建必要的目录
+            for directory in [self.backup_dir, self.root_dir, self.post_dir]:
+                if not os.path.exists(directory):
+                    logging.info(f"创建目录: {directory}")
+                    os.mkdir(directory)
 
-        if os.path.exists(self.static_dir):
-            for item in os.listdir(self.static_dir):
-                src = os.path.join(self.static_dir, item)
-                dst = os.path.join(self.root_dir, item)
-                if os.path.isfile(src):
-                    shutil.copy(src, dst)
-                    print(f"Copied {item} to docs")
-                elif os.path.isdir(src):
-                    shutil.copytree(src, dst)
-                    print(f"Copied directory {item} to docs")
-        else:
-            print("static does not exist")
+            # 复制静态文件
+            if os.path.exists(self.static_dir):
+                for item in os.listdir(self.static_dir):
+                    src = os.path.join(self.static_dir, item)
+                    dst = os.path.join(self.root_dir, item)
+                    try:
+                        if os.path.isfile(src):
+                            shutil.copy(src, dst)
+                            logging.info(f"复制文件: {item} 到 docs")
+                        elif os.path.isdir(src):
+                            shutil.copytree(src, dst)
+                            logging.info(f"复制目录: {item} 到 docs")
+                    except Exception as e:
+                        logging.warning(f"复制 {item} 失败: {str(e)}")
+            else:
+                logging.warning("static 目录不存在")
+        except Exception as e:
+            logging.error(f"清理文件失败: {str(e)}")
+            raise
 
     def defaultConfig(self):
         dconfig={"singlePage":[],"startSite":"","filingNum":"","onePageListNum":15,"commentLabelColor":"#006b75","yearColorList":["#bc4c00", "#0969da", "#1f883d", "#A333D0"],"i18n":"CN","themeMode":"manual","dayTheme":"light","nightTheme":"dark","urlMode":"pinyin","script":"","style":"","head":"","indexScript":"","indexStyle":"","bottomText":"","showPostSource":1,"iconList":{},"UTC":+8,"rssSplit":"sentence","exlink":{},"needComment":1,"allHead":""}
@@ -123,26 +168,75 @@ class GMEEK():
         self.TZ=datetime.timezone(datetime.timedelta(hours=self.blogBase["UTC"]))
 
     def get_repo(self,user:Github, repo:str):
-        return user.get_repo(repo)
+        retry_count = 0
+        while retry_count < self.max_retries:
+            try:
+                repo_instance = user.get_repo(repo)
+                logging.info(f"成功连接到仓库: {repo}")
+                return repo_instance
+            except GithubException as e:
+                retry_count += 1
+                logging.warning(f"GitHub API错误 (尝试 {retry_count}/{self.max_retries}): {str(e)}")
+                if retry_count >= self.max_retries:
+                    logging.error(f"连接仓库失败，已达最大重试次数")
+                    raise
+                time.sleep(self.retry_delay * (retry_count + random.uniform(0.5, 1.5)))  # 指数退避加随机延迟
+            except Exception as e:
+                logging.error(f"获取仓库失败: {str(e)}")
+                raise
 
     def markdown2html(self, mdstr):
-        payload = {"text": mdstr, "mode": "gfm"}
-        headers = {"Authorization": "token {}".format(self.options.github_token)}
         try:
+            if mdstr is None:
+                return ""
+            
+            payload = {"text": mdstr, "mode": "gfm"}
+            headers = {"Authorization": "token {}".format(self.options.github_token)}
             response = requests.post("https://api.github.com/markdown", json=payload, headers=headers)
             response.raise_for_status()  # Raises an exception if status code is not 200
             return response.text
         except requests.RequestException as e:
-            raise Exception("markdown2html error: {}".format(e))
+            logging.error(f"markdown2html API调用失败: {str(e)}")
+            # 返回原始字符串，确保即使转换失败也能显示内容
+            return mdstr or ""
+        except Exception as e:
+            logging.error(f"markdown2html处理失败: {str(e)}")
+            return mdstr or ""
 
     def renderHtml(self,template,blogBase,postListJson,htmlDir,icon):
-        file_loader = FileSystemLoader('templates')
-        env = Environment(loader=file_loader)
-        template = env.get_template(template)
-        output = template.render(blogBase=blogBase,postListJson=postListJson,i18n=self.i18n,IconList=icon)
-        f = open(htmlDir, 'w', encoding='UTF-8')
-        f.write(output)
-        f.close()
+        try:
+            # 确保目录存在
+            os.makedirs(os.path.dirname(htmlDir), exist_ok=True)
+            
+            file_loader = FileSystemLoader('templates')
+            env = Environment(loader=file_loader)
+            template_obj = env.get_template(template)
+            
+            # 准备渲染数据，确保所有必需字段存在
+            render_data = {
+                "blogBase": blogBase or {},
+                "postListJson": postListJson or {},
+                "i18n": self.i18n or {},
+                "IconList": icon or {}
+            }
+            
+            output = template_obj.render(**render_data)
+            
+            # 使用with语句安全地写入文件
+            with open(htmlDir, 'w', encoding='UTF-8', buffering=4096) as f:
+                f.write(output)
+                
+            logging.info(f"成功生成HTML文件: {htmlDir}")
+        except Exception as e:
+            logging.error(f"渲染HTML文件 {htmlDir} 失败: {str(e)}")
+            # 尝试创建一个简单的错误页面
+            try:
+                error_content = f"<html><body><h1>页面生成错误</h1><p>{str(e)}</p></body></html>"
+                with open(htmlDir, 'w', encoding='UTF-8') as f:
+                    f.write(error_content)
+                logging.warning(f"已创建错误页面: {htmlDir}")
+            except:
+                logging.critical(f"无法创建错误页面: {htmlDir}")
 
     def createPostHtml(self,issue):
         mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue["postTitle"])
@@ -264,52 +358,142 @@ class GMEEK():
         print("create tag.html")
 
     def createFeedXml(self):
-        self.blogBase["postListJson"]=dict(sorted(self.blogBase["postListJson"].items(),key=lambda x:x[1]["createdAt"],reverse=False))#使列表由时间排序
-        feed = FeedGenerator()
-        feed.title(self.blogBase["title"])
-        feed.description(self.blogBase["subTitle"])
-        feed.link(href=self.blogBase["homeUrl"])
-        feed.image(url=self.blogBase["avatarUrl"],title="avatar", link=self.blogBase["homeUrl"])
-        feed.copyright(self.blogBase["title"])
-        feed.managingEditor(self.blogBase["title"])
-        feed.webMaster(self.blogBase["title"])
-        feed.ttl("60")
-
-        for num in self.blogBase["singeListJson"]:
-            item=feed.add_item()
-            item.guid(self.blogBase["homeUrl"]+"/"+self.blogBase["singeListJson"][num]["postUrl"],permalink=True)
-            item.title(self.blogBase["singeListJson"][num]["postTitle"])
-            item.description(self.blogBase["singeListJson"][num]["description"])
-            item.link(href=self.blogBase["homeUrl"]+"/"+self.blogBase["singeListJson"][num]["postUrl"])
-            item.pubDate(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(self.blogBase["singeListJson"][num]["createdAt"])))
-
-        for num in self.blogBase["postListJson"]:
-            item=feed.add_item()
-            item.guid(self.blogBase["homeUrl"]+"/"+self.blogBase["postListJson"][num]["postUrl"],permalink=True)
-            item.title(self.blogBase["postListJson"][num]["postTitle"])
-            item.description(self.blogBase["postListJson"][num]["description"])
-            item.link(href=self.blogBase["homeUrl"]+"/"+self.blogBase["postListJson"][num]["postUrl"])
-            item.pubDate(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(self.blogBase["postListJson"][num]["createdAt"])))
-
-        if self.oldFeedString!='':
-            feed.rss_file(self.root_dir+'new.xml')
-            newFeed=open(self.root_dir+'new.xml','r',encoding='utf-8')
-            new=newFeed.read()
-            newFeed.close()
-
-            new=re.sub(r'<lastBuildDate>.*?</lastBuildDate>','',new)
-            old=re.sub(r'<lastBuildDate>.*?</lastBuildDate>','',self.oldFeedString)
-            os.remove(self.root_dir+'new.xml')
+        try:
+            logging.info("====== 开始生成RSS XML ======")
             
-            if new==old:
-                print("====== rss xml no update ======")
-                feedFile=open(self.root_dir+'rss.xml',"w")
-                feedFile.write(self.oldFeedString)
-                feedFile.close()
-                return
-
-        print("====== create rss xml ======")
-        feed.rss_file(self.root_dir+'rss.xml')
+            # 确保数据结构存在
+            if "postListJson" not in self.blogBase:
+                self.blogBase["postListJson"] = {}
+            if "singeListJson" not in self.blogBase:
+                self.blogBase["singeListJson"] = {}
+            
+            # 排序文章列表
+            self.blogBase["postListJson"] = dict(sorted(
+                self.blogBase["postListJson"].items(),
+                key=lambda x: x[1].get("createdAt", 0),
+                reverse=False
+            ))
+            
+            # 初始化FeedGenerator
+            feed = FeedGenerator()
+            
+            # 安全地设置Feed属性，提供默认值
+            feed.title(self.blogBase.get("title", "Blog Title"))
+            feed.description(self.blogBase.get("subTitle", "Blog Description"))
+            feed.link(href=self.blogBase.get("homeUrl", "https://example.com"))
+            
+            # 尝试设置图片，出错时记录警告但继续
+            try:
+                if self.blogBase.get("avatarUrl"):
+                    feed.image(
+                        url=self.blogBase["avatarUrl"],
+                        title="avatar",
+                        link=self.blogBase.get("homeUrl", "https://example.com")
+                    )
+            except Exception as e:
+                logging.warning(f"设置RSS图片失败: {str(e)}")
+            
+            feed.copyright(self.blogBase.get("title", "Blog"))
+            feed.managingEditor(self.blogBase.get("title", "Blog"))
+            feed.webMaster(self.blogBase.get("title", "Blog"))
+            feed.ttl("60")
+            
+            # 添加单页内容到RSS
+            rss_item_count = 0
+            for list_type in ["singeListJson", "postListJson"]:
+                if list_type in self.blogBase:
+                    for num, post_data in self.blogBase[list_type].items():
+                        try:
+                            item = feed.add_item()
+                            
+                            # 安全地获取并设置属性
+                            post_url = post_data.get("postUrl", "")
+                            home_url = self.blogBase.get("homeUrl", "")
+                            full_url = f"{home_url}/{post_url}" if post_url else home_url
+                            
+                            item.guid(full_url, permalink=True)
+                            item.title(post_data.get("postTitle", f"Post {num}"))
+                            item.description(post_data.get("description", "No description available"))
+                            item.link(href=full_url)
+                            
+                            # 安全地设置发布日期
+                            try:
+                                if "createdAt" in post_data:
+                                    pub_date = time.strftime(
+                                        "%a, %d %b %Y %H:%M:%S +0000",
+                                        time.gmtime(post_data["createdAt"])
+                                    )
+                                    item.pubDate(pub_date)
+                            except Exception as e:
+                                logging.warning(f"设置发布日期失败 for {num}: {str(e)}")
+                                # 使用当前时间作为备选
+                                current_time = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
+                                item.pubDate(current_time)
+                            
+                            rss_item_count += 1
+                        except Exception as e:
+                            logging.error(f"添加RSS项目 {num} 失败: {str(e)}")
+                            # 继续处理下一个项目
+                            continue
+            
+            # 检查是否需要更新RSS文件
+            need_update = True
+            if self.oldFeedString and rss_item_count > 0:
+                try:
+                    temp_rss_path = os.path.join(self.root_dir, 'new.xml')
+                    feed.rss_file(temp_rss_path)
+                    
+                    with open(temp_rss_path, 'r', encoding='utf-8') as newFeed:
+                        new = newFeed.read()
+                    
+                    # 移除lastBuildDate标签以便比较
+                    new = re.sub(r'<lastBuildDate>.*?</lastBuildDate>', '', new, flags=re.DOTALL)
+                    old = re.sub(r'<lastBuildDate>.*?</lastBuildDate>', '', self.oldFeedString, flags=re.DOTALL)
+                    
+                    # 清理临时文件
+                    os.remove(temp_rss_path)
+                    
+                    if new == old:
+                        logging.info("RSS内容无变化，跳过更新")
+                        need_update = False
+                        # 使用旧的RSS内容
+                        rss_output_path = os.path.join(self.root_dir, 'rss.xml')
+                        with open(rss_output_path, "w", encoding='utf-8') as feedFile:
+                            feedFile.write(self.oldFeedString)
+                except Exception as e:
+                    logging.error(f"比较RSS内容时出错: {str(e)}")
+                    # 出错时仍然更新RSS
+                    need_update = True
+            
+            # 如果需要更新，则生成新的RSS文件
+            if need_update and rss_item_count > 0:
+                rss_output_path = os.path.join(self.root_dir, 'rss.xml')
+                feed.rss_file(rss_output_path)
+                logging.info(f"成功生成RSS XML，共包含 {rss_item_count} 个项目")
+            elif rss_item_count == 0:
+                logging.warning("没有内容可添加到RSS")
+                
+        except Exception as e:
+            logging.error(f"创建RSS XML失败: {str(e)}")
+            # 尝试创建一个基本的RSS文件作为后备
+            try:
+                basic_rss = f'''
+                <?xml version="1.0" encoding="UTF-8"?>
+                <rss version="2.0">
+                    <channel>
+                        <title>{self.blogBase.get("title", "Blog")}</title>
+                        <link>{self.blogBase.get("homeUrl", "")}</link>
+                        <description>RSS generation failed: {str(e)}</description>
+                        <lastBuildDate>{time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())}</lastBuildDate>
+                    </channel>
+                </rss>
+                '''
+                rss_output_path = os.path.join(self.root_dir, 'rss.xml')
+                with open(rss_output_path, "w", encoding='utf-8') as f:
+                    f.write(basic_rss)
+                logging.warning(f"已创建基本RSS文件作为后备")
+            except:
+                logging.critical("无法创建后备RSS文件")
 
     def addOnePostJson(self,issue):
         if len(issue.labels)>=1:
@@ -402,22 +586,48 @@ class GMEEK():
             return listJsonName
 
     def runAll(self):
-        print("====== start create static html ======")
-        self.cleanFile()
-
-        issues=self.repo.get_issues()
-        for issue in issues:
-            self.addOnePostJson(issue)
-
-        for issue in self.blogBase["postListJson"].values():
-            self.createPostHtml(issue)
-
-        for issue in self.blogBase["singeListJson"].values():
-            self.createPostHtml(issue)
-
-        self.createPlistHtml()
-        self.createFeedXml()
-        print("====== create static html end ======")
+        logging.info("====== 开始创建静态HTML ======")
+        try:
+            # 清理文件和目录
+            self.cleanFile()
+            
+            # 获取所有issues，添加分页支持以处理大量issues
+            issue_count = 0
+            max_issues = 1000  # 设置一个合理的上限，防止处理过多issues
+            
+            for issue in self.repo.get_issues(state="open"):
+                issue_count += 1
+                if issue_count > max_issues:
+                    logging.warning(f"已达到最大处理数量 {max_issues}，跳过剩余issues")
+                    break
+                
+                try:
+                    self.addOnePostJson(issue)
+                except Exception as e:
+                    logging.error(f"处理issue #{issue.number} 失败: {str(e)}")
+                    # 继续处理下一个issue
+                    continue
+            
+            # 生成文章HTML
+            for issue_type in ["postListJson", "singeListJson"]:
+                if issue_type in self.blogBase:
+                    for issue_id, issue in list(self.blogBase[issue_type].items()):
+                        try:
+                            self.createPostHtml(issue)
+                        except Exception as e:
+                            logging.error(f"生成文章 {issue_id} HTML 失败: {str(e)}")
+                            # 继续处理下一篇文章
+                            continue
+            
+            # 生成列表页面和RSS
+            self.createPlistHtml()
+            self.createFeedXml()
+            
+            logging.info("====== 创建静态HTML完成 ======")
+            logging.info(f"总共处理了 {issue_count} 个issues")
+        except Exception as e:
+            logging.error(f"runAll 执行失败: {str(e)}")
+            raise
 
     def runOne(self,number_str):
         print("====== start create static html ======")

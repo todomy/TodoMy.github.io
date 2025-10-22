@@ -4,13 +4,13 @@ on:  # 指定触发工作流的事件
   workflow_dispatch:  # 当有人手动触发时
   issues:  # 当有新的issue或issue被编辑时
     types: [opened, edited]  # 指定触发事件的类型
-    schedule:  # 计划任务
-    - cron: "0 24 * * *"  # 每天的24:00 UTC时间触发
+  schedule:  # 计划任务
+    - cron: "0 0 * * *"  # 每天的00:00 UTC时间触发
 
 jobs:  # 定义工作流中的工作（jobs）
   build:  # 定义名为“build”的工作
     name: Generate blog  # 工作的名字
-    runs-on: ubuntu-22.04  # 指定运行环境为Ubuntu 22.04
+    runs-on: ubuntu-latest  # 使用最新的Ubuntu版本，确保长期兼容性
     if: ${{ github.event.repository.owner.id == github.event.sender.id || github.event_name == 'schedule' }}  # 条件判断，确保只有仓库所有者或计划任务触发时才执行
     permissions: write-all  # 设置权限，允许写入所有内容
     steps:  # 工作的具体步骤
@@ -33,6 +33,14 @@ jobs:  # 定义工作流中的工作（jobs）
         with:
           python-version: 3.8  # 指定Python版本
 
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies  # 步骤名称：安装依赖
         run: |
           pip install --upgrade pip  # 更新pip到最新版本
@@ -45,12 +53,12 @@ jobs:  # 定义工作流中的工作（jobs）
 
       - name: Update html  # 步骤名称：更新HTML文件
         run: |
-          git config --local user.email "$(jq -r ".email" config.json)"  # 设置git用户邮箱
+          git config --local user.email "$(jq -r ".email // 'actions@github.com'" config.json)"  # 设置git用户邮箱
           git config --local user.name "${{ github.repository_owner }}"  # 设置git用户名
-          git add .  # 添加所有更改到暂存区
+          git add docs/ postList.json blogBase.json  # 只添加需要的文件，提高效率
+          git add README.md || true  # 尝试添加README.md，但不失败
           git commit -a -m '🎉auto update by Gmeek action' || echo "nothing to commit"  # 提交更改或打印无提交信息
           git push || echo "nothing to push"  # 推送更改或打印无推送信息
-          sleep 3  # 等待3秒，确保推送完成
 
       - name: Upload artifact  # 步骤名称：上传构建产物
         uses: actions/upload-pages-artifact@v3  # 使用actions提供的页面构建产物上传操作
@@ -59,7 +67,7 @@ jobs:  # 定义工作流中的工作（jobs）
 
   deploy:  # 定义名为“deploy”的工作
     name: Deploy blog  # 工作的名字
-    runs-on: ubuntu-22.04  # 指定运行环境为Ubuntu 22.04
+    runs-on: ubuntu-latest  # 运行环境
     needs: build  # 指定依赖的工作为“build”
     permissions:  # 设置权限
       contents: write  # 允许写入仓库内容
