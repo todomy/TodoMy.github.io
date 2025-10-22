@@ -393,10 +393,10 @@ class GMEEK():
 
     def createPlistHtml(self):
         # 优化排序逻辑，只排序一次
-        # 确保安全处理top字段和createdAt字段可能不存在的情况
+        # 确保top字段使用统一的整数类型，createdAt字段使用统一的字符串类型
         sorted_posts = sorted(
             self.blogBase["postListJson"].items(),
-            key=lambda x: (x[1].get("top", False), x[1].get("createdAt", "")),
+            key=lambda x: (int(x[1].get("top", 0)), str(x[1].get("createdAt", ""))),
             reverse=True
         )
         self.blogBase["postListJson"] = dict(sorted_posts)
