@@ -44,7 +44,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     .postTitle{font-size:24px;}
 }
 </style>
-
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style>
 
 
 
@@ -74,65 +74,151 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody">> [!Tip]
-> 你还在为存储密码设置密码而烦恼吗，以下是密码设置安全手册，在我看来一定要开二次验证，这一点很重要，是懒人最后的托底。
-
-
-2025 终极密码安全手册 
-——最短长度 × 实时破解时间 × 零门槛执行
-
-────────────────────  
-📊 2025 GPU 暴力算力基准  
-| 攻击规模 | 显卡数量 | 实测速度 (SHA-256) |
-|---|---|---|
-| 黑产 GPU 农场 | 12× RTX 5090 | 4.8×10¹² 次/秒 |
-| 国家级集群 | 1 万× RTX 5090 | 4.0×10¹⁵ 次/秒 |
-
-────────────────────  
-📏 最短安全长度 & 实时破解时间速查表  
-（向上取整，已含 50 年 / 1000 年阈值）
-
-| 字符集 | 个人/企业最短位数 | 12 卡破解时间 | 国家级最短位数 | 1 万卡破解时间 | 示例 |
-|---|---|---|---|---|---|
-| 纯数字 | **18 位** | ≈ 6.6 年 | **20 位** | ≈ 83 天 | 492830174638291045 |
-| 小写字母 | **15 位** | ≈ 1.3×10⁴ 年 | **17 位** | ≈ 1.6×10² 年 | qzmxknpdhlwefgh |
-| 大小写字母 | **14 位** | ≈ 1.3×10⁷ 年 | **16 位** | ≈ 1.6×10⁵ 年 | TrGvKpLxMnQsWpR |
-| 字母+数字 | **13 位** | ≈ 4.6×10⁶ 年 | **15 位** | ≈ 5.7×10⁴ 年 | a7B9n2Q8d1F4e |
-| **全集 94** | **12 位** | ≈ 2.6×10⁷ 年 | **14 位** | ≈ 3.3×10⁵ 年 | `rG8!b@2#qZ7%` |
-
-✅ 懒人结论  
-• 普通用户：直接选“全集 12–14 位”。  
-• 高价值机密：升级到“全集 14 位”。
-
-────────────────────  
-⚙️ 懒人三步执行  
-1️⃣ 生成  
-• 手机/电脑密码管理器 → 长度 14 → 字符全开 → 一键保存。  
-2️⃣ 存储  
-• 主密码：只记大脑 + 防火金属板。  
-• 其余密码：全部交给密码管理器。  
-3️⃣ 加固  
-• 所有账户开 MFA（TOTP 或硬件密钥）。  
-• 每半年 haveibeenpwned.com 查泄露。
-
-────────────────────  
-📋 一键安全自检清单  
-打印贴屏，逐项打勾 ✅
-
-| 检查项 | 状态 | 备注 |
-|---|---|---|
-| 主密码 ≥ 12 位全集随机 | ☐ | 大小写+数字+符号 |
-| 密码管理器已启用 | ☐ | 不再手动记密码 |
-| 所有重要账户已开 MFA | ☐ | TOTP / 硬件密钥 |
-| 恢复密钥金属备份 | ☐ | 防火防水，不存云端 |
-| 半年查泄露库 | ☐ | haveibeenpwned.com |
-| 系统/浏览器/管理器最新版 | ☐ | 打开自动更新 |
-
-全部 ✅ 后，你的账户安全已 > 99 % 网民。
-
-────────────────────  
-🎯 结束语  
-按表设长度 + 密码管理器 + MFA，你的账户安全等级已超过 99 % 的网民。剩下的 1 % 风险来自钓鱼电话、假冒客服和偷窥摄像头——请把警惕留给真人，而不是无限加长密码。在 2025 年的算力面前，12–14 位随机全集密码已把 GPU 集群熬成废铁；真正的漏洞永远在人，而不是位数。</div>
+<div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>你还在为存储密码设置密码而烦恼吗，以下是密码设置安全手册，在我看来一定要开二次验证，这一点很重要，是懒人最后的托底。</p>
+</div>
+<p>2025 终极密码安全手册<br>
+——最短长度 × 实时破解时间 × 零门槛执行</p>
+<p>────────────────────<br>
+📊 2025 GPU 暴力算力基准</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>攻击规模</th>
+<th>显卡数量</th>
+<th>实测速度 (SHA-256)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黑产 GPU 农场</td>
+<td>12× RTX 5090</td>
+<td>4.8×10¹² 次/秒</td>
+</tr>
+<tr>
+<td>国家级集群</td>
+<td>1 万× RTX 5090</td>
+<td>4.0×10¹⁵ 次/秒</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>────────────────────<br>
+📏 最短安全长度 &amp; 实时破解时间速查表<br>
+（向上取整，已含 50 年 / 1000 年阈值）</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>字符集</th>
+<th>个人/企业最短位数</th>
+<th>12 卡破解时间</th>
+<th>国家级最短位数</th>
+<th>1 万卡破解时间</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>纯数字</td>
+<td><strong>18 位</strong></td>
+<td>≈ 6.6 年</td>
+<td><strong>20 位</strong></td>
+<td>≈ 83 天</td>
+<td>492830174638291045</td>
+</tr>
+<tr>
+<td>小写字母</td>
+<td><strong>15 位</strong></td>
+<td>≈ 1.3×10⁴ 年</td>
+<td><strong>17 位</strong></td>
+<td>≈ 1.6×10² 年</td>
+<td>qzmxknpdhlwefgh</td>
+</tr>
+<tr>
+<td>大小写字母</td>
+<td><strong>14 位</strong></td>
+<td>≈ 1.3×10⁷ 年</td>
+<td><strong>16 位</strong></td>
+<td>≈ 1.6×10⁵ 年</td>
+<td>TrGvKpLxMnQsWpR</td>
+</tr>
+<tr>
+<td>字母+数字</td>
+<td><strong>13 位</strong></td>
+<td>≈ 4.6×10⁶ 年</td>
+<td><strong>15 位</strong></td>
+<td>≈ 5.7×10⁴ 年</td>
+<td>a7B9n2Q8d1F4e</td>
+</tr>
+<tr>
+<td><strong>全集 94</strong></td>
+<td><strong>12 位</strong></td>
+<td>≈ 2.6×10⁷ 年</td>
+<td><strong>14 位</strong></td>
+<td>≈ 3.3×10⁵ 年</td>
+<td><code class="notranslate">rG8!b@2#qZ7%</code></td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>✅ 懒人结论<br>
+• 普通用户：直接选“全集 12–14 位”。<br>
+• 高价值机密：升级到“全集 14 位”。</p>
+<p>────────────────────<br>
+⚙️ 懒人三步执行<br>
+1️⃣ 生成<br>
+• 手机/电脑密码管理器 → 长度 14 → 字符全开 → 一键保存。<br>
+2️⃣ 存储<br>
+• 主密码：只记大脑 + 防火金属板。<br>
+• 其余密码：全部交给密码管理器。<br>
+3️⃣ 加固<br>
+• 所有账户开 MFA（TOTP 或硬件密钥）。<br>
+• 每半年 haveibeenpwned.com 查泄露。</p>
+<p>────────────────────<br>
+📋 一键安全自检清单<br>
+打印贴屏，逐项打勾 ✅</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>检查项</th>
+<th>状态</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主密码 ≥ 12 位全集随机</td>
+<td>☐</td>
+<td>大小写+数字+符号</td>
+</tr>
+<tr>
+<td>密码管理器已启用</td>
+<td>☐</td>
+<td>不再手动记密码</td>
+</tr>
+<tr>
+<td>所有重要账户已开 MFA</td>
+<td>☐</td>
+<td>TOTP / 硬件密钥</td>
+</tr>
+<tr>
+<td>恢复密钥金属备份</td>
+<td>☐</td>
+<td>防火防水，不存云端</td>
+</tr>
+<tr>
+<td>半年查泄露库</td>
+<td>☐</td>
+<td>haveibeenpwned.com</td>
+</tr>
+<tr>
+<td>系统/浏览器/管理器最新版</td>
+<td>☐</td>
+<td>打开自动更新</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>全部 ✅ 后，你的账户安全已 &gt; 99 % 网民。</p>
+<p>────────────────────<br>
+🎯 结束语<br>
+按表设长度 + 密码管理器 + MFA，你的账户安全等级已超过 99 % 的网民。剩下的 1 % 风险来自钓鱼电话、假冒客服和偷窥摄像头——请把警惕留给真人，而不是无限加长密码。在 2025 年的算力面前，12–14 位随机全集密码已把 GPU 集群熬成废铁；真正的漏洞永远在人，而不是位数。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
