@@ -664,30 +664,46 @@ class GMEEK():
             self.cleanFile()
             
             # 获取所有issues，添加分页支持以处理大量issues
-            issue_count = 0
             max_issues = 1000  # 设置一个合理的上限，防止处理过多issues
             
             # 预加载所有open状态的issues，减少API调用次数
             open_issues = list(self.repo.get_issues(state="open"))
-            issue_count = len(open_issues)
+            total_issue_count = len(open_issues)
             
-            logging.info(f"准备处理 {issue_count} 个issues")
+            # 收集已存在的备份文件，用于判断哪些是新增的issues
+            existing_backups = set()
+            if os.path.exists(self.backup_dir):
+                for filename in os.listdir(self.backup_dir):
+                    if filename.endswith('.md'):
+                        existing_backups.add(filename)
+            
+            # 筛选出新增的issues（没有对应的备份文件）
+            new_issues = []
+            for issue in open_issues:
+                # 生成对应的备份文件名
+                mdFileName = re.sub(r'[<>:/\\|?*""]|[\0-\31]', '-', issue.title) + '.md'
+                # 如果备份文件不存在，则认为是新增的issue
+                if mdFileName not in existing_backups:
+                    new_issues.append(issue)
+            
+            new_issue_count = len(new_issues)
+            logging.info(f"总共发现 {total_issue_count} 个issues，其中新增 {new_issue_count} 个")
             
             # 限制处理数量
-            if issue_count > max_issues:
+            if new_issue_count > max_issues:
                 logging.warning(f"已达到最大处理数量 {max_issues}，跳过剩余issues")
-                open_issues = open_issues[:max_issues]
-                issue_count = max_issues
+                new_issues = new_issues[:max_issues]
+                new_issue_count = max_issues
             
-            # 批量处理issues
-            for i, issue in enumerate(open_issues):
+            # 批量处理新增的issues
+            for i, issue in enumerate(new_issues):
                 try:
                     self.addOnePostJson(issue)
                     # 每处理10个issue打印一次进度，减少日志输出
-                    if (i + 1) % 10 == 0 or i + 1 == issue_count:
-                        logging.info(f"已处理 {i + 1}/{issue_count} 个issues")
+                    if (i + 1) % 10 == 0 or i + 1 == new_issue_count:
+                        logging.info(f"已处理 {i + 1}/{new_issue_count} 个新增issues")
                 except Exception as e:
-                    logging.error(f"处理issue #{issue.number} 失败: {str(e)}")
+                    logging.error(f"处理新增issue #{issue.number} 失败: {str(e)}")
                     # 继续处理下一个issue
                     continue
             
@@ -723,7 +739,7 @@ class GMEEK():
             self.createFeedXml()
             
             logging.info("====== 创建静态HTML完成 ======")
-            logging.info(f"总共处理了 {issue_count} 个issues")
+            logging.info(f"总共处理了 {new_issue_count} 个新增issues")
         except Exception as e:
             logging.error(f"runAll 执行失败: {str(e)}")
             raise
