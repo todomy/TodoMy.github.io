@@ -52,6 +52,10 @@ class GMEEK():
         
         self.root_dir='docs/'
         self.static_dir='static/'
+        # 创建static目录（如果不存在）
+        if not os.path.exists(self.static_dir):
+            os.makedirs(self.static_dir)
+            logging.info(f"已创建static目录: {self.static_dir}")
         self.post_folder='post/'
         self.backup_dir='backup/'
         self.post_dir=self.root_dir+self.post_folder
