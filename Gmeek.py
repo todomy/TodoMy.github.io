@@ -748,76 +748,100 @@ class GMEEK():
             # 使用分页获取所有issues，避免一次性加载过多
             issues_to_process = []
             all_processed_issues = []
-            page = 1
             per_page = 100  # GitHub API每页最多100个
-            has_more = True
             
-            while has_more:
-                logging.debug(f"获取第 {page} 页issues...")
+            # 使用PyGithub的迭代器功能，避免一次性获取所有issues
+            issues_iterator = self.repo.get_issues(state="all", sort="updated", direction="desc")
+            
+            # 批量处理issues
+            batch = []
+            i = 0
+            max_retries = 3
+            
+            while True:
                 try:
-                    # 获取所有状态的issues，按更新时间降序排列
-                    # 注意：PyGithub库不支持per_page和page参数，使用默认分页
-                    issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc"))[:per_page]
-                    
-                    if not issues:
-                        has_more = False
+                    # 尝试获取下一个issue
+                    if i > 0:  # 除了第一次迭代外，需要手动获取下一个
+                        issue = next(issues_iterator, None)
                     else:
-                        all_processed_issues.extend(issues)
+                        # 第一次迭代使用for循环获取第一个元素
+                        issue = next(iter(issues_iterator), None)
+                        i += 1
+                    
+                    if issue is None:
+                        break  # 没有更多issues了
+                    
+                    batch.append(issue)
+                    
+                    # 当累积了per_page个issue时处理一批
+                    if len(batch) >= per_page:
+                        all_processed_issues.extend(batch)
                         
                         # 检查是否需要处理这些issues
-                        for issue in issues:
-                            # 如果是新issue或者已更新的issue，则添加到处理列表
-                            issue_key = f"P{issue.number}"
+                        for issue_item in batch:
+                            issue_key = f"P{issue_item.number}"
                             if (issue_key not in existing_issues or 
                                 ("updated_at" in existing_issues.get(issue_key, {}) and 
-                                 existing_issues[issue_key]["updated_at"] < issue.updated_at.timestamp())):
-                                issues_to_process.append(issue)
+                                 existing_issues[issue_key]["updated_at"] < issue_item.updated_at.timestamp())):
+                                issues_to_process.append(issue_item)
                             # 如果issue没有更新，可以从现有状态获取
                             else:
-                                # 直接从状态中恢复已存在的issue数据
                                 if issue_key in existing_issues and "data" in existing_issues[issue_key]:
                                     list_json_name = existing_issues[issue_key].get("list_json_name", "postListJson")
                                     if list_json_name not in self.blogBase:
                                         self.blogBase[list_json_name] = {}
                                     self.blogBase[list_json_name][issue_key] = existing_issues[issue_key]["data"]
                         
-                        # 添加短暂休息以避免触发API速率限制
+                        # 清空批次并添加短暂休息以避免触发API速率限制
+                        batch = []
+                        logging.info(f"已处理 {len(all_processed_issues)} 个issues...")
                         time.sleep(0.5)
-                        page += 1
+                    
+                    # 防止处理过多issues导致超时
+                    i += 1
+                    if i > 1000:  # 限制最大处理数量，可根据需要调整
+                        logging.warning(f"已达到最大处理数量限制 ({i} 个issues)")
+                        break
+                    
+                except StopIteration:
+                    break  # 迭代结束
                 except Exception as e:
-                    logging.error(f"获取第 {page} 页issues失败: {str(e)}")
-                    # 重试当前页最多3次
+                    logging.error(f"获取issue时出错: {str(e)}")
+                    # 重试机制
                     retry_count = 0
-                    while retry_count < 3:
+                    while retry_count < max_retries:
                         retry_count += 1
-                        logging.info(f"第 {retry_count} 次重试获取第 {page} 页...")
+                        logging.info(f"第 {retry_count} 次重试...")
                         time.sleep(2)  # 增加等待时间后重试
                         try:
-                            # 注意：PyGithub库不支持per_page和page参数，使用默认分页
-                            issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc"))[:per_page]
-                            if issues:
-                                all_processed_issues.extend(issues)
-                                # 处理这些issues
-                                for issue in issues:
-                                    issue_key = f"P{issue.number}"
-                                    if (issue_key not in existing_issues or 
-                                        ("updated_at" in existing_issues.get(issue_key, {}) and 
-                                         existing_issues[issue_key]["updated_at"] < issue.updated_at.timestamp())):
-                                        issues_to_process.append(issue)
-                                    else:
-                                        if issue_key in existing_issues and "data" in existing_issues[issue_key]:
-                                            list_json_name = existing_issues[issue_key].get("list_json_name", "postListJson")
-                                            if list_json_name not in self.blogBase:
-                                                self.blogBase[list_json_name] = {}
-                                            self.blogBase[list_json_name][issue_key] = existing_issues[issue_key]["data"]
-                                time.sleep(0.5)
-                                page += 1
-                                break
+                            # 重新初始化迭代器，从上次处理的位置开始可能比较复杂
+                            # 这里简化为重新开始，但可以考虑使用更精确的恢复机制
+                            issues_iterator = self.repo.get_issues(state="all", sort="updated", direction="desc")
+                            # 跳过已经处理过的issues
+                            for _ in range(len(all_processed_issues)):
+                                next(issues_iterator, None)
+                            break  # 重试成功，跳出重试循环
                         except Exception as retry_e:
                             logging.error(f"重试失败: {str(retry_e)}")
                     else:
-                        logging.error(f"已达到最大重试次数，跳过第 {page} 页")
-                        page += 1
+                        logging.error(f"已达到最大重试次数，停止获取issues")
+                        break
+            
+            # 处理最后一批剩余的issues
+            if batch:
+                all_processed_issues.extend(batch)
+                for issue_item in batch:
+                    issue_key = f"P{issue_item.number}"
+                    if (issue_key not in existing_issues or 
+                        ("updated_at" in existing_issues.get(issue_key, {}) and 
+                         existing_issues[issue_key]["updated_at"] < issue_item.updated_at.timestamp())):
+                        issues_to_process.append(issue_item)
+                    else:
+                        if issue_key in existing_issues and "data" in existing_issues[issue_key]:
+                            list_json_name = existing_issues[issue_key].get("list_json_name", "postListJson")
+                            if list_json_name not in self.blogBase:
+                                self.blogBase[list_json_name] = {}
+                            self.blogBase[list_json_name][issue_key] = existing_issues[issue_key]["data"]
             
             total_issues_count = len(all_processed_issues)
             issue_count = len(issues_to_process)
