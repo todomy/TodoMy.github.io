@@ -704,6 +704,11 @@ class GMEEK():
 
     def get_issue_status(self):
         """获取保存的issue状态信息"""
+        # 确保issue_status_file属性存在
+        if not hasattr(self, 'issue_status_file'):
+            print("警告: issue_status_file属性不存在，设置默认值")
+            self.issue_status_file = 'issue_status.json'
+        
         if os.path.exists(self.issue_status_file):
             try:
                 with open(self.issue_status_file, 'r', encoding='utf-8') as f:
