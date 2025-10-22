@@ -71,8 +71,11 @@ class GMEEK():
         
         try:
             # 添加超时和重试机制初始化GitHub连接
+            # 使用新版auth参数避免弃用警告
+            from github import Auth
+            auth = Auth.Token(self.options.github_token)
             user = Github(
-                self.options.github_token,
+                auth=auth,
                 timeout=30,
                 per_page=100
             )
