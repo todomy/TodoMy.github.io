@@ -519,6 +519,7 @@ class GMEEK():
             if issue.body==None:
                 self.blogBase[listJsonName][postNum]["description"]=''
                 self.blogBase[listJsonName][postNum]["wordCount"]=0
+                self.blogBase[listJsonName][postNum]["content"]=''  # 添加文章内容字段
             else:
                 self.blogBase[listJsonName][postNum]["wordCount"]=len(issue.body)
                 if self.blogBase["rssSplit"]=="sentence":
@@ -529,6 +530,7 @@ class GMEEK():
                 else:
                     period=self.blogBase["rssSplit"]
                 self.blogBase[listJsonName][postNum]["description"]=issue.body.split(period)[0].replace("\"", "\'")+period
+                self.blogBase[listJsonName][postNum]["content"]=issue.body  # 添加文章内容字段
                 
             self.blogBase[listJsonName][postNum]["top"]=0
             for event in issue.get_events():
