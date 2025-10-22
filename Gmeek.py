@@ -756,8 +756,8 @@ class GMEEK():
                 logging.debug(f"获取第 {page} 页issues...")
                 try:
                     # 获取所有状态的issues，按更新时间降序排列
-                    issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc", 
-                                                       per_page=per_page, page=page))
+                    # 注意：PyGithub库不支持per_page和page参数，使用默认分页
+                    issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc"))[:per_page]
                     
                     if not issues:
                         has_more = False
@@ -793,8 +793,8 @@ class GMEEK():
                         logging.info(f"第 {retry_count} 次重试获取第 {page} 页...")
                         time.sleep(2)  # 增加等待时间后重试
                         try:
-                            issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc", 
-                                                               per_page=per_page, page=page))
+                            # 注意：PyGithub库不支持per_page和page参数，使用默认分页
+                            issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc"))[:per_page]
                             if issues:
                                 all_processed_issues.extend(issues)
                                 # 处理这些issues
