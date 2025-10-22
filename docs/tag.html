@@ -249,6 +249,8 @@ function showList(labelsCount){
         if(i!='labelColorDict'){
             let div=document.createElement("div");
             div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
+            div.setAttribute("data-content", jsonData[i]['content'] || '');
+
             let item=document.createElement("a");
             item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between");
             item.setAttribute("href",jsonData[i]['postUrl']);
@@ -337,10 +339,28 @@ function searchShow(){
     else{document.title=searchInput+" - TodoMy";}
     let a=0;
     window.location.hash="#"+(searchInput);
+    
+    // 转换为大写以进行不区分大小写的搜索
+    let searchTerm = searchInput.toUpperCase();
+    
     for(let i = 0; i < lists.length; i++){
-        if(lists[i].childNodes[0].childNodes[0].childNodes[1].innerHTML.toUpperCase().indexOf(searchInput.toUpperCase())==-1){lists[i].style.display='none';}
-        else{lists[i].style.display='block';a=a+1;}
+        let item = lists[i];
+        let titleElement = item.childNodes[0].childNodes[0].childNodes[1];
+        let titleText = titleElement ? titleElement.innerHTML.toUpperCase() : '';
+        
+        // 获取文章内容（从data-content属性中）
+        let contentText = item.getAttribute('data-content') || '';
+        contentText = contentText.toUpperCase();
+        
+        // 同时搜索标题和内容
+        if(titleText.indexOf(searchTerm) !== -1 || contentText.indexOf(searchTerm) !== -1){
+            item.style.display='block';
+            a++;
+        } else {
+            item.style.display='none';
+        }
     }
+    
     if(a==0){
         let notFind=document.getElementsByClassName("notFind")[0];
         notFind.style.display='block';
