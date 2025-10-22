@@ -19,8 +19,8 @@ from jinja2 import Environment, FileSystemLoader
 from transliterate import translit
 from collections import OrderedDict
 import random
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+import hashlib
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # 配置日志
 logging.basicConfig(
@@ -63,6 +63,12 @@ class GMEEK():
         self.post_dir=self.root_dir+self.post_folder
         self.max_retries = 3
         self.retry_delay = 2  # 秒
+        self.cache_dir = '.cache/'
+        self.issue_status_file = 'issue_status.json'
+        
+        # 创建缓存目录
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir)
         
         # 设置带重试机制的requests会话
         self.session = requests.Session()
@@ -252,11 +258,27 @@ class GMEEK():
             if mdstr is None:
                 return ""
             
+            # 生成内容哈希作为缓存键
+            content_hash = hashlib.md5(mdstr.encode('utf-8')).hexdigest()
+            cache_file = os.path.join(self.cache_dir, f'md_cache_{content_hash}.html')
+            
+            # 检查缓存是否存在
+            if os.path.exists(cache_file):
+                with open(cache_file, 'r', encoding='utf-8') as f:
+                    logging.debug(f"使用缓存的HTML转换结果: {content_hash}")
+                    return f.read()
+            
             payload = {"text": mdstr, "mode": "gfm"}
             # 使用已配置的会话而不是新请求
             response = self.session.post("https://api.github.com/markdown", json=payload, headers=self.github_headers)
             response.raise_for_status()  # Raises an exception if status code is not 200
-            return response.text
+            
+            # 保存到缓存
+            html_content = response.text
+            with open(cache_file, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+                
+            return html_content
         except requests.RequestException as e:
             logging.error(f"markdown2html API调用失败: {str(e)}")
             # 返回原始字符串，确保即使转换失败也能显示内容
@@ -557,163 +579,404 @@ class GMEEK():
                 logging.critical("无法创建后备RSS文件")
 
     def addOnePostJson(self,issue):
-        if len(issue.labels)>=1:
-            # 优化标签判断逻辑
-            first_label = issue.labels[0].name
-            if first_label in self.blogBase["singlePage"]:
-                listJsonName='singeListJson'
-                htmlFile='{}.html'.format(self.createFileName(issue,useLabel=True))
-                gen_Html = self.root_dir+htmlFile
-            else:
-                listJsonName='postListJson'
-                htmlFile='{}.html'.format(self.createFileName(issue))
-                gen_Html = self.post_dir+htmlFile
-
-            postNum="P"+str(issue.number)
-            # 使用字典字面量而非json.loads，提高性能
-            self.blogBase[listJsonName][postNum] = {}
-            post_data = self.blogBase[listJsonName][postNum]
-            
-            # 批量赋值，减少重复键查找
-            post_data["htmlDir"] = gen_Html
-            post_data["labels"] = [label.name for label in issue.labels]
-            post_data["postTitle"] = issue.title
-            post_data["postUrl"] = urllib.parse.quote(gen_Html[len(self.root_dir):])
-            post_data["postSourceUrl"] = "https://github.com/"+options.repo_name+"/issues/"+str(issue.number)
-            
-            # 缓存评论数，避免重复API调用
-            comment_count = issue.get_comments().totalCount
-            post_data["commentNum"] = comment_count
-
-            # 优化文章内容处理
-            issue_body = issue.body or ''
-            post_data["content"] = issue_body  # 保存文章内容
-            
-            if not issue_body:
-                post_data["description"] = ''
-                post_data["wordCount"] = 0
-            else:
-                post_data["wordCount"] = len(issue_body)
-                # 优化分隔符逻辑
-                if self.blogBase["rssSplit"] == "sentence":
-                    period = "。" if self.blogBase["i18n"] == "CN" else "."
+        try:
+            if len(issue.labels)>=1:
+                # 优化标签判断逻辑
+                first_label = issue.labels[0].name
+                if first_label in self.blogBase["singlePage"]:
+                    listJsonName='singeListJson'
+                    htmlFile='{}.html'.format(self.createFileName(issue,useLabel=True))
+                    gen_Html = self.root_dir+htmlFile
                 else:
-                    period = self.blogBase["rssSplit"]
-                
-                # 安全地获取第一段
-                description_parts = issue_body.split(period)
-                if description_parts:
-                    post_data["description"] = description_parts[0].replace('"', "'") + period
-                else:
-                    post_data["description"] = ""
-                
-            # 优化置顶状态检查
-            post_data["top"] = 0
-            # 减少不必要的API调用，仅在需要时获取事件
-            if hasattr(issue, '_rawData') and 'events_url' in issue._rawData:
-                for event in issue.get_events():
-                    if event.event == "pinned":
-                        post_data["top"] = 1
-                        break  # 找到置顶事件后立即退出循环
-                    elif event.event == "unpinned":
-                        post_data["top"] = 0
+                    listJsonName='postListJson'
+                    htmlFile='{}.html'.format(self.createFileName(issue))
+                    gen_Html = self.post_dir+htmlFile
 
-            # 尝试解析自定义配置
-            postConfig = {}
-            if issue_body and "##" in issue_body:
+                postNum="P"+str(issue.number)
+                # 使用字典字面量而非json.loads，提高性能
+                self.blogBase[listJsonName][postNum] = {}
+                post_data = self.blogBase[listJsonName][postNum]
+                
+                # 批量赋值，减少重复键查找
+                post_data["htmlDir"] = gen_Html
+                post_data["labels"] = [label.name for label in issue.labels]
+                post_data["postTitle"] = issue.title
+                post_data["postUrl"] = urllib.parse.quote(gen_Html[len(self.root_dir):])
+                post_data["postSourceUrl"] = "https://github.com/"+options.repo_name+"/issues/"+str(issue.number)
+                
+                # 缓存评论数，避免重复API调用
+                comment_count = issue.get_comments().totalCount
+                post_data["commentNum"] = comment_count
+
+                # 优化文章内容处理
+                issue_body = issue.body or ''
+                post_data["content"] = issue_body  # 保存文章内容
+                
+                if not issue_body:
+                    post_data["description"] = ''
+                    post_data["wordCount"] = 0
+                else:
+                    post_data["wordCount"] = len(issue_body)
+                    # 优化分隔符逻辑
+                    if self.blogBase["rssSplit"] == "sentence":
+                        period = "。" if self.blogBase["i18n"] == "CN" else "."
+                    else:
+                        period = self.blogBase["rssSplit"]
+                    
+                    # 安全地获取第一段
+                    description_parts = issue_body.split(period)
+                    if description_parts:
+                        post_data["description"] = description_parts[0].replace('"', "'") + period
+                    else:
+                        post_data["description"] = ""
+                    
+                # 优化置顶状态检查
+                post_data["top"] = 0
+                # 减少不必要的API调用，仅在需要时获取事件
+                if hasattr(issue, '_rawData') and 'events_url' in issue._rawData:
+                    for event in issue.get_events():
+                        if event.event == "pinned":
+                            post_data["top"] = 1
+                            break  # 找到置顶事件后立即退出循环
+                        elif event.event == "unpinned":
+                            post_data["top"] = 0
+
+                # 尝试解析自定义配置
+                postConfig = {}
+                if issue_body and "##" in issue_body:
+                    try:
+                        last_line = issue_body.split("\r\n")[-1]
+                        if "##" in last_line:
+                            postConfig = json.loads(last_line.split("##")[1])
+                            print("Has Custom JSON parameters")
+                            print(postConfig)
+                    except Exception as e:
+                        # 静默处理错误，使用默认配置
+                        pass
+
+                # 处理时间戳
                 try:
-                    last_line = issue_body.split("\r\n")[-1]
-                    if "##" in last_line:
-                        postConfig = json.loads(last_line.split("##")[1])
-                        print("Has Custom JSON parameters")
-                        print(postConfig)
-                except Exception as e:
-                    # 静默处理错误，使用默认配置
-                    pass
-
-            # 处理时间戳
-            if "timestamp" in postConfig:
-                post_data["createdAt"] = postConfig["timestamp"]
-            else:
-                post_data["createdAt"] = int(time.mktime(issue.created_at.timetuple()))
-            
-            # 处理自定义样式和脚本
-            post_data["style"] = self.blogBase["style"] + (str(postConfig.get("style", "")) if "style" in postConfig else "")
-            post_data["script"] = self.blogBase["script"] + (str(postConfig.get("script", "")) if "script" in postConfig else "")
-            post_data["head"] = self.blogBase["head"] + (str(postConfig.get("head", "")) if "head" in postConfig else "")
-            post_data["ogImage"] = postConfig.get("ogImage", self.blogBase["ogImage"])
-
-            # 处理日期相关信息
-            thisTime = datetime.datetime.fromtimestamp(post_data["createdAt"])
-            thisTime = thisTime.astimezone(self.TZ)
-            thisYear = thisTime.year
-            post_data["createdDate"] = thisTime.strftime("%Y-%m-%d")
-            post_data["dateLabelColor"] = self.blogBase["yearColorList"][int(thisYear) % len(self.blogBase["yearColorList"])]
-
-            # 写入备份文件
-            mdFileName = re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue.title)
-            with open(self.backup_dir + mdFileName + ".md", 'w', encoding='UTF-8') as f:
-                f.write(issue_body)
+                    if "timestamp" in postConfig:
+                        post_data["createdAt"] = postConfig["timestamp"]
+                    else:
+                        if hasattr(issue, 'created_at'):
+                            post_data["createdAt"] = int(time.mktime(issue.created_at.timetuple()))
+                        else:
+                            post_data["createdAt"] = int(time.time())
+                except:
+                    post_data["createdAt"] = int(time.time())
                 
-            return listJsonName
+                # 处理自定义样式和脚本
+                post_data["style"] = self.blogBase.get("style", "") + (str(postConfig.get("style", "")) if "style" in postConfig else "")
+                post_data["script"] = self.blogBase.get("script", "") + (str(postConfig.get("script", "")) if "script" in postConfig else "")
+                post_data["head"] = self.blogBase.get("head", "") + (str(postConfig.get("head", "")) if "head" in postConfig else "")
+                post_data["ogImage"] = postConfig.get("ogImage", self.blogBase.get("ogImage", ""))
 
+                # 处理日期相关信息
+                try:
+                    thisTime = datetime.datetime.fromtimestamp(post_data["createdAt"])
+                    thisTime = thisTime.astimezone(self.TZ)
+                    thisYear = thisTime.year
+                    post_data["createdDate"] = thisTime.strftime("%Y-%m-%d")
+                    
+                    year_color_list = self.blogBase.get("yearColorList", ["#000000"])
+                    post_data["dateLabelColor"] = year_color_list[int(thisYear) % len(year_color_list)]
+                except:
+                    post_data["createdDate"] = ""
+                    post_data["dateLabelColor"] = "#000000"
+
+                # 确保备份目录存在
+                if not os.path.exists(self.backup_dir):
+                    os.makedirs(self.backup_dir)
+                    
+                # 写入备份文件
+                try:
+                    mdFileName = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', issue.title if hasattr(issue, 'title') else "untitled")
+                    with open(self.backup_dir + mdFileName + ".md", 'w', encoding='UTF-8') as f:
+                        f.write(issue_body)
+                except:
+                    pass
+                
+                return listJsonName
+        except Exception as e:
+            print(f"处理issue时发生异常: {str(e)}")
+            return None
+
+    def get_issue_status(self):
+        """获取保存的issue状态信息"""
+        if os.path.exists(self.issue_status_file):
+            try:
+                with open(self.issue_status_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                logging.error(f"读取issue状态文件失败: {str(e)}")
+        return {"issues": {}, "last_updated": 0}
+    
+    def save_issue_status(self, status):
+        """保存issue状态信息"""
+        try:
+            with open(self.issue_status_file, 'w', encoding='utf-8') as f:
+                json.dump(status, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            logging.error(f"保存issue状态文件失败: {str(e)}")
+    
     def runAll(self):
         logging.info("====== 开始创建静态HTML ======")
         try:
-            # 清理文件和目录
+            # 获取issue状态信息，用于增量更新
+            issue_status = self.get_issue_status()
+            last_updated = issue_status.get("last_updated", 0)
+            existing_issues = issue_status.get("issues", {})
+            
+            # 清理文件和目录 - 但保留可能不需要重新生成的内容
             self.cleanFile()
             
-            # 获取所有issues，添加分页支持以处理大量issues
-            issue_count = 0
-            max_issues = 1000  # 设置一个合理的上限，防止处理过多issues
+            # 初始化基础数据结构
+            if "postListJson" not in self.blogBase:
+                self.blogBase["postListJson"] = {}
+            if "singeListJson" not in self.blogBase:
+                self.blogBase["singeListJson"] = {}
             
-            # 预加载所有open状态的issues，减少API调用次数
-            open_issues = list(self.repo.get_issues(state="open"))
-            issue_count = len(open_issues)
+            # 获取所有issues（包括open和closed），完全解除处理上限
+            logging.info("获取所有issues（包括open和closed状态）...")
             
-            logging.info(f"准备处理 {issue_count} 个issues")
+            # 使用分页获取所有issues，避免一次性加载过多
+            issues_to_process = []
+            all_processed_issues = []
+            page = 1
+            per_page = 100  # GitHub API每页最多100个
+            has_more = True
             
-            # 限制处理数量
-            if issue_count > max_issues:
-                logging.warning(f"已达到最大处理数量 {max_issues}，跳过剩余issues")
-                open_issues = open_issues[:max_issues]
-                issue_count = max_issues
-            
-            # 批量处理issues
-            for i, issue in enumerate(open_issues):
+            while has_more:
+                logging.debug(f"获取第 {page} 页issues...")
                 try:
-                    self.addOnePostJson(issue)
-                    # 每处理10个issue打印一次进度，减少日志输出
-                    if (i + 1) % 10 == 0 or i + 1 == issue_count:
-                        logging.info(f"已处理 {i + 1}/{issue_count} 个issues")
+                    # 获取所有状态的issues，按更新时间降序排列
+                    issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc", 
+                                                       per_page=per_page, page=page))
+                    
+                    if not issues:
+                        has_more = False
+                    else:
+                        all_processed_issues.extend(issues)
+                        
+                        # 检查是否需要处理这些issues
+                        for issue in issues:
+                            # 如果是新issue或者已更新的issue，则添加到处理列表
+                            issue_key = f"P{issue.number}"
+                            if (issue_key not in existing_issues or 
+                                ("updated_at" in existing_issues.get(issue_key, {}) and 
+                                 existing_issues[issue_key]["updated_at"] < issue.updated_at.timestamp())):
+                                issues_to_process.append(issue)
+                            # 如果issue没有更新，可以从现有状态获取
+                            else:
+                                # 直接从状态中恢复已存在的issue数据
+                                if issue_key in existing_issues and "data" in existing_issues[issue_key]:
+                                    list_json_name = existing_issues[issue_key].get("list_json_name", "postListJson")
+                                    if list_json_name not in self.blogBase:
+                                        self.blogBase[list_json_name] = {}
+                                    self.blogBase[list_json_name][issue_key] = existing_issues[issue_key]["data"]
+                        
+                        # 添加短暂休息以避免触发API速率限制
+                        time.sleep(0.5)
+                        page += 1
                 except Exception as e:
-                    logging.error(f"处理issue #{issue.number} 失败: {str(e)}")
-                    # 继续处理下一个issue
-                    continue
+                    logging.error(f"获取第 {page} 页issues失败: {str(e)}")
+                    # 重试当前页最多3次
+                    retry_count = 0
+                    while retry_count < 3:
+                        retry_count += 1
+                        logging.info(f"第 {retry_count} 次重试获取第 {page} 页...")
+                        time.sleep(2)  # 增加等待时间后重试
+                        try:
+                            issues = list(self.repo.get_issues(state="all", sort="updated", direction="desc", 
+                                                               per_page=per_page, page=page))
+                            if issues:
+                                all_processed_issues.extend(issues)
+                                # 处理这些issues
+                                for issue in issues:
+                                    issue_key = f"P{issue.number}"
+                                    if (issue_key not in existing_issues or 
+                                        ("updated_at" in existing_issues.get(issue_key, {}) and 
+                                         existing_issues[issue_key]["updated_at"] < issue.updated_at.timestamp())):
+                                        issues_to_process.append(issue)
+                                    else:
+                                        if issue_key in existing_issues and "data" in existing_issues[issue_key]:
+                                            list_json_name = existing_issues[issue_key].get("list_json_name", "postListJson")
+                                            if list_json_name not in self.blogBase:
+                                                self.blogBase[list_json_name] = {}
+                                            self.blogBase[list_json_name][issue_key] = existing_issues[issue_key]["data"]
+                                time.sleep(0.5)
+                                page += 1
+                                break
+                        except Exception as retry_e:
+                            logging.error(f"重试失败: {str(retry_e)}")
+                    else:
+                        logging.error(f"已达到最大重试次数，跳过第 {page} 页")
+                        page += 1
+            
+            total_issues_count = len(all_processed_issues)
+            issue_count = len(issues_to_process)
+            logging.info(f"总共获取到 {total_issues_count} 个issues，需要处理 {issue_count} 个issues (新增或更新)")
+            
+            # 跟踪处理状态
+            processed_count = 0
+            failed_count = 0
+            
+            # 批量处理需要更新的issues，使用线程池提高效率
+            if issue_count > 0:
+                # 根据系统CPU核心数动态调整线程池大小
+                import multiprocessing
+                max_workers = min(32, multiprocessing.cpu_count() * 4)
+                max_workers = min(max_workers, max(2, issue_count // 5))
+                logging.info(f"使用线程池并行处理，最大工作线程: {max_workers}")
+                
+                # 分批处理，避免一次性提交太多任务
+                batch_size = 200
+                for batch_start in range(0, issue_count, batch_size):
+                    batch_end = min(batch_start + batch_size, issue_count)
+                    current_batch = issues_to_process[batch_start:batch_end]
+                    batch_num = (batch_start // batch_size) + 1
+                    total_batches = (issue_count + batch_size - 1) // batch_size
+                    
+                    logging.info(f"处理批次 {batch_num}/{total_batches}，包含 {len(current_batch)} 个issues")
+                    
+                    with ThreadPoolExecutor(max_workers=min(max_workers, len(current_batch))) as executor:
+                        # 提交当前批次的任务
+                        future_to_issue = {executor.submit(self.addOnePostJson, issue): issue for issue in current_batch}
+                        
+                        # 处理完成的任务
+                        for future in as_completed(future_to_issue):
+                            issue = future_to_issue[future]
+                            try:
+                                list_json_name = future.result()
+                                # 更新状态信息
+                                issue_key = f"P{issue.number}"
+                                if list_json_name and list_json_name in self.blogBase and issue_key in self.blogBase[list_json_name]:
+                                    issue_status["issues"][issue_key] = {
+                                        "updated_at": issue.updated_at.timestamp(),
+                                        "list_json_name": list_json_name,
+                                        "data": self.blogBase[list_json_name][issue_key],
+                                        "processed_at": time.time()
+                                    }
+                                
+                                processed_count += 1
+                                if processed_count % 20 == 0 or processed_count == issue_count:
+                                    logging.info(f"已处理 {processed_count}/{issue_count} 个issues")
+                            except Exception as e:
+                                failed_count += 1
+                                logging.error(f"处理issue #{issue.number} 失败: {str(e)}")
+                    
+                    # 每批次后保存状态，防止数据丢失
+                    issue_status["last_updated"] = time.time()
+                    self.save_issue_status(issue_status)
+            
+            # 更新最后处理时间
+            issue_status["last_updated"] = time.time()
+            
+            # 清理不再活跃的issue记录（超过60天未更新的）
+            current_time = time.time()
+            sixty_days_ago = current_time - (60 * 24 * 60 * 60)
+            active_issue_keys = {f"P{issue.number}" for issue in all_processed_issues}
+            
+            # 清理issue_status中的旧记录
+            inactive_keys = []
+            for key, value in existing_issues.items():
+                if key not in active_issue_keys and value.get("processed_at", 0) < sixty_days_ago:
+                    inactive_keys.append(key)
+            
+            for key in inactive_keys:
+                if key in issue_status["issues"]:
+                    del issue_status["issues"][key]
+            
+            logging.info(f"清理了 {len(inactive_keys)} 个不活跃的issue记录")
+            
+            # 保存更新后的状态
+            self.save_issue_status(issue_status)
             
             # 优化HTML生成顺序，先生成文章，再生成列表页
             total_posts = 0
+            posts_to_generate = []
+            
+            # 确定是否需要强制重新生成所有HTML
+            force_regenerate = False
+            if failed_count > 0:
+                force_regenerate = True
+                logging.info(f"有 {failed_count} 个issues处理失败，需要重新生成相关HTML")
+            
+            # 如果总issue数量与已保存的不同，也需要重新生成
+            stored_issue_count = len(existing_issues)
+            if abs(total_issues_count - stored_issue_count) > 5:  # 允许小的差异
+                force_regenerate = True
+                logging.info(f"检测到issue数量显著变化: 存储 {stored_issue_count} 个, 当前 {total_issues_count} 个，需要重新生成HTML")
+            
+            # 收集需要生成HTML的文章
             for issue_type in ["postListJson", "singeListJson"]:
                 if issue_type in self.blogBase:
-                    posts = list(self.blogBase[issue_type].items())
-                    post_count = len(posts)
-                    total_posts += post_count
-                    
-                    if post_count > 0:
-                        logging.info(f"开始生成 {issue_type} 的 {post_count} 个HTML页面")
-                        
-                        for i, (issue_id, issue) in enumerate(posts):
-                            try:
-                                self.createPostHtml(issue)
-                                # 每处理10个post打印一次进度
-                                if (i + 1) % 10 == 0 or i + 1 == post_count:
-                                    logging.info(f"已生成 {i + 1}/{post_count} 个HTML页面")
-                            except Exception as e:
-                                logging.error(f"生成文章 {issue_id} HTML 失败: {str(e)}")
-                                # 继续处理下一篇文章
-                                continue
+                    for issue_id, issue in self.blogBase[issue_type].items():
+                        # 需要生成HTML的条件：
+                        # 1. 强制重新生成
+                        # 2. 新增或更新的文章
+                        if (force_regenerate or 
+                            (issue_id in issue_status["issues"] and 
+                             issue_status["issues"][issue_id]["updated_at"] > last_updated)):
+                            posts_to_generate.append((issue_type, issue_id, issue))
+                            total_posts += 1
             
-            logging.info(f"总共生成了 {total_posts} 个文章HTML页面")
+            # 如果没有具体文章需要更新，但有新增或更新的issue，那么需要全部重新生成（可能有排序变化）
+            if not posts_to_generate and (issue_count > 0 or force_regenerate):
+                posts_to_generate = []
+                total_posts = 0
+                for issue_type in ["postListJson", "singeListJson"]:
+                    if issue_type in self.blogBase:
+                        for issue_id, issue in self.blogBase[issue_type].items():
+                            posts_to_generate.append((issue_type, issue_id, issue))
+                            total_posts += 1
+                
+                logging.info(f"需要重新生成所有 {total_posts} 个HTML页面")
+            else:
+                logging.info(f"开始生成 {total_posts} 个新增或更新的HTML页面")
+            
+            # 使用线程池并行生成HTML
+            if posts_to_generate:
+                # 根据系统CPU核心数动态调整线程池大小
+                import multiprocessing
+                max_workers = min(32, multiprocessing.cpu_count() * 4)
+                max_workers = min(max_workers, max(2, len(posts_to_generate) // 10))
+                
+                # 分批生成HTML，避免内存占用过高
+                html_batch_size = 100
+                for html_batch_start in range(0, len(posts_to_generate), html_batch_size):
+                    html_batch_end = min(html_batch_start + html_batch_size, len(posts_to_generate))
+                    html_batch = posts_to_generate[html_batch_start:html_batch_end]
+                    html_batch_num = (html_batch_start // html_batch_size) + 1
+                    html_total_batches = (len(posts_to_generate) + html_batch_size - 1) // html_batch_size
+                    
+                    logging.info(f"生成HTML批次 {html_batch_num}/{html_total_batches}，包含 {len(html_batch)} 个文件")
+                    
+                    with ThreadPoolExecutor(max_workers=min(max_workers, len(html_batch))) as executor:
+                        future_to_post = {executor.submit(self.createPostHtml, post): (issue_type, issue_id) 
+                                        for issue_type, issue_id, post in html_batch}
+                        
+                        generated_count = 0
+                        html_failed_count = 0
+                        for future in as_completed(future_to_post):
+                            issue_type, issue_id = future_to_post[future]
+                            try:
+                                future.result()
+                                generated_count += 1
+                                if generated_count % 20 == 0 or generated_count == len(html_batch):
+                                    logging.info(f"当前批次已生成 {generated_count}/{len(html_batch)} 个HTML页面")
+                            except Exception as e:
+                                html_failed_count += 1
+                                logging.error(f"生成文章 {issue_id} HTML 失败: {str(e)}")
+                        
+                        logging.info(f"HTML批次完成: 成功 {generated_count}, 失败 {html_failed_count}")
+            else:
+                logging.info("没有需要更新的HTML页面")
+            
+            # 保存JSON数据
+            self.saveListJson("postListJson")
+            self.saveListJson("singeListJson")
             
             # 生成列表页面和RSS
             logging.info("开始生成列表页面")
@@ -723,9 +986,27 @@ class GMEEK():
             self.createFeedXml()
             
             logging.info("====== 创建静态HTML完成 ======")
-            logging.info(f"总共处理了 {issue_count} 个issues")
+            logging.info(f"总共获取到 {total_issues_count} 个issues，处理了 {processed_count} 个新增/更新的issues，失败 {failed_count} 个")
+        except KeyboardInterrupt:
+            logging.warning("用户中断操作")
+            # 尝试保存当前状态
+            try:
+                issue_status["last_updated"] = time.time()
+                self.save_issue_status(issue_status)
+                logging.info("已保存当前处理状态")
+            except Exception as e:
+                logging.error(f"保存状态失败: {str(e)}")
+            raise
         except Exception as e:
             logging.error(f"runAll 执行失败: {str(e)}")
+            # 尝试保存当前状态，以便下次恢复
+            try:
+                if 'issue_status' in locals():
+                    issue_status["last_updated"] = time.time()
+                    self.save_issue_status(issue_status)
+                    logging.info("已保存当前处理状态")
+            except Exception as save_e:
+                logging.error(f"保存状态失败: {str(save_e)}")
             raise
 
     def runOne(self,number_str):
@@ -821,17 +1102,8 @@ docListFile.close()
 
 if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     print("====== update readme file ======")
-    workspace_path = os.environ.get('GITHUB_WORKSPACE')
-    readme="# %s :link: %s \r\n" % (blog.blogBase["title"],blog.blogBase["homeUrl"])
-    readme=readme+"\r\n## 关于这个博客\r\n"
-    readme=readme+"这是一个基于 GitHub Issues 的个人知识库和思考记录平台。\r\n"
-    readme=readme+"主要分享读书笔记、生活思考、技术探索和投资见解等内容。\r\n"
-    readme=readme+"通过 Gmeek 工具自动将 GitHub Issues 转换为静态博客页面。\r\n\r\n"
-    readme=readme+"### :page_facing_up: [%d](%s/tag.html) \r\n" % (len(blog.blogBase["postListJson"])-1,blog.blogBase["homeUrl"])
-    readme=readme+"### :speech_balloon: %d \r\n" % commentNumSum
-    readme=readme+"### :hibiscus: %d \r\n" % wordCount
-    readme=readme+"### :alarm_clock: %s \r\n" % datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S')
-    readmeFile=open(workspace_path+"/README.md","w")
-    readmeFile.write(readme)
-    readmeFile.close()
+    # 已移除自动生成README.md的代码
 ######################################################################################
+
+
+
