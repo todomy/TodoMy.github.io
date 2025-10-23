@@ -8,7 +8,13 @@
 <meta property="og:url" content="{{ blogBase['postUrl'] }}">
 <meta property="og:image" content="{{ blogBase['ogImage'] }}">
 <title>{{ blogBase['postTitle'] }}</title>
+<<<<<<< HEAD
 {% if blogBase['highlight']==1 %}<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />{% endif %}
+=======
+{% if blogBase['highlight']==1 %}<!-- 本地代码高亮样式 -->
+<link href="{{ blogBase['baseUrl'] }}../plugins/starry-night-both.css" rel="stylesheet" />{% endif %}
+<!-- 注意：需要从unpkg下载starry-night样式文件并保存到plugins目录 -->
+>>>>>>> master
 {{ blogBase['head'] }}
 {% endblock %}
 

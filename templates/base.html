@@ -7,6 +7,11 @@
     {{ blogBase['primerCSS'] }}
     {{ blogBase['allHead'] }}
     <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
+<<<<<<< HEAD
+=======
+    <!-- 本地JavaScript资源 -->
+    <script src="{% if pageType == 'post' %}{{ blogBase['baseUrl'] }}../plugins/GmeekVercount.js{% else %}{{ blogBase['baseUrl'] }}plugins/GmeekVercount.js{% endif %}"></script>
+>>>>>>> master
     {%- if blogBase['themeMode']=='manual' -%}
     <script>
         let theme = localStorage.getItem("meek_theme") || "light";
