@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block head %}
+<meta name="description" content="{{ blogBase['subTitle'] }}">
+<meta property="og:title" content="{{ blogBase['title'] }}">
+<meta property="og:description" content="{{ blogBase['subTitle'] }}">
+<meta property="og:type" content="blog">
+<meta property="og:url" content="{{ blogBase['homeUrl'] }}">
+<meta property="og:image" content="{{ blogBase['ogImage'] }}">
+<title>{{ blogBase['title'] }}</title>
+{% endblock %}
+
+{% block style %}
+<style>
+.avatar {transition: 0.8s;width:64px;height:64px;object-fit: cover;}
+.avatar:hover{transform: scale(1.15) rotate(360deg);}
+#header h1 a{color:inherit;text-decoration:none;vertical-align: bottom;font-size:40px;font-family:Monaco;margin-left:8px;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right button{margin-right:8px;padding:16px;}
+.title-right .circle{padding: 14px 16px;}
+
+.SideNav{min-width: 360px;}
+.SideNav-icon{margin-right: 16px}
+.SideNav-item .Label{color: #fff;margin-left:4px;}
+.d-flex{min-width:0;}
+.listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
+.listLabels{white-space:nowrap;display:flex;}
+.listLabels object{max-height:16px;max-width:24px;}
+
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .avatar {width:40px;height:40px;}
+    .blogTitle{display:none;}
+    #buttonRSS{display:none;}
+    .LabelTime{display:none;}
+}
+</style>
+{{ blogBase['indexStyle'] }}
+{% endblock %}
+
+{% block header %}
+<h1>
+    <img src="{{ blogBase['avatarUrl'] }}" class="avatar circle" id="avatarImg" alt="avatar">
+    {%- if blogBase['displayTitle']=='eekdai' -%}
+    <a class="blogTitle" href="https://meekdai.com">{{ blogBase['displayTitle'] }}</a>
+    {% else -%}
+    <a class="blogTitle">{{ blogBase['displayTitle'] }}</a>
+    {%- endif -%}
+</h1>
+<div class="title-right">
+    <a href="{{ blogBase['homeUrl'] }}/tag.html" id="buttonSearch" class="btn btn-invisible circle" title="{{ i18n['Search'] }}">
+        <svg class="octicon" width="16" height="16" >
+            <path id="pathSearch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    {% for key, value in blogBase['exlink'].items() -%}
+    <a href="{{ value }}" class="btn btn-invisible circle" title="{{ key }}" target="_blank">
+        <svg class="octicon" width="16" height="16" >
+            <path id="{{ key }}" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    {%- endfor %}
+    {% for num in blogBase['singeListJson'] -%}
+    <a href="{{ blogBase['homeUrl'] }}/{{ blogBase['singeListJson'][num]['labels'][0] }}.html" class="btn btn-invisible circle" title="{{ blogBase['singeListJson'][num]['postTitle'] }}">
+        <svg class="octicon" width="16" height="16" >
+            <path id="{{ blogBase['singeListJson'][num]['postTitle'] }}" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    {%- endfor %}
+    <a href="{{ blogBase['homeUrl'] }}/rss.xml" target="_blank" id="buttonRSS" class="btn btn-invisible circle" title="RSS">
+        <svg class="octicon" width="16" height="16" >
+            <path id="pathRSS" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 16px;">{{ blogBase['subTitle'] }}</div>
+<nav class="SideNav border">
+{% for num in postListJson -%}
+<a class="SideNav-item d-flex flex-items-center flex-justify-between" href="{{ postListJson[num]['postUrl']|e }}">
+    <div class="d-flex flex-items-center">
+        <svg class="SideNav-icon octicon" style="witdh:16px;height:16px"><path class="svgTop{{ postListJson[num]['top'] }}" d=""></path>
+        </svg>
+        <span class="listTitle">{{ postListJson[num]['postTitle']|e }}</span>
+    </div>
+    <div class="listLabels">
+        {% if postListJson[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['commentLabelColor'] }}">{{ postListJson[num]['commentNum'] }}</span>{% endif %}
+        {% for label in postListJson[num]['labels'] -%}
+        <span class="Label LabelName" style="background-color:{{ blogBase['labelColorDict'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
+        {%- endfor %}
+        <span class="Label LabelTime" style="background-color:{{ postListJson[num]['dateLabelColor'] }}">{{ postListJson[num]['createdDate'] }}</span>
+    </div>
+</a>
+{%- endfor %}
+</nav>
+{%- if blogBase['prevUrl']!='disabled' or blogBase['nextUrl']!='disabled' -%}
+<nav class="paginate-container" aria-label="Pagination">
+    <div class="pagination">
+        {%- if blogBase['prevUrl']=='disabled' -%}
+        <span class="previous_page" aria-disabled="true">{{ i18n['Previous'] }}</span>
+        {% else -%}
+        <a class="previous_page" rel="previous" href="{{ blogBase['homeUrl'] }}{{ blogBase['prevUrl'] }}" aria-label="Previous Page">{{ i18n['Previous'] }}</a>
+        {%- endif -%}
+
+        {%- if blogBase['nextUrl']=='disabled' -%}
+        <span class="next_page" aria-disabled="true">{{ i18n['Next'] }}</span>
+        {% else -%}
+        <a class="next_page" rel="next" href="{{ blogBase['homeUrl'] }}{{ blogBase['nextUrl'] }}" aria-label="Next Page">{{ i18n['Next'] }}</a>
+        {%- endif -%}
+
+    </div>
+</nav>
+{%- endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+document.getElementById("pathSearch").setAttribute("d",IconList["search"]);
+document.getElementById("pathRSS").setAttribute("d",IconList["rss"]);
+iconTOP=document.getElementsByClassName("svgTop1");
+iconPost=document.getElementsByClassName("svgTop0");
+for(var i=0;i<iconTOP.length;i++){
+    iconTOP[i].setAttribute("d",IconList["upload"]);
+    iconTOP[i].parentNode.style.color="red";
+}
+for(var i=0;i<iconPost.length;i++){
+    iconPost[i].setAttribute("d",IconList["post"]);
+}
+
+{% for key, value in blogBase['exlink'].items() %}
+document.getElementById("{{ key }}").setAttribute("d",value=IconList["{{ key }}"]);
+{%- endfor %}
+
+{% for num in blogBase['singeListJson'] -%}
+document.getElementById("{{ blogBase['singeListJson'][num]['postTitle'] }}").setAttribute("d",value=IconList["{{ blogBase['singeListJson'][num]['labels'][0] }}"]);
+{%- endfor %}
+</script>
+{{ blogBase['indexScript'] }}
+{% endblock %}
