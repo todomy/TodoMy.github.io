@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/primer.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js'></script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="> [!Tip]
+> 希望大家能把他们运用到生活里，这种思维模型可以让人更理智的做出决策，实事求是，客观看待事物，能够做到客观看待事物的人，必然能看到本质，趋吉避害。">
+<meta property="og:title" content="费马和帕斯卡的概率论学习">
+<meta property="og:description" content="> [!Tip]
+> 希望大家能把他们运用到生活里，这种思维模型可以让人更理智的做出决策，实事求是，客观看待事物，能够做到客观看待事物的人，必然能看到本质，趋吉避害。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://todomy.github.io/post/fei-ma-he-pa-si-qia-de-gai-lv-lun-xue-xi.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
+<title>费马和帕斯卡的概率论学习</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">费马和帕斯卡的概率论学习</h1>
+<div class="title-right">
+    <a href="https://todomy.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/111" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>希望大家能把他们运用到生活里，这种思维模型可以让人更理智的做出决策，实事求是，客观看待事物，能够做到客观看待事物的人，必然能看到本质，趋吉避害。</p>
+</div>
+<hr>
+<h3>📜 <strong>故事背景：一个赌博分钱的难题</strong></h3>
+<p>300多年前，有两个法国数学家——<strong>费马</strong>和<strong>帕斯卡</strong>，他们研究了一个赌博问题：</p>
+<blockquote>
+<p>甲乙两人赌博，每局赢的概率都是1/2。<br>
+先赢满5局的人拿走全部奖金。<br>
+但突然比赛中断时，甲赢了4局，乙赢了3局。<br>
+<strong>奖金该怎么公平分配？</strong></p>
+</blockquote>
+<hr>
+<h3>🎯 <strong>费马和帕斯卡的解决方法</strong></h3>
+<p>他们用了不同的思路，但答案一样！我们分开看：</p>
+<hr>
+<h4><strong>1️⃣ 费马的方法：看“未来可能”</strong></h4>
+<p>费马说：“<strong>我们只看接下来最多还需要几局</strong>就能结束比赛。”</p>
+<ul>
+<li><strong>最多再打2局</strong>（因为甲差1局赢，乙差2局赢）。</li>
+<li>可能的2局结果有4种（用A表示甲赢，B表示乙赢）：
+<ul>
+<li><strong>AA</strong>：甲赢第5局，直接结束。</li>
+<li><strong>AB</strong>：甲赢第1局，乙赢第2局 → 甲已赢5局，比赛结束。</li>
+<li><strong>BA</strong>：乙赢第1局，甲赢第2局 → 甲赢第5局，比赛结束。</li>
+<li><strong>BB</strong>：乙赢2局，比分变成4:5 → 乙赢。</li>
+</ul>
+</li>
+</ul>
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li>前3种情况（AA、AB、BA）都是<strong>甲最终赢</strong>。</li>
+<li>只有第4种（BB）是<strong>乙最终赢</strong>。</li>
+</ul>
+<p>所以：</p>
+<ul>
+<li>甲赢的概率 = 3/4</li>
+<li>乙赢的概率 = 1/4</li>
+</ul>
+<p><strong>奖金就该按3:1分！</strong><br>
+（比如100元 → 甲拿75元，乙拿25元）</p>
+<hr>
+<h4><strong>2️⃣ 帕斯卡的方法：用“期望值”</strong></h4>
+<p>帕斯卡更聪明，他想：“<strong>如果比赛继续打下去，平均每人能拿多少钱？</strong>”</p>
+<p>他用了一个叫**“期望值”**的概念（可以理解为“平均结果”）。</p>
+<ul>
+<li>如果<strong>甲再赢1局</strong>（概率1/2），甲直接拿100元。</li>
+<li>如果<strong>乙赢下一局</strong>（概率1/2），比分变成4:4，此时两人机会均等，每人拿50元。</li>
+</ul>
+<p>所以甲的期望奖金是：</p>
+<p><strong>½×100+ ½×50=75元</strong></p>
+<p>乙的期望奖金是：</p>
+<p><strong>½×0+ ½×50=25元</strong></p>
+<p>答案和费马完全一样！✅</p>
+<hr>
+<h3>🎲 <strong>什么是概率？</strong></h3>
+<p>通过这个故事，他们发现：</p>
+<blockquote>
+<p><strong>概率</strong>就是“<strong>某件事情发生的可能性</strong>”，用分数表示。<br>
+比如抛硬币正面概率是1/2，骰子掷出6的概率是1/6。</p>
+</blockquote>
+<hr>
+<h3>🌟 <strong>初中能学什么？</strong></h3>
+<p>你现在可以掌握：</p>
+<ol>
+<li><strong>用列举法算概率</strong>：比如掷骰子、抽扑克牌。</li>
+<li><strong>期望值</strong>：平均每次能赢多少钱（比如抽奖活动）。</li>
+<li><strong>公平分配</strong>：像费马帕斯卡一样，用概率解决生活中的争议。</li>
+</ol>
+<hr>
+<h3>🎮 <strong>小游戏练习</strong></h3>
+<p><strong>问题</strong>：你和同桌玩“剪刀石头布”，赢的人得1分，先赢3局的人得10元。<br>
+现在比分是2:1（你领先），但突然要放学了，奖金怎么分？</p>
+<p><strong>提示</strong>：用费马的方法，看最多还需要几局？<br>
+（答案：你赢的概率是3/4，同桌是1/4，你拿7.5元，同桌拿2.5元）</p>
+<hr>
+<h3>📚 总结</h3>
+<ul>
+<li><strong>费马</strong>：用“未来所有可能”计算概率。</li>
+<li><strong>帕斯卡</strong>：用“平均结果”计算概率。</li>
+<li><strong>核心思想</strong>：<strong>公平分配 = 按概率分</strong>！</li>
+</ul>
+<hr>
+<h3>❓费马和帕斯卡的方法区别</h3>
+<p>一句话先总结：<br>
+<strong>费马是“把全部未来可能的情况都列出来，再数比例”；帕斯卡是“直接算每个人平均能拿多少钱”。</strong></p>
+<p>用刚才那个分奖金的故事，我来给你做一个“对照表”，就能一眼看出区别。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>比较点</th>
+<th>费马的方法</th>
+<th>帕斯卡的方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>思路</strong></td>
+<td>“穷举”：把接下来所有可能的比赛结果都写出来，再统计谁赢。</td>
+<td>“期望”：不穷举，而是用一步一步的“平均结果”倒推。</td>
+</tr>
+<tr>
+<td><strong>计算过程</strong></td>
+<td>1. 列树状图：最多再打 2 局，有 4 种结局。<br>2. 数一数：3 种结局甲赢，1 种结局乙赢。<br>3. 概率比 = 3 : 1</td>
+<td>1. 先算“如果下一局甲赢”会怎样。<br>2. 再算“如果下一局乙赢”会怎样。<br>3. 把两种情况的奖金按 1/2 和 1/2 加权平均。</td>
+</tr>
+<tr>
+<td><strong>关键词</strong></td>
+<td>“所有可能”、“树状图”、“数个数”</td>
+<td>“平均值”、“倒推”、“加权”</td>
+</tr>
+<tr>
+<td><strong>优点</strong></td>
+<td>直观、容易看懂，适合小局面</td>
+<td>计算简洁，局面再大也能用公式</td>
+</tr>
+<tr>
+<td><strong>缺点</strong></td>
+<td>局面一大（要打很多局），树状图爆炸，写不完</td>
+<td>需要理解“期望”这个新概念，第一次接触有点抽象</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>再举个超小例子帮你感受：</p>
+<p><strong>抛硬币一次，正面你得 10 元，反面你得 0 元，怎么算你“平均能拿多少”？</strong></p>
+<ul>
+<li>费马式：把两种可能列出来，正面、反面各 1 种 → (10 + 0) ÷ 2 = 5 元。</li>
+<li>帕斯卡式：直接用期望公式：10×½ + 0×½ = 5 元。</li>
+</ul>
+<p>答案一样，只是走的路不同。</p>
+<p>所以，你可以这样记：<br>
+<strong>费马像“老实人数格子”，帕斯卡像“聪明人心算平均”。</strong></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 添加返回顶部按钮的样式 */
+        .circle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: none; /* 默认不显示 */
+        }
+
+        .circle-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        /* 链接样式 */
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: font-weight 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            font-weight: bold; /* 鼠标悬停时链接变粗 */
+            transform: scale(1.1); /* 字体变大 */
+        }
+    </style>
+</head>
+<body>
+    <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
+    <div id="footer2">
+        <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    </div>
+
+    <!-- 添加返回顶部按钮 -->
+    <div class="circle-button" onclick="scrollToTop()">↑</div>
+
+    <script>
+        var now = new Date();
+        document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+
+        if ("11/24/2024" != "") {
+            var startSite = new Date("11/24/2024");
+            var diff = now.getTime() - startSite.getTime();
+            var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        }
+
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY; // 获取当前滚动位置
+            var button = document.querySelector('.circle-button'); // 获取返回顶部按钮
+            if (scrollPosition > 100) { // 如果滚动距离大于100px，显示按钮
+                button.style.display = 'flex';
+            } else { // 否则隐藏按钮
+                button.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","todomy/TodoMy.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+<script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekTOC.js'></script><script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/lightbox.js'></script>
+
+</html>
