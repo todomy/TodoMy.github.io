@@ -81,7 +81,7 @@ const styles = `
       max-width: 760px;
       margin-left: auto;
       margin-right: auto;
-      min-height: 200px; /* 确保有足够空间显示加载状态 */
+      min-height: 100px; /* 确保有足够空间显示加载状态 */
     }
     .utterances-frame {
       color-scheme: light;
@@ -94,37 +94,12 @@ const styles = `
       height: 100%;
       border: 0;
     }
-    .utterances-skeleton {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, var(--skeleton-start, #f0f0f0) 25%, var(--skeleton-middle, #e0e0e0) 50%, var(--skeleton-end, #f0f0f0) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      z-index: 1;
-      border-radius: 4px;
-      border: 1px solid var(--color-border-default, #e1e4e8);
-    }
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
     .utterances-loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2;
+      text-align: center;
+      padding: 20px;
       font-size: 14px;
       color: var(--color-text-secondary, #666);
-      background: var(--color-bg-primary, #ffffff);
-      padding: 10px 20px;
-      border-radius: 6px;
-      border: 1px solid var(--color-border-default, #e1e4e8);
     }
-    .utterances-loaded .utterances-skeleton,
     .utterances-loaded .utterances-loading {
       display: none;
     }
@@ -136,11 +111,10 @@ const l = r.src.match(/^https:\/\/utteranc\.es|http:\/\/localhost:\d+|\/plugins\
 const h = l.includes('plugins') ? 'https://utteranc.es' : l;
 const u = `${h}/utterances.html`;
 
-// 添加带骨架屏和加载状态的容器
+// 添加带简单加载状态的容器
 r.insertAdjacentHTML("afterend", `
   <div class="utterances">
-    <div class="utterances-skeleton"></div>
-    <div class="utterances-loading">加载评论中...</div>
+    <div class="utterances-loading">正在加载评论...</div>
     <iframe 
       class="utterances-frame" 
       title="Comments" 
