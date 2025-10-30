@@ -1,85 +1,43 @@
-name: build Gmeek  # 定义工作流的名称
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
-on:  # 指定触发工作流的事件
-  workflow_dispatch:  # 当有人手动触发时
-  issues:  # 当有新的issue或issue被编辑时
-    types: [opened, edited]  # 指定触发事件的类型
-  schedule:  # 计划任务
-    - cron: "0 0 * * *"  # 每天的00:00 UTC时间触发
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
 
-jobs:  # 定义工作流中的工作（jobs）
-  build:  # 定义名为“build”的工作
-    name: Generate blog  # 工作的名字
-    runs-on: ubuntu-latest  # 使用最新的Ubuntu版本，确保长期兼容性
-    if: ${{ github.event.repository.owner.id == github.event.sender.id || github.event_name == 'schedule' }}  # 条件判断，确保只有仓库所有者或计划任务触发时才执行
-    permissions: write-all  # 设置权限，允许写入所有内容
-    steps:  # 工作的具体步骤
-      - name: Checkout  # 步骤名称：检出代码
-        uses: actions/checkout@v4  # 使用actions提供的检出代码操作
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
-      - name: Setup Pages  # 步骤名称：设置Pages
-        id: pages  # 步骤标识，用于后续引用输出
-        uses: actions/configure-pages@v4  # 使用actions提供的Pages设置操作
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-      - name: Get config.json  # 步骤名称：获取config.json配置文件
-        run: |
-          echo "====== check config.json file ======"
-          cat config.json  # 打印config.json文件内容，用于检查
-          echo "====== check config.json end  ======"
-          sudo apt-get install jq  # 安装jq工具，用于处理JSON
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
-      - name: Set up Python  # 步骤名称：设置Python环境
-        uses: actions/setup-python@v5  # 使用actions提供的Python设置操作
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          python-version: 3.8  # 指定Python版本
-
-      - name: Cache Python dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install dependencies  # 步骤名称：安装依赖
-        run: |
-          pip install --upgrade pip  # 更新pip到最新版本
-          pip install -r requirements.txt  # 安装requirements.txt中列出的依赖
-
-      - name: Generate new html  # 步骤名称：生成新的HTML文件
-        run: |
-          python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'  # 运行Gmeek.py脚本生成HTML
-          # Gmeek.py应该在${{ github.workspace }}目录下运行并生成所需的文件
-
-      - name: Update html  # 步骤名称：更新HTML文件
-        run: |
-          git config --local user.email "actions@github.com"  # 设置git用户邮箱，使用默认值
-          git config --local user.name "${{ github.repository_owner }}"  # 设置git用户名
-          git add docs/ blogBase.json  # 只添加需要的文件，提高效率
-          git add README.md || true  # 尝试添加README.md，但不失败
-          git commit -a -m '🎉auto update by Gmeek action' || echo "nothing to commit"  # 提交更改或打印无提交信息
-          git push || echo "nothing to push"  # 推送更改或打印无推送信息
-
-      - name: Upload artifact  # 步骤名称：上传构建产物
-        uses: actions/upload-pages-artifact@v3  # 使用actions提供的页面构建产物上传操作
-        with:
-          path: 'docs/'  # 指定上传路径为docs目录
-
-  deploy:  # 定义名为“deploy”的工作
-    name: Deploy blog  # 工作的名字
-    runs-on: ubuntu-latest  # 运行环境
-    needs: build  # 指定依赖的工作为“build”
-    permissions:  # 设置权限
-      contents: write  # 允许写入仓库内容
-      pages: write  # 允许写入Pages
-      id-token: write  # 允许写入身份令牌
-    concurrency:  # 设置并发策略
-      group: "pages"  # 并发组为“pages”
-      cancel-in-progress: false  # 取消正在进行的并发工作
-    environment:  # 设置环境变量
-      name: github-pages  # 环境名为github-pages
-      url: ${{ steps.deployment.outputs.page_url }}  # 页面URL来自部署步骤的输出
-    steps:  # 工作的具体步骤
-      - name: Deploy to GitHub Pages  # 步骤名称：部署到GitHub Pages
-        id: deployment  # 步骤标识
-        uses: actions/deploy-pages@v4  # 使用actions提供的Pages部署操作
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
