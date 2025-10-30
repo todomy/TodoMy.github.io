@@ -400,32 +400,10 @@ function openComments() {
     var cm = document.getElementById("comments");
     var cmButton = document.getElementById("cmButton");
     
-    // 简化评论加载过程，不显示加载状态和骨架屏
+    // 简单的评论加载过程
     cmButton.disabled = true;
-    cm.innerHTML = '';
+    cm.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--color-text-secondary, #666);">正在加载评论...</div>';
     
-    // 预加载主题CSS
-    if(!document.getElementById('utterances-css-preload')) {
-        var link = document.createElement('link');
-        link.id = 'utterances-css-preload';
-        link.rel = 'preload';
-        link.as = 'style';
-        if(blogData.themeMode == 'manual') {
-            if(localStorage.getItem("meek_theme") == "dark") {
-                link.href = 'https://utteranc.es/stylesheets/themes/github-dark/utterances.css';
-            } else if(localStorage.getItem("meek_theme") == "light") {
-                link.href = 'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
-            } else {
-                link.href = window.matchMedia("(prefers-color-scheme: dark)").matches ? 
-                            'https://utteranc.es/stylesheets/themes/github-dark/utterances.css' : 
-                            'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
-            }
-        } else {
-            link.href = 'https://utteranc.es/stylesheets/themes/' + blogData.nightTheme + '/utterances.css';
-        }
-        document.head.appendChild(link);
-    }
-
     // 使用setTimeout延迟加载脚本，允许浏览器处理当前UI更新
     setTimeout(function() {
         var script = document.createElement("script");
