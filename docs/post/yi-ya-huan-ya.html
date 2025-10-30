@@ -50,44 +50,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 #comments{margin-top:64px;}
 .g-emoji{font-size:24px;}
 
-/* 评论骨架屏样式 */
-.comment-skeleton {
-    display: flex;
-    padding: 16px;
-    margin-bottom: 16px;
-    background-color: var(--color-canvas-subtle);
-    border-radius: 6px;
-}
-
-.skeleton-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--color-border-default);
-    margin-right: 16px;
-    animation: skeleton-loading 1.5s linear infinite alternate;
-}
-
-.skeleton-content {
-    flex: 1;
-}
-
-.skeleton-line {
-    height: 16px;
-    background-color: var(--color-border-default);
-    margin-bottom: 8px;
-    border-radius: 4px;
-    animation: skeleton-loading 1.5s linear infinite alternate;
-}
-
-.skeleton-line.short {
-    width: 60%;
-}
-
-@keyframes skeleton-loading {
-    0% { background-color: var(--color-border-default); }
-    100% { background-color: var(--color-neutral-muted); }
-}
+/* 评论相关样式已简化 */
 
 @media (max-width: 600px) {
     body {padding: 8px;}
@@ -347,12 +310,9 @@ function openComments() {
     var cm = document.getElementById("comments");
     var cmButton = document.getElementById("cmButton");
     
-    // 显示友好的加载状态
-    cmButton.innerHTML = "加载评论中";
+    // 简化评论加载过程，不显示加载状态和骨架屏
     cmButton.disabled = true;
-    
-    // 添加骨架屏提升用户体验
-    cm.innerHTML = '<div class="comment-skeleton"><div class="skeleton-avatar"></div><div class="skeleton-content"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div></div>';
+    cm.innerHTML = '';
     
     // 预加载主题CSS
     if(!document.getElementById('utterances-css-preload')) {
