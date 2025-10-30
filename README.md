@@ -6,11 +6,11 @@
 ## 📊 博客统计
 | 统计项 | 数据 | 说明 |
 |-------|------|------|
-| 📚 文章总数 | [108](https://todomy.github.io/tag.html) | 包含所有公开文章 |
+| 📚 文章总数 | [107](https://todomy.github.io/tag.html) | 包含所有公开文章 |
 | 💬 评论总数 | 327 | 所有文章的评论统计 |
-| 📝 总字数 | 210,668 | 所有文章内容字数 |
+| 📝 总字数 | 209,105 | 所有文章内容字数 |
 | 🌍 网站地址 | [https://todomy.github.io](https://todomy.github.io) | GitHub Pages 部署地址 |
-| 🕒 最后更新 | 2025-10-30 15:08:58 | 服务器时区：UTC+8 |
+| 🕒 最后更新 | 2025-10-30 15:15:56 | 服务器时区：UTC+8 |
 
 ## 🚀 核心特性
 - ✅ 基于 GitHub Issues 的内容管理
@@ -22,20 +22,20 @@
 
 ## 📑 最近文章
 
-### 1. [陈志的诈骗之路](https://todomy.github.io/post/chen-zhi-de-zha-pian-zhi-lu.html)
-**发布日期**: 2025-10-30
-
-### 2. [大国之难，不是公平的敌人](https://todomy.github.io/post/da-guo-zhi-nan-%EF%BC%8C-bu-shi-gong-ping-de-di-ren.html)
+### 1. [大国之难，不是公平的敌人](https://todomy.github.io/post/da-guo-zhi-nan-%EF%BC%8C-bu-shi-gong-ping-de-di-ren.html)
 **发布日期**: 2025-10-17
 
-### 3. [饥饿的齿痕：人类“人相食”全景史（公元前594 - 2023）](https://todomy.github.io/post/ji-e-de-chi-hen-%EF%BC%9A-ren-lei-%E2%80%9C-ren-xiang-shi-%E2%80%9D-quan-jing-shi-%EF%BC%88-gong-yuan-qian-594%20-%202023%EF%BC%89.html)
+### 2. [饥饿的齿痕：人类“人相食”全景史（公元前594 - 2023）](https://todomy.github.io/post/ji-e-de-chi-hen-%EF%BC%9A-ren-lei-%E2%80%9C-ren-xiang-shi-%E2%80%9D-quan-jing-shi-%EF%BC%88-gong-yuan-qian-594%20-%202023%EF%BC%89.html)
 **发布日期**: 2025-10-15
 
-### 4. [纸上的王冠：新王朝如何借史书证明合法性](https://todomy.github.io/post/zhi-shang-de-wang-guan-%EF%BC%9A-xin-wang-zhao-ru-he-jie-shi-shu-zheng-ming-he-fa-xing.html)
+### 3. [纸上的王冠：新王朝如何借史书证明合法性](https://todomy.github.io/post/zhi-shang-de-wang-guan-%EF%BC%9A-xin-wang-zhao-ru-he-jie-shi-shu-zheng-ming-he-fa-xing.html)
 **发布日期**: 2025-10-15
 
-### 5. [《置身事内》导读](https://todomy.github.io/post/%E3%80%8A-zhi-shen-shi-nei-%E3%80%8B-dao-du.html)
+### 4. [《置身事内》导读](https://todomy.github.io/post/%E3%80%8A-zhi-shen-shi-nei-%E3%80%8B-dao-du.html)
 **发布日期**: 2025-10-06
+
+### 5. [抽象自由：革命的双刃剑与个体的灾难](https://todomy.github.io/post/chou-xiang-zi-you-%EF%BC%9A-ge-ming-de-shuang-ren-jian-yu-ge-ti-de-zai-nan.html)
+**发布日期**: 2025-09-17
 
 
 ## 🔧 技术栈

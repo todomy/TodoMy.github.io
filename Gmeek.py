@@ -174,7 +174,8 @@ class GMEEK():
             
             # 如果有issue_number，添加到文件名中以确保唯一性
             if issue_number:
-                mdFileName = f"{issue_number}-{safe_title}"
+                # 确保issue_number是字符串类型
+                mdFileName = f"{str(issue_number)}-{safe_title}"
             else:
                 mdFileName = safe_title
             
@@ -809,7 +810,15 @@ class GMEEK():
                             if post_id != "labelColorDict":  # 跳过特殊键
                                 # 检查是否已经有备份文件
                                 post_title = post_data.get("postTitle", "未知标题")
-                                mdFileName = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', post_title)
+                                # 生成安全的文件名，与backupPostContent方法保持一致
+                                safe_title = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', post_title)
+                                # 检查是否有issue编号
+                                issue_number = post_data.get("number") or post_data.get("issue_number")
+                                if issue_number:
+                                    # 确保issue_number是字符串类型
+                                    mdFileName = f"{str(issue_number)}-{safe_title}"
+                                else:
+                                    mdFileName = safe_title
                                 mdFilePath = os.path.join(self.backup_dir, mdFileName + ".md")
                                 
                                 # 如果没有备份文件，创建一个空的备份文件
@@ -981,7 +990,7 @@ class GMEEK():
 parser = argparse.ArgumentParser()
 parser.add_argument("github_token", help="github_token", nargs='?', default=None)
 parser.add_argument("repo_name", help="repo_name", nargs='?', default=None)
-parser.add_argument("--issue_number", help="issue_number", default=0, required=False)
+parser.add_argument("--issue_number", help="issue_number", default="0", required=False)
 parser.add_argument("--local", help="Run in local development mode without GitHub API", action="store_true")
 options = parser.parse_args()
 
@@ -1015,7 +1024,8 @@ else:
         oldFeedFile=open(blog.root_dir+'rss.xml','r',encoding='utf-8')
         blog.oldFeedString=oldFeedFile.read()
         oldFeedFile.close()
-    if options.issue_number=="0" or options.issue_number=="":
+    # 确保与字符串"0"比较，无论输入类型如何
+    if str(options.issue_number)=="0" or str(options.issue_number)=='':
         print("issue_number=='0', runAll")
         blog.runAll()
     else:
@@ -1056,7 +1066,15 @@ for i in blog.blogBase["postListJson"]:
     # 添加文章内容到postListJson以便全文搜索
     if i != "labelColorDict":
         post_title = blog.blogBase["postListJson"][i]["postTitle"]
-        mdFileName = re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', post_title)
+        # 生成安全的文件名，与backupPostContent方法保持一致
+        safe_title = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', post_title)
+        # 检查是否有issue编号
+        issue_number = blog.blogBase["postListJson"][i].get("number") or blog.blogBase["postListJson"][i].get("issue_number")
+        if issue_number:
+            # 确保issue_number是字符串类型
+            mdFileName = f"{str(issue_number)}-{safe_title}"
+        else:
+            mdFileName = safe_title
         mdFilePath = os.path.join(blog.backup_dir, mdFileName + ".md")
         try:
             with open(mdFilePath, 'r', encoding='UTF-8') as f:
