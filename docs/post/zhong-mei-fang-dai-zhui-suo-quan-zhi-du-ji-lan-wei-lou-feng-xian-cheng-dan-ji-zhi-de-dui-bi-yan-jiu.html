@@ -25,7 +25,7 @@
 <meta property="og:url" content="https://todomy.github.io/post/zhong-mei-fang-dai-zhui-suo-quan-zhi-du-ji-lan-wei-lou-feng-xian-cheng-dan-ji-zhi-de-dui-bi-yan-jiu.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
 <title>中美房贷追索权制度及烂尾楼风险承担机制的对比研究</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -124,22 +124,20 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <hr>
 <h2>二、预售制度与风险传导路径对比</h2>
 <h3>中国预售资金监管框架</h3>
-<pre lang="mermaid" class="notranslate"><code class="notranslate">graph LR
-A[购房者首付] --&gt; B(开发商预售账户)
-C[银行按揭贷款] --&gt; B
-B --&gt; D[工程进度节点拨付]
-D --&gt; E[开发商挪用风险]
-E --&gt; F[项目烂尾]
-F --&gt; G[购房者继续还贷]
-</code></pre>
+<div class="highlight highlight-source-mermaid"><pre class="notranslate"><span class="pl-k">graph</span> <span class="pl-c1">LR</span>
+<span class="pl-ent">A</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>购房者首付<span class="pl-pds"><span class="pl-sg">]</span></span></span> <span class="pl-k">--&gt;</span> <span class="pl-ent">B</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">(</span></span>开发商预售账户<span class="pl-pds"><span class="pl-sg">)</span></span></span>
+<span class="pl-ent">C</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>银行按揭贷款<span class="pl-pds"><span class="pl-sg">]</span></span></span> <span class="pl-k">--&gt;</span> <span class="pl-ent">B</span>
+<span class="pl-ent">B</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">D</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>工程进度节点拨付<span class="pl-pds"><span class="pl-sg">]</span></span></span>
+<span class="pl-ent">D</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">E</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>开发商挪用风险<span class="pl-pds"><span class="pl-sg">]</span></span></span>
+<span class="pl-ent">E</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">F</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>项目烂尾<span class="pl-pds"><span class="pl-sg">]</span></span></span>
+<span class="pl-ent">F</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">G</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>购房者继续还贷<span class="pl-pds"><span class="pl-sg">]</span></span></span></pre></div>
 <h3>美国第三方托管机制</h3>
-<pre lang="mermaid" class="notranslate"><code class="notranslate">graph TB
-H[购房者定金] --&gt; I(Escrow Account/产权公司)
-J[建筑贷款] --&gt; K(分阶段支付承包商)
-I --&gt; L[竣工交付后转移产权]
-K --&gt; L
-L --&gt; M[购房者偿还贷款]
-</code></pre>
+<div class="highlight highlight-source-mermaid"><pre class="notranslate"><span class="pl-k">graph</span> <span class="pl-c1">TB</span>
+<span class="pl-ent">H</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>购房者定金<span class="pl-pds"><span class="pl-sg">]</span></span></span> <span class="pl-k">--&gt;</span> <span class="pl-ent">I</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">(</span></span>Escrow Account/产权公司<span class="pl-pds"><span class="pl-sg">)</span></span></span>
+<span class="pl-ent">J</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>建筑贷款<span class="pl-pds"><span class="pl-sg">]</span></span></span> <span class="pl-k">--&gt;</span> <span class="pl-ent">K</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">(</span></span>分阶段支付承包商<span class="pl-pds"><span class="pl-sg">)</span></span></span>
+<span class="pl-ent">I</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">L</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>竣工交付后转移产权<span class="pl-pds"><span class="pl-sg">]</span></span></span>
+<span class="pl-ent">K</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">L</span>
+<span class="pl-ent">L</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">M</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>购房者偿还贷款<span class="pl-pds"><span class="pl-sg">]</span></span></span></pre></div>
 <p><strong>关键差异</strong>：</p>
 <ul>
 <li>中国资金存管率仅35%（住建部2022年抽样）</li>
@@ -205,11 +203,10 @@ L --&gt; M[购房者偿还贷款]
 </li>
 <li>
 <p><strong>重构资金监管体系</strong></p>
-<pre lang="mermaid" class="notranslate"><code class="notranslate">graph LR
-N[购房款项] --&gt; O(省级住建监管平台)
-O --&gt; P[按工程进度AI自动拨付]
-P --&gt; Q[开发商]
-</code></pre>
+<div class="highlight highlight-source-mermaid"><pre class="notranslate"><span class="pl-k">graph</span> <span class="pl-c1">LR</span>
+<span class="pl-ent">N</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>购房款项<span class="pl-pds"><span class="pl-sg">]</span></span></span> <span class="pl-k">--&gt;</span> <span class="pl-ent">O</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">(</span></span>省级住建监管平台<span class="pl-pds"><span class="pl-sg">)</span></span></span>
+<span class="pl-ent">O</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">P</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>按工程进度AI自动拨付<span class="pl-pds"><span class="pl-sg">]</span></span></span>
+<span class="pl-ent">P</span> <span class="pl-k">--&gt;</span> <span class="pl-ent">Q</span><span class="pl-s"><span class="pl-pds"><span class="pl-sg">[</span></span>开发商<span class="pl-pds"><span class="pl-sg">]</span></span></span></pre></div>
 </li>
 <li>
 <p><strong>推行预售保险机制</strong><br>
