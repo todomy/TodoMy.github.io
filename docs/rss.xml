@@ -1,30 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Thu, 30 Oct 2025 08:23:25 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>计算机应用技术</title><link>https://todomy.github.io/post/ji-suan-ji-ying-yong-ji-shu.html</link><description>全文额Run echo '开始生成HTML文件...'
-开始生成HTML文件...
-Gmeek.py:65: DeprecationWarning: Argument login_or_token is deprecated, please use auth=github.Auth.Token(...) instead
-  user = Github(self.options.github_token)
-✅ 成功连接到GitHub API
-✅ 成功获取仓库: todomy/TodoMy.github.io
-✅ 获取到 3 个标签颜色
-GitHub Pages URL:  https://todomy.github.io/
-blogBase is exists and issue_number!=0, runOne
-====== start create static html ======
-🔄 开始备份文章: 好的 我测试一下...
-🔄 首次备份文章: 好的 我测试一下.md
-✅ 文章备份成功创建: 好的 我测试一下.md (33 字节)
-📝 文章无变化，跳过备份: 好的 我测试一下.md
-create postPage title=好的 我测试一下 file=docs/post/hao-de- -wo-ce-shi-yi-xia.html 
-topNum=0 postNum=1
-create docs/index.html
-create tag.html
-====== create rss xml ======
-====== create static html end ======
-====== create postList.json file ======
-✅ 成功保存文章列表到 docs/postList.json
-📝 开始更新README文件...
-✅ 成功提取 1 篇最近文章
-✅ 成功更新README.md文件: /home/runner/work/TodoMy.github.io/TodoMy.github.io/README.md
-HTML文件生成完成。</description><guid isPermaLink="true">https://todomy.github.io/post/ji-suan-ji-ying-yong-ji-shu.html</guid><pubDate>Thu, 30 Oct 2025 08:23:01 +0000</pubDate></item><item><title>好的 我测试一下</title><link>https://todomy.github.io/post/hao-de-%20-wo-ce-shi-yi-xia.html</link><description>企鹅企鹅请问请问请问去。</description><guid isPermaLink="true">https://todomy.github.io/post/hao-de-%20-wo-ce-shi-yi-xia.html</guid><pubDate>Thu, 30 Oct 2025 07:51:00 +0000</pubDate></item><item><title>测试一下 1111111111</title><link>https://todomy.github.io/post/ce-shi-yi-xia-%201111111111.html</link><description>32222222222222222222222222222222222222213131231231233123123321321323131231。</description><guid isPermaLink="true">https://todomy.github.io/post/ce-shi-yi-xia-%201111111111.html</guid><pubDate>Thu, 30 Oct 2025 07:26:56 +0000</pubDate></item><item><title>陈志的诈骗之路</title><link>https://todomy.github.io/post/chen-zhi-de-zha-pian-zhi-lu.html</link><description>&gt; [!Tip]
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Thu, 30 Oct 2025 09:42:27 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>陈志的诈骗之路</title><link>https://todomy.github.io/post/chen-zhi-de-zha-pian-zhi-lu.html</link><description>&gt; [!Tip]
 &gt; 本文来自AI搜索全网整理的信息资料
 
 ### 案件经过

@@ -155,29 +155,72 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        /* 添加返回顶部按钮的样式 */
+        /* 返回顶部按钮样式 - 简洁优雅版 */
         .circle-button {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background-color: #007bff;
-            color: white;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 18px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            display: none; /* 默认不显示 */
+            font-size: 22px;
+            font-weight: 300;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            border: none;
+            z-index: 9999;
+        }
+
+        /* 暗色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            .circle-button {
+                background-color: rgba(35, 35, 35, 0.9);
+                color: #f0f0f0;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* 显示时的样式 */
+        .circle-button.visible {
+            opacity: 1;
+            visibility: visible;
         }
 
         .circle-button:hover {
-            background-color: #0056b3;
-            transform: scale(1.1);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .circle-button:hover {
+                background-color: rgba(45, 45, 45, 1);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        .circle-button:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .circle-button {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
         }
 
         /* 链接样式 */
@@ -223,12 +266,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
         // 监听滚动事件
         window.addEventListener('scroll', function() {
-            var scrollPosition = window.scrollY; // 获取当前滚动位置
-            var button = document.querySelector('.circle-button'); // 获取返回顶部按钮
-            if (scrollPosition > 100) { // 如果滚动距离大于100px，显示按钮
-                button.style.display = 'flex';
-            } else { // 否则隐藏按钮
-                button.style.display = 'none';
+            var button = document.querySelector('.circle-button');
+            if (window.scrollY > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
             }
         });
     </script>
