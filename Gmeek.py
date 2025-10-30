@@ -141,21 +141,87 @@ class GMEEK():
         print("🔄 开始清理和准备工作目录...")
         workspace_path = os.environ.get('GITHUB_WORKSPACE', '.')
         
-        # 在本地开发模式下，不清理backup目录以便对比
-        if not self.local_mode:
-            # 清理backup目录
-            for backup_path in [
-                os.path.join(workspace_path, self.backup_dir),
-                self.backup_dir
-            ]:
-                if os.path.exists(backup_path):
-                    try:
-                        shutil.rmtree(backup_path)
-                        print(f"✅ 已清理目录: {backup_path}")
-                    except Exception as e:
-                        print(f"❌ 清理目录失败 {backup_path}: {e}")
-        else:
-            print(f"📝 本地开发模式：保留backup目录用于文章对比")
+        # 重要：保留backup目录，用于文章对比和增量更新
+        # 无论是线上还是线下模式，都不清理backup目录，而是确保其存在
+        backup_paths = [
+            os.path.join(workspace_path, self.backup_dir),
+            self.backup_dir
+        ]
+        
+        # 确保backup目录存在
+        for backup_path in backup_paths:
+            try:
+                os.makedirs(backup_path, exist_ok=True)
+                print(f"✅ 已确保目录存在: {backup_path}")
+            except Exception as e:
+                print(f"❌ 创建目录失败 {backup_path}: {e}")
+        
+        print("📝 保留backup目录用于文章对比和增量更新")
+        
+    def backupPostContent(self, post_title, content, issue_number=None):
+        """
+        统一的文章备份方法，支持线上和线下模式
+        Args:
+            post_title: 文章标题
+            content: 文章内容
+            issue_number: 文章编号（可选）
+        Returns:
+            tuple: (是否成功, 备份文件路径, 是否有更新)
+        """
+        try:
+            # 生成安全的文件名
+            safe_title = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', post_title)
+            
+            # 如果有issue_number，添加到文件名中以确保唯一性
+            if issue_number:
+                mdFileName = f"{issue_number}-{safe_title}"
+            else:
+                mdFileName = safe_title
+            
+            # 构建完整的备份文件路径
+            backup_file_path = os.path.join(self.backup_dir, mdFileName + ".md")
+            
+            # 确保backup目录存在
+            os.makedirs(os.path.dirname(backup_file_path), exist_ok=True)
+            
+            # 检查文件是否已存在，并进行内容对比
+            has_content_changed = True
+            if os.path.exists(backup_file_path):
+                try:
+                    with open(backup_file_path, 'r', encoding='UTF-8') as f:
+                        existing_content = f.read()
+                    # 比较内容是否变化
+                    if existing_content == content:
+                        has_content_changed = False
+                        print(f"📝 文章无变化，跳过备份: {mdFileName}.md")
+                        return True, backup_file_path, False
+                    else:
+                        print(f"🔄 文章内容有变化，将更新备份: {mdFileName}.md")
+                except Exception as e:
+                    print(f"⚠️ 读取现有备份文件时出错: {e}")
+            else:
+                print(f"🔄 首次备份文章: {mdFileName}.md")
+            
+            # 写入备份内容
+            with open(backup_file_path, 'w', encoding='UTF-8') as f:
+                if content is None:
+                    f.write('')
+                else:
+                    f.write(content)
+            
+            # 验证文件是否成功创建
+            if os.path.exists(backup_file_path):
+                file_size = os.path.getsize(backup_file_path)
+                status = "更新" if not has_content_changed else "创建"
+                print(f"✅ 文章备份成功{status}: {mdFileName}.md ({file_size} 字节)")
+                return True, backup_file_path, has_content_changed
+            else:
+                print(f"❌ 文章备份文件创建失败，文件不存在: {mdFileName}.md")
+                return False, backup_file_path, False
+                
+        except Exception as e:
+            print(f"❌ 文章备份过程中出错: {e}")
+            return False, None, False
         
         # 特殊处理root_dir，保留plugins目录
         root_paths = [
@@ -699,14 +765,12 @@ class GMEEK():
             self.blogBase[listJsonName][postNum]["createdDate"]=thisTime.strftime("%Y-%m-%d")
             self.blogBase[listJsonName][postNum]["dateLabelColor"]=self.blogBase["yearColorList"][int(thisYear)%len(self.blogBase["yearColorList"])]
 
-            mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue.title)
-            f = open(self.backup_dir+mdFileName+".md", 'w', encoding='UTF-8')
-            
-            if issue.body==None:
-                f.write('')
-            else:
-                f.write(issue.body)
-            f.close()
+            # 使用统一备份方法
+            success, path, changed = self.backupPostContent(
+                issue.title, 
+                issue.body, 
+                issue.number
+            )
             return listJsonName
 
     def runAll(self):
@@ -847,18 +911,13 @@ class GMEEK():
                         # 确保backup目录存在
                         os.makedirs(self.backup_dir, exist_ok=True)
                         
-                        # 备份文章内容
+                        # 使用统一的备份方法进行文章备份
                         post_title = issue.get("postTitle", "未知标题")
-                        mdFileName = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', post_title)
-                        mdFilePath = os.path.join(self.backup_dir, mdFileName + ".md")
-                        
-                        try:
-                            with open(mdFilePath, 'w', encoding='UTF-8') as f:
-                                # 这里我们无法获取完整内容，但可以写入标题作为标记
-                                f.write(f"# {post_title}\n\n这是一个自动生成的备份文件。\n")
-                            print(f"✅ 备份文章: {mdFileName}.md")
-                        except Exception as e:
-                            print(f"❌ 备份文章失败 {mdFileName}.md: {e}")
+                        # 在本地开发模式下，我们可能没有完整内容，使用标题作为标记
+                        content = f"# {post_title}\n\n这是一个自动生成的备份文件。\n"
+                        success, _, _ = self.backupPostContent(post_title, content, number_str)
+                        if not success:
+                            print(f"⚠️ 文章备份失败，但继续处理文章: {post_title}")
                         
                         # 生成HTML
                         self.createPostHtml(issue)
@@ -877,23 +936,15 @@ class GMEEK():
             try:
                 issue = self.repo.get_issue(int(number_str))
                 if issue.state == "open":
-                    # 确保backup目录存在
-                    os.makedirs(self.backup_dir, exist_ok=True)
-                    print(f"✅ 确保backup目录存在")
-                    
-                    # 备份文章内容
+                        # 调用统一备份方法备份文章内容
                     print(f"🔄 开始备份文章: {issue.title}...")
-                    mdFileName = re.sub(r'[<>:/\\|?*\"]|[\\0-\\31]', '-', issue.title)
-                    mdFilePath = os.path.join(self.backup_dir, mdFileName + ".md")
-                    try:
-                        with open(mdFilePath, 'w', encoding='UTF-8') as f:
-                            if issue.body is None:
-                                f.write('')
-                            else:
-                                f.write(issue.body)
-                        print(f"✅ 成功备份文章: {mdFileName}.md")
-                    except Exception as e:
-                        print(f"❌ 备份文章失败 {mdFileName}.md: {e}")
+                    success, path, changed = self.backupPostContent(
+                        issue.title, 
+                        issue.body, 
+                        issue.number
+                    )
+                    if not success:
+                        print(f"❌ 备份文章失败: {issue.title}")
                     
                     listJsonName = self.addOnePostJson(issue)
                     self.createPostHtml(self.blogBase[listJsonName]["P" + number_str])
