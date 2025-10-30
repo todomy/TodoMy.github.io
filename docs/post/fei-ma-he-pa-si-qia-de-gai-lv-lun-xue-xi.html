@@ -83,45 +83,50 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><blockquote>
-<p>[!Tip]<br />
-希望大家能把他们运用到生活里，这种思维模型可以让人更理智的做出决策，实事求是，客观看待事物，能够做到客观看待事物的人，必然能看到本质，趋吉避害。</p>
-</blockquote>
-<hr />
-<h3 id="_1">📜 <strong>故事背景：一个赌博分钱的难题</strong></h3>
+<div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>希望大家能把他们运用到生活里，这种思维模型可以让人更理智的做出决策，实事求是，客观看待事物，能够做到客观看待事物的人，必然能看到本质，趋吉避害。</p>
+</div>
+<hr>
+<h3>📜 <strong>故事背景：一个赌博分钱的难题</strong></h3>
 <p>300多年前，有两个法国数学家——<strong>费马</strong>和<strong>帕斯卡</strong>，他们研究了一个赌博问题：</p>
 <blockquote>
-<p>甲乙两人赌博，每局赢的概率都是1/2。<br />
-先赢满5局的人拿走全部奖金。<br />
-但突然比赛中断时，甲赢了4局，乙赢了3局。<br />
+<p>甲乙两人赌博，每局赢的概率都是1/2。<br>
+先赢满5局的人拿走全部奖金。<br>
+但突然比赛中断时，甲赢了4局，乙赢了3局。<br>
 <strong>奖金该怎么公平分配？</strong></p>
 </blockquote>
-<hr />
-<h3 id="_2">🎯 <strong>费马和帕斯卡的解决方法</strong></h3>
+<hr>
+<h3>🎯 <strong>费马和帕斯卡的解决方法</strong></h3>
 <p>他们用了不同的思路，但答案一样！我们分开看：</p>
-<hr />
-<h4 id="1"><strong>1️⃣ 费马的方法：看“未来可能”</strong></h4>
+<hr>
+<h4><strong>1️⃣ 费马的方法：看“未来可能”</strong></h4>
 <p>费马说：“<strong>我们只看接下来最多还需要几局</strong>就能结束比赛。”</p>
 <ul>
 <li><strong>最多再打2局</strong>（因为甲差1局赢，乙差2局赢）。</li>
-<li>可能的2局结果有4种（用A表示甲赢，B表示乙赢）：</li>
+<li>可能的2局结果有4种（用A表示甲赢，B表示乙赢）：
+<ul>
 <li><strong>AA</strong>：甲赢第5局，直接结束。</li>
 <li><strong>AB</strong>：甲赢第1局，乙赢第2局 → 甲已赢5局，比赛结束。</li>
 <li><strong>BA</strong>：乙赢第1局，甲赢第2局 → 甲赢第5局，比赛结束。</li>
 <li><strong>BB</strong>：乙赢2局，比分变成4:5 → 乙赢。</li>
 </ul>
-<p><strong>关键发现</strong>：<br />
-- 前3种情况（AA、AB、BA）都是<strong>甲最终赢</strong>。<br />
-- 只有第4种（BB）是<strong>乙最终赢</strong>。</p>
-<p>所以：<br />
-- 甲赢的概率 = 3/4<br />
-- 乙赢的概率 = 1/4</p>
-<p><strong>奖金就该按3:1分！</strong><br />
+</li>
+</ul>
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li>前3种情况（AA、AB、BA）都是<strong>甲最终赢</strong>。</li>
+<li>只有第4种（BB）是<strong>乙最终赢</strong>。</li>
+</ul>
+<p>所以：</p>
+<ul>
+<li>甲赢的概率 = 3/4</li>
+<li>乙赢的概率 = 1/4</li>
+</ul>
+<p><strong>奖金就该按3:1分！</strong><br>
 （比如100元 → 甲拿75元，乙拿25元）</p>
-<hr />
-<h4 id="2"><strong>2️⃣ 帕斯卡的方法：用“期望值”</strong></h4>
+<hr>
+<h4><strong>2️⃣ 帕斯卡的方法：用“期望值”</strong></h4>
 <p>帕斯卡更聪明，他想：“<strong>如果比赛继续打下去，平均每人能拿多少钱？</strong>”</p>
-<p>他用了一个叫<strong>“期望值”</strong>的概念（可以理解为“平均结果”）。</p>
+<p>他用了一个叫**“期望值”**的概念（可以理解为“平均结果”）。</p>
 <ul>
 <li>如果<strong>甲再赢1局</strong>（概率1/2），甲直接拿100元。</li>
 <li>如果<strong>乙赢下一局</strong>（概率1/2），比分变成4:4，此时两人机会均等，每人拿50元。</li>
@@ -131,38 +136,40 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>乙的期望奖金是：</p>
 <p><strong>½×0+ ½×50=25元</strong></p>
 <p>答案和费马完全一样！✅</p>
-<hr />
-<h3 id="_3">🎲 <strong>什么是概率？</strong></h3>
+<hr>
+<h3>🎲 <strong>什么是概率？</strong></h3>
 <p>通过这个故事，他们发现：</p>
 <blockquote>
-<p><strong>概率</strong>就是“<strong>某件事情发生的可能性</strong>”，用分数表示。<br />
+<p><strong>概率</strong>就是“<strong>某件事情发生的可能性</strong>”，用分数表示。<br>
 比如抛硬币正面概率是1/2，骰子掷出6的概率是1/6。</p>
 </blockquote>
-<hr />
-<h3 id="_4">🌟 <strong>初中能学什么？</strong></h3>
-<p>你现在可以掌握：<br />
-1. <strong>用列举法算概率</strong>：比如掷骰子、抽扑克牌。<br />
-2. <strong>期望值</strong>：平均每次能赢多少钱（比如抽奖活动）。<br />
-3. <strong>公平分配</strong>：像费马帕斯卡一样，用概率解决生活中的争议。</p>
-<hr />
-<h3 id="_5">🎮 <strong>小游戏练习</strong></h3>
-<p><strong>问题</strong>：你和同桌玩“剪刀石头布”，赢的人得1分，先赢3局的人得10元。<br />
+<hr>
+<h3>🌟 <strong>初中能学什么？</strong></h3>
+<p>你现在可以掌握：</p>
+<ol>
+<li><strong>用列举法算概率</strong>：比如掷骰子、抽扑克牌。</li>
+<li><strong>期望值</strong>：平均每次能赢多少钱（比如抽奖活动）。</li>
+<li><strong>公平分配</strong>：像费马帕斯卡一样，用概率解决生活中的争议。</li>
+</ol>
+<hr>
+<h3>🎮 <strong>小游戏练习</strong></h3>
+<p><strong>问题</strong>：你和同桌玩“剪刀石头布”，赢的人得1分，先赢3局的人得10元。<br>
 现在比分是2:1（你领先），但突然要放学了，奖金怎么分？</p>
-<p><strong>提示</strong>：用费马的方法，看最多还需要几局？<br />
+<p><strong>提示</strong>：用费马的方法，看最多还需要几局？<br>
 （答案：你赢的概率是3/4，同桌是1/4，你拿7.5元，同桌拿2.5元）</p>
-<hr />
-<h3 id="_6">📚 总结</h3>
+<hr>
+<h3>📚 总结</h3>
 <ul>
 <li><strong>费马</strong>：用“未来所有可能”计算概率。</li>
 <li><strong>帕斯卡</strong>：用“平均结果”计算概率。</li>
 <li><strong>核心思想</strong>：<strong>公平分配 = 按概率分</strong>！</li>
 </ul>
-<hr />
-<h3 id="_7">❓费马和帕斯卡的方法区别</h3>
-<p>一句话先总结：<br />
+<hr>
+<h3>❓费马和帕斯卡的方法区别</h3>
+<p>一句话先总结：<br>
 <strong>费马是“把全部未来可能的情况都列出来，再数比例”；帕斯卡是“直接算每个人平均能拿多少钱”。</strong></p>
 <p>用刚才那个分奖金的故事，我来给你做一个“对照表”，就能一眼看出区别。</p>
-<table>
+<markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
 <th>比较点</th>
@@ -197,15 +204,15 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <td>需要理解“期望”这个新概念，第一次接触有点抽象</td>
 </tr>
 </tbody>
-</table>
+</table></markdown-accessiblity-table>
 <p>再举个超小例子帮你感受：</p>
 <p><strong>抛硬币一次，正面你得 10 元，反面你得 0 元，怎么算你“平均能拿多少”？</strong></p>
 <ul>
-<li>费马式：把两种可能列出来，正面、反面各 1 种 → (10 + 0) ÷ 2 = 5 元。  </li>
+<li>费马式：把两种可能列出来，正面、反面各 1 种 → (10 + 0) ÷ 2 = 5 元。</li>
 <li>帕斯卡式：直接用期望公式：10×½ + 0×½ = 5 元。</li>
 </ul>
 <p>答案一样，只是走的路不同。</p>
-<p>所以，你可以这样记：<br />
+<p>所以，你可以这样记：<br>
 <strong>费马像“老实人数格子”，帕斯卡像“聪明人心算平均”。</strong></p></div>
 <div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
 
@@ -380,7 +387,7 @@ var blogData = {
     needComment: 1,
     themeMode: 'manual',
     nightTheme: 'dark_colorblind',
-    repoName: 'local_repo'
+    repoName: 'todomy/TodoMy.github.io'
 };
 
 // 添加评论数量
