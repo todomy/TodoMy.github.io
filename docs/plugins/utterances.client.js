@@ -72,8 +72,11 @@ i["og:title"] = c ? c.content : "";
 i.session = n || localStorage.getItem("utterances-session") || "";
 
 // 优化样式：添加加载状态和骨架屏
-const styles = `
-  <style>
+// 添加基本样式，避免重复添加
+if (!document.getElementById('utterances-styles')) {
+  const styleElement = document.createElement('style');
+  styleElement.id = 'utterances-styles';
+  styleElement.textContent = `
     .utterances {
       position: relative;
       box-sizing: border-box;
@@ -103,41 +106,63 @@ const styles = `
     .utterances-loaded .utterances-loading {
       display: none;
     }
-  </style>`;
-
-document.head.insertAdjacentHTML("afterbegin", styles);
+  `;
+  document.head.appendChild(styleElement);
+}
 
 const l = r.src.match(/^https:\/\/utteranc\.es|http:\/\/localhost:\d+|\/plugins\/utterances\.client\.js$/)[0];
 const h = l.includes('plugins') ? 'https://utteranc.es' : l;
 const u = `${h}/utterances.html`;
 
-// 添加带简单加载状态的容器
-r.insertAdjacentHTML("afterend", `
-  <div class="utterances">
-    <div class="utterances-loading">正在加载评论...</div>
-    <iframe 
-      class="utterances-frame" 
-      title="Comments" 
-      scrolling="no" 
-      src="${u}?${new URLSearchParams(i)}" 
-      loading="lazy"
-      onload="this.parentElement.classList.add('utterances-loaded')"
-    ></iframe>
-  </div>
-`);
+// 创建评论容器
+const container = document.createElement('div');
+container.className = 'utterances';
 
-const m = r.nextElementSibling;
-r.parentElement.removeChild(r);
+// 创建加载状态元素
+const loadingDiv = document.createElement('div');
+loadingDiv.className = 'utterances-loading';
+loadingDiv.textContent = '正在加载评论...';
+container.appendChild(loadingDiv);
+
+// 创建iframe元素
+const iframe = document.createElement('iframe');
+iframe.className = 'utterances-frame';
+iframe.title = 'Comments';
+iframe.scrolling = 'no';
+iframe.src = `${u}?${new URLSearchParams(i)}`;
+iframe.loading = 'lazy';
+
+// 使用事件监听器而不是内联事件
+iframe.addEventListener('load', function() {
+  container.classList.add('utterances-loaded');
+  // 清除超时定时器
+  if (timeoutId) clearTimeout(timeoutId);
+});
+
+container.appendChild(iframe);
+
+// 插入容器到DOM
+r.parentNode.insertBefore(container, r.nextSibling);
+
+// 移除原始脚本元素
+r.parentNode.removeChild(r);
 
 // 添加超时处理
 let timeoutId = setTimeout(() => {
-  const container = document.querySelector('.utterances');
-  if (container && !container.classList.contains('utterances-loaded')) {
+  if (!container.classList.contains('utterances-loaded')) {
     console.warn('Utterances加载超时，尝试重新加载...');
     // 重新加载iframe
-    const iframe = container.querySelector('.utterances-frame');
     if (iframe) {
       iframe.src = iframe.src;
+      // 重置超时
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (!container.classList.contains('utterances-loaded')) {
+          console.warn('Utterances加载再次超时');
+          // 标记为加载完成，避免加载提示一直显示
+          container.classList.add('utterances-loaded');
+        }
+      }, 10000); // 再次尝试10秒
     }
   }
 }, 10000); // 10秒超时
@@ -151,8 +176,8 @@ function handleMessage(e) {
     // 清除超时定时器
     clearTimeout(timeoutId);
     // 设置高度并标记为已加载
-    m.style.height = `${t.height}px`;
-    m.classList.add('utterances-loaded');
+    container.style.height = `${t.height}px`;
+    container.classList.add('utterances-loaded');
   }
 }
 
