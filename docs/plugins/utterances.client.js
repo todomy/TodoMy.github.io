@@ -100,11 +100,12 @@ const styles = `
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: linear-gradient(90deg, var(--skeleton-start, #f0f0f0) 25%, var(--skeleton-middle, #e0e0e0) 50%, var(--skeleton-end, #f0f0f0) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
       z-index: 1;
       border-radius: 4px;
+      border: 1px solid var(--color-border-default, #e1e4e8);
     }
     @keyframes shimmer {
       0% { background-position: -200% 0; }
@@ -117,7 +118,11 @@ const styles = `
       transform: translate(-50%, -50%);
       z-index: 2;
       font-size: 14px;
-      color: #666;
+      color: var(--color-text-secondary, #666);
+      background: var(--color-bg-primary, #ffffff);
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: 1px solid var(--color-border-default, #e1e4e8);
     }
     .utterances-loaded .utterances-skeleton,
     .utterances-loaded .utterances-loading {

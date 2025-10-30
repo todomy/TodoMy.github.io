@@ -24,7 +24,33 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 #footer {margin-top:64px; text-align: center;font-size: small;}
 
 </style>
-{% block style %}{% endblock %}
+{% block style %}
+<style>
+  /* 定义骨架屏主题变量 */
+  :root {
+    --skeleton-start: #f0f0f0;
+    --skeleton-middle: #e0e0e0;
+    --skeleton-end: #f0f0f0;
+  }
+  
+  /* 暗色主题下的骨架屏颜色 */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --skeleton-start: #333333;
+      --skeleton-middle: #444444;
+      --skeleton-end: #333333;
+    }
+  }
+  
+  /* 手动切换到暗色主题时的变量 */
+  .dark {
+    --skeleton-start: #333333;
+    --skeleton-middle: #444444;
+    --skeleton-end: #333333;
+  }
+</style>
+{{ blogBase['style'] }}
+{% endblock %}
 
 <body>
     <div id="header">{% block header %}{% endblock %}</div>
