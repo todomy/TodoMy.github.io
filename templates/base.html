@@ -4,9 +4,6 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- 缓存控制头 -->
-    <meta http-equiv="Cache-Control" content="max-age=31536000, public, must-revalidate">
-    <!-- 移除固定过期日期，让浏览器基于max-age自动计算 -->
     {{ blogBase['primerCSS'] }}
     {{ blogBase['allHead'] }}
     <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
@@ -24,33 +21,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 #footer {margin-top:64px; text-align: center;font-size: small;}
 
 </style>
-{% block style %}
-<style>
-  /* 定义骨架屏主题变量 */
-  :root {
-    --skeleton-start: #f0f0f0;
-    --skeleton-middle: #e0e0e0;
-    --skeleton-end: #f0f0f0;
-  }
-  
-  /* 暗色主题下的骨架屏颜色 */
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light) {
-      --skeleton-start: #333333;
-      --skeleton-middle: #444444;
-      --skeleton-end: #333333;
-    }
-  }
-  
-  /* 手动切换到暗色主题时的变量 */
-  .dark {
-    --skeleton-start: #333333;
-    --skeleton-middle: #444444;
-    --skeleton-end: #333333;
-  }
-</style>
-{{ blogBase['style'] }}
-{% endblock %}
+{% block style %}{% endblock %}
 
 <body>
     <div id="header">{% block header %}{% endblock %}</div>
@@ -67,10 +38,10 @@ let themeSettings={
     "auto": ["auto","sync","","preferred-color-scheme"]
 };
 function changeTheme(mode, icon, color, utheme){
-    document.documentElement.setAttribute("data-color-mode", mode);
-    document.getElementById("themeSwitch").setAttribute("d", IconList[icon]);
-    document.getElementById("themeSwitch").parentNode.style.color = color;
-    if(utterancesLoad == 1){utterancesTheme(utheme);}
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
 }
 function modeSwitch(){
     let currentMode=document.documentElement.getAttribute('data-color-mode');
@@ -85,59 +56,9 @@ function utterancesTheme(theme){
     const iframe=document.getElementsByClassName('utterances-frame')[0];
     iframe.contentWindow.postMessage(message,'https://utteranc.es');
 }
-// 使用当前主题模式初始化
-let currentTheme = document.documentElement.getAttribute('data-color-mode');
-if(themeSettings[currentTheme]){changeTheme(...themeSettings[currentTheme]);}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 {%- endif %}
 </script>
 {% block script %}{% endblock %}
-<script>
-    // 图片懒加载功能
-    document.addEventListener('DOMContentLoaded', function() {
-        // 检查浏览器是否支持原生懒加载
-        if ('loading' in HTMLImageElement.prototype) {
-            const images = document.querySelectorAll('img[lazy-src]');
-            images.forEach(img => {
-                img.src = img.getAttribute('lazy-src');
-                img.removeAttribute('lazy-src');
-            });
-        } else {
-            // 不支持原生懒加载时使用JavaScript实现
-            const lazyLoadImages = function() {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.getAttribute('lazy-src');
-                            img.removeAttribute('lazy-src');
-                            observer.unobserve(img);
-                        }
-                    });
-                });
-                
-                document.querySelectorAll('img[lazy-src]').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            };
-            
-            // 启动懒加载
-            lazyLoadImages();
-        }
-    });
-    
-    // 资源合并优化相关：动态加载非关键JavaScript
-    function loadScript(url, callback) {
-        const script = document.createElement('script');
-        script.src = url;
-        script.async = true;
-        script.onload = callback;
-        document.head.appendChild(script);
-    }
-    
-    // 页面加载完成后再加载非关键脚本
-    window.addEventListener('load', function() {
-        // 可以在这里添加非关键脚本的延迟加载
-    });
-</script>
 </html>
 

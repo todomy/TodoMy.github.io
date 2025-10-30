@@ -9,9 +9,6 @@
 <meta property="og:image" content="{{ blogBase['ogImage'] }}">
 <title>{{ blogBase['postTitle'] }}</title>
 {% if blogBase['highlight']==1 %}<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />{% endif %}
-<!-- 预连接到utteranc.es域名，减少DNS查询和连接建立时间 -->
-<link rel="preconnect" href="https://utteranc.es">
-<link rel="dns-prefetch" href="https://utteranc.es">
 {{ blogBase['head'] }}
 {% endblock %}
 
@@ -25,9 +22,6 @@
 #cmButton{height:48px;margin-top:48px;}
 #comments{margin-top:64px;}
 .g-emoji{font-size:24px;}
-
-/* 评论相关样式已简化 */
-
 @media (max-width: 600px) {
     body {padding: 8px;}
     .postTitle{font-size:24px;}
@@ -74,97 +68,53 @@
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
-
-// 初始化变量
-var blogData = {
-    commentNum: {{ blogBase['commentNum'] }},
-    needComment: {{ blogBase['needComment'] }},
-    themeMode: '{{ blogBase['themeMode'] }}',
-    nightTheme: '{{ blogBase['nightTheme'] }}',
-    repoName: '{{ blogBase['repoName'] }}'
-};
-
-// 添加评论数量
-if(blogData.commentNum > 0) {
-    var cmButton = document.getElementById("cmButton");
-    var span = document.createElement("span");
+{% if blogBase['commentNum']>0 -%}
+    cmButton=document.getElementById("cmButton");
+    span=document.createElement("span");
     span.setAttribute("class","Counter");
-    span.innerHTML = blogData.commentNum;
+    span.innerHTML="{{ blogBase['commentNum'] }}";
     cmButton.appendChild(span);
+{%- endif %}
+
+{% if blogBase['needComment']==1 %}
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","{{ blogBase['repoName'] }}");
+    script.setAttribute("issue-term","title");
+    {% if blogBase['themeMode']=='manual' %}
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    {% else %}
+    script.setAttribute("theme","{{ blogBase['nightTheme'] }}");
+    {% endif %}
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
 }
 
-// 评论相关功能
-if(blogData.needComment == 1) {
-function openComments() {
-    var cm = document.getElementById("comments");
-    var cmButton = document.getElementById("cmButton");
-    
-    // 禁用按钮防止重复点击
-    cmButton.disabled = true;
-    
-    // 清空评论区域，不添加额外的加载提示，由utterances.client.js统一处理
-    cm.innerHTML = '';
-    
-    // 使用setTimeout延迟加载脚本，允许浏览器处理当前UI更新
-    setTimeout(function() {
-        var script = document.createElement("script");
-        // 使用本地utterances评论系统脚本
-        script.setAttribute("src","/plugins/utterances.client.js");
-        script.setAttribute("repo", blogData.repoName);
-        script.setAttribute("issue-term","title");
-        if(blogData.themeMode == 'manual') {
-            if(localStorage.getItem("meek_theme") == "dark") {
-                script.setAttribute("theme","dark-blue");
-            } else if(localStorage.getItem("meek_theme") == "light") {
-                script.setAttribute("theme","github-light");
-            } else {
-                script.setAttribute("theme","preferred-color-scheme");
-            }
-        } else {
-            script.setAttribute("theme", blogData.nightTheme);
-        }
-        script.setAttribute("crossorigin","anonymous");
-        script.setAttribute("async","true");
-        
-        // 添加错误处理
-        script.onerror = function() {
-            cm.innerHTML = '<div style="color: #d73a49; text-align: center; padding: 20px;">评论加载失败，请稍后重试</div>';
-            cmButton.innerHTML = "重试";
-            cmButton.disabled = false;
-            if(window.int) clearInterval(window.int);
-        };
-        
-        cm.appendChild(script);
-
-        // 存储定时器到window对象，避免重复创建
-        window.int = setInterval(iFrameLoading, 100);
-    }, 100);
-}
-
-function iFrameLoading() {
-    var utterances = document.getElementsByClassName('utterances');
-    if(utterances.length == 1) {
-        // 检查是否已标记为加载完成
-        if(utterances[0].classList.contains('utterances-loaded')) {
-            window.utterancesLoad = 1;
-            clearInterval(window.int);
-            document.getElementById("cmButton").style.display = "none";
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
             console.log("utterances Load OK");
-        } else {
-            // 作为备选检测，等待iframe加载完成
-            var iframe = utterances[0].querySelector('.utterances-frame');
-            if(iframe && iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
-                // 手动添加loaded类，确保加载提示正确隐藏
-                utterances[0].classList.add('utterances-loaded');
-                window.utterancesLoad = 1;
-                clearInterval(window.int);
-                document.getElementById("cmButton").style.display = "none";
-                console.log("utterances Load OK (by iframe readyState)");
-            }
         }
     }
 }
-}
+{%- endif %}
 </script>
 {{ blogBase['script'] }}
 {% endblock %}

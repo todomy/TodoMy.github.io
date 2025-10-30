@@ -117,6 +117,8 @@ function showList(labelsCount){
         if(i!='labelColorDict'){
             let div=document.createElement("div");
             div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
+            div.setAttribute("data-content", jsonData[i]['content'] || '');
+
             let item=document.createElement("a");
             item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between");
             item.setAttribute("href",jsonData[i]['postUrl']);
@@ -206,137 +208,33 @@ function searchShow(){
     let a=0;
     window.location.hash="#"+(searchInput);
     
-    // 转换搜索输入为大写以实现不区分大小写的搜索
+    // 转换为大写以进行不区分大小写的搜索
     let searchTerm = searchInput.toUpperCase();
     
-    // 先进行基本搜索（标题、标签、日期）
-    // 然后异步加载postList.json进行全文搜索
     for(let i = 0; i < lists.length; i++){
-        // 获取标题文本
-        let titleText = lists[i].childNodes[0].childNodes[0].childNodes[1].innerHTML.toUpperCase();
+        let item = lists[i];
+        let titleElement = item.childNodes[0].childNodes[0].childNodes[1];
+        let titleText = titleElement ? titleElement.innerHTML.toUpperCase() : '';
         
-        // 获取标签文本（组合所有标签）
-        let labelsText = "";
-        let labelElements = lists[i].getElementsByClassName("LabelName");
-        for(let j = 0; j < labelElements.length; j++){
-            labelsText += labelElements[j].innerHTML.toUpperCase() + " ";
+        // 获取文章内容（从data-content属性中）
+        let contentText = item.getAttribute('data-content') || '';
+        contentText = contentText.toUpperCase();
+        
+        // 同时搜索标题和内容
+        if(titleText.indexOf(searchTerm) !== -1 || contentText.indexOf(searchTerm) !== -1){
+            item.style.display='block';
+            a++;
+        } else {
+            item.style.display='none';
         }
-        
-        // 获取日期文本
-        let dateText = "";
-        let dateElement = lists[i].getElementsByClassName("LabelTime")[0];
-        if(dateElement){
-            dateText = dateElement.innerHTML.toUpperCase();
-        }
-        
-        // 先隐藏所有列表项
-        lists[i].style.display='none';
     }
     
-    // 异步加载postList.json进行全文搜索
-    fetch('postList.json')
-        .then(response => response.json())
-        .then(data => {
-            let foundCount = 0;
-            
-            // 遍历列表项
-            for(let i = 0; i < lists.length; i++){
-                let listItem = lists[i];
-                let titleElement = listItem.childNodes[0].childNodes[0].childNodes[1];
-                let titleText = titleElement.innerHTML;
-                
-                // 获取标题文本
-                let titleTextUpper = titleText.toUpperCase();
-                
-                // 获取标签文本（组合所有标签）
-                let labelsTextUpper = "";
-                let labelElements = listItem.getElementsByClassName("LabelName");
-                for(let j = 0; j < labelElements.length; j++){
-                    labelsTextUpper += labelElements[j].innerHTML.toUpperCase() + " ";
-                }
-                
-                // 获取日期文本
-                let dateTextUpper = "";
-                let dateElement = listItem.getElementsByClassName("LabelTime")[0];
-                if(dateElement){
-                    dateTextUpper = dateElement.innerHTML.toUpperCase();
-                }
-                
-                // 基本搜索（标题、标签、日期）
-                let basicMatch = titleTextUpper.indexOf(searchTerm) !== -1 || 
-                               labelsTextUpper.indexOf(searchTerm) !== -1 || 
-                               dateTextUpper.indexOf(searchTerm) !== -1;
-                
-                // 全文搜索
-                let fullTextMatch = false;
-                
-                // 在postList.json中查找匹配的文章内容
-                for(let postKey in data){
-                    if(postKey !== "labelColorDict" && data[postKey].postTitle === titleText){
-                        // 找到匹配的文章
-                        if(data[postKey].content && data[postKey].content.toUpperCase().indexOf(searchTerm) !== -1){
-                            fullTextMatch = true;
-                        }
-                        break;
-                    }
-                }
-                
-                // 如果基本搜索或全文搜索匹配，则显示该项
-                if(basicMatch || fullTextMatch){
-                    listItem.style.display='block';
-                    foundCount++;
-                }
-            }
-            
-            // 更新未找到提示
-            if(foundCount === 0){
-                let notFind = document.getElementsByClassName("notFind")[0];
-                notFind.style.display='block';
-                notFind.innerHTML='Not Find "'+searchInput+'"';
-            } else {
-                document.getElementsByClassName("notFind")[0].style.display='none';
-            }
-        })
-        .catch(error => {
-            console.error('Error loading postList.json:', error);
-            // 加载失败时，回退到基本搜索
-            for(let i = 0; i < lists.length; i++){
-                // 获取标题文本
-                let titleText = lists[i].childNodes[0].childNodes[0].childNodes[1].innerHTML.toUpperCase();
-                
-                // 获取标签文本（组合所有标签）
-                let labelsText = "";
-                let labelElements = lists[i].getElementsByClassName("LabelName");
-                for(let j = 0; j < labelElements.length; j++){
-                    labelsText += labelElements[j].innerHTML.toUpperCase() + " ";
-                }
-                
-                // 获取日期文本
-                let dateText = "";
-                let dateElement = lists[i].getElementsByClassName("LabelTime")[0];
-                if(dateElement){
-                    dateText = dateElement.innerHTML.toUpperCase();
-                }
-                
-                // 检查搜索词是否在标题、标签或日期中出现
-                if(titleText.indexOf(searchTerm) !== -1 || 
-                   labelsText.indexOf(searchTerm) !== -1 || 
-                   dateText.indexOf(searchTerm) !== -1){
-                    lists[i].style.display='block';
-                    a++;
-                } else {
-                    lists[i].style.display='none';
-                }
-            }
-            
-            if(a === 0){
-                let notFind = document.getElementsByClassName("notFind")[0];
-                notFind.style.display='block';
-                notFind.innerHTML='Not Find "'+searchInput+'"';
-            } else {
-                document.getElementsByClassName("notFind")[0].style.display='none';
-            }
-        });
+    if(a==0){
+        let notFind=document.getElementsByClassName("notFind")[0];
+        notFind.style.display='block';
+        notFind.innerHTML='Not Find "'+searchInput+'"';
+    }
+    else{document.getElementsByClassName("notFind")[0].style.display='none';}
 }
 
 </script>

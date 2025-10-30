@@ -1,39 +1,33 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
         /* 添加返回顶部按钮的样式 */
-        .back-to-top {
+        .circle-button {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #4a6cf7, #6c8eff);
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #007bff;
             color: white;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 20px;
-            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            visibility: hidden;
-            z-index: 9999;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: none; /* 默认不显示 */
         }
 
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background: linear-gradient(135deg, #3a5ce7, #5c7cff);
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 6px 16px rgba(74, 108, 247, 0.4);
-        }
-
-        .back-to-top:active {
-            transform: translateY(-2px) scale(1.05);
+        .circle-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
         }
 
         /* 链接样式 */
@@ -48,6 +42,8 @@
             transform: scale(1.1); /* 字体变大 */
         }
     </style>
+</head>
+<body>
     <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl'] }}">{{ blogBase['title'] }}</a></div>
     <div id="footer2">
         {%- if blogBase['filingNum']!='' -%}
@@ -57,11 +53,7 @@
     </div>
 
     <!-- 添加返回顶部按钮 -->
-    <div class="back-to-top" onclick="scrollToTop()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-        </svg>
-    </div>
+    <div class="circle-button" onclick="scrollToTop()">↑</div>
 
     <script>
         var now = new Date();
@@ -84,43 +76,14 @@
 
         // 监听滚动事件
         window.addEventListener('scroll', function() {
-            var scrollPosition = window.scrollY;
-            var button = document.querySelector('.back-to-top');
-            
-            // 使用 Intersection Observer API 或简单的滚动检测
-            if (scrollPosition > 300) { // 增加显示阈值，减少不必要的显示
-                button.classList.add('visible');
-            } else {
-                button.classList.remove('visible');
+            var scrollPosition = window.scrollY; // 获取当前滚动位置
+            var button = document.querySelector('.circle-button'); // 获取返回顶部按钮
+            if (scrollPosition > 100) { // 如果滚动距离大于100px，显示按钮
+                button.style.display = 'flex';
+            } else { // 否则隐藏按钮
+                button.style.display = 'none';
             }
         });
-        
-        // 为支持平滑滚动添加 polyfill 检测
-        if (!('scrollBehavior' in document.documentElement.style)) {
-            // 如果浏览器不支持 smooth scroll，可以在这里添加 polyfill 或使用替代方案
-            function smoothScrollTo(element, to, duration) {
-                var start = element.scrollTop,
-                    change = to - start,
-                    currentTime = 0,
-                    increment = 20;
-                
-                var animateScroll = function() {
-                    currentTime += increment;
-                    var val = easeInOutQuad(currentTime, start, change, duration);
-                    element.scrollTop = val;
-                    if (currentTime < duration) {
-                        setTimeout(animateScroll, increment);
-                    }
-                };
-                
-                function easeInOutQuad(t, b, c, d) {
-                    t /= d / 2;
-                    if (t < 1) return c / 2 * t * t + b;
-                    t--;
-                    return -c / 2 * (t * (t - 2) - 1) + b;
-                }
-                
-                animateScroll();
-            }
-        }
     </script>
+</body>
+</html>
