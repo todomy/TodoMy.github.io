@@ -172,12 +172,8 @@ class GMEEK():
             # 生成安全的文件名
             safe_title = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', post_title)
             
-            # 如果有issue_number，添加到文件名中以确保唯一性
-            if issue_number:
-                # 确保issue_number是字符串类型
-                mdFileName = f"{str(issue_number)}-{safe_title}"
-            else:
-                mdFileName = safe_title
+            # 只使用标题作为文件名，不包含issue_number前缀
+            mdFileName = safe_title
             
             # 构建完整的备份文件路径
             backup_file_path = os.path.join(self.backup_dir, mdFileName + ".md")
@@ -518,11 +514,8 @@ class GMEEK():
     def createPostHtml(self,issue):
         # 使用与backupPostContent相同的文件名生成逻辑
         safe_title = re.sub(r'[<>:/\\|?*"]|[\0-\31]', '-', issue["postTitle"])
-        # 如果有issue_number，添加到文件名中以确保一致性
-        if "number" in issue and issue["number"]:
-            mdFileName = f"{issue['number']}-{safe_title}"
-        else:
-            mdFileName = safe_title
+        # 只使用标题作为文件名，不包含issue_number前缀
+        mdFileName = safe_title
         
         f = open(self.backup_dir+mdFileName+".md", 'r', encoding='UTF-8')
         post_body=self.markdown2html(f.read())
