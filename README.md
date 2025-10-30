@@ -22,13 +22,16 @@
 
 ## 📑 最近文章
 
+<<<<<<< HEAD
+### 最近文章
+
 ### 1. [测试一下 1111111111](https://todomy.github.io/post/ce-shi-yi-xia-%201111111111.html)
 **发布日期**: 2025-10-30
 
 ### 2. [大国之难，不是公平的敌人](https://todomy.github.io/post/da-guo-zhi-nan-%EF%BC%8C-bu-shi-gong-ping-de-di-ren.html)
 **发布日期**: 2025-10-17
 
-### 3. [饥饿的齿痕：人类“人相食”全景史（公元前594 - 2023）](https://todomy.github.io/post/ji-e-de-chi-hen-%EF%BC%9A-ren-lei-%E2%80%9C-ren-xiang-shi-%E2%80%9D-quan-jing-shi-%EF%BC%88-gong-yuan-qian-594%20-%202023%EF%BC%89.html)
+### 3. [饥饿的齿痕：人类"人相食"全景史（公元前594 - 2023）](https://todomy.github.io/post/ji-e-de-chi-hen-%EF%BC%9A-ren-lei-%E2%80%9C-ren-xiang-shi-%E2%80%9D-quan-jing-shi-%EF%BC%88-gong-yuan-qian-594%20-%202023%EF%BC%89.html)
 **发布日期**: 2025-10-15
 
 ### 4. [纸上的王冠：新王朝如何借史书证明合法性](https://todomy.github.io/post/zhi-shang-de-wang-guan-%EF%BC%9A-xin-wang-zhao-ru-he-jie-shi-shu-zheng-ming-he-fa-xing.html)
