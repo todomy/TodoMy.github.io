@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 缓存控制头 -->
+    <meta http-equiv="Cache-Control" content="max-age=31536000, public, must-revalidate">
+    <!-- 移除固定过期日期，让浏览器基于max-age自动计算 -->
+    <link href='/plugins/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="> [!tip] 
+>DeepSeek 使用讲解
+---
+
+## **第一部分：DeepSeek 简介**
+### **1.1 什么是 DeepSeek？**
+- **定位**：国产开源通用人工智能（AGI）公司，专注于大模型研发与应用。">
+<meta property="og:title" content="DeepSeek 从入门到精通">
+<meta property="og:description" content="> [!tip] 
+>DeepSeek 使用讲解
+---
+
+## **第一部分：DeepSeek 简介**
+### **1.1 什么是 DeepSeek？**
+- **定位**：国产开源通用人工智能（AGI）公司，专注于大模型研发与应用。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://todomy.github.io/post/DeepSeek%20-cong-ru-men-dao-jing-tong.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
+<title>DeepSeek 从入门到精通</title>
+
+<!-- 预连接到utteranc.es域名，减少DNS查询和连接建立时间 -->
+<link rel="preconnect" href="https://utteranc.es">
+<link rel="dns-prefetch" href="https://utteranc.es">
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+
+/* 评论骨架屏样式 */
+.comment-skeleton {
+    display: flex;
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: var(--color-canvas-subtle);
+    border-radius: 6px;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-border-default);
+    margin-right: 16px;
+    animation: skeleton-loading 1.5s linear infinite alternate;
+}
+
+.skeleton-content {
+    flex: 1;
+}
+
+.skeleton-line {
+    height: 16px;
+    background-color: var(--color-border-default);
+    margin-bottom: 8px;
+    border-radius: 4px;
+    animation: skeleton-loading 1.5s linear infinite alternate;
+}
+
+.skeleton-line.short {
+    width: 60%;
+}
+
+@keyframes skeleton-loading {
+    0% { background-color: var(--color-border-default); }
+    100% { background-color: var(--color-neutral-muted); }
+}
+
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">DeepSeek 从入门到精通</h1>
+<div class="title-right">
+    <a href="https://todomy.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/63" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>DeepSeek 使用讲解</p>
+</div>
+<hr>
+<h2><strong>第一部分：DeepSeek 简介</strong></h2>
+<h3><strong>1.1 什么是 DeepSeek？</strong></h3>
+<ul>
+<li><strong>定位</strong>：国产开源通用人工智能（AGI）公司，专注于大模型研发与应用。</li>
+<li><strong>核心产品</strong>：DeepSeek-R1 推理模型，擅长复杂任务处理，支持免费商用。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>国产化</strong>：自主技术，符合本地化需求。</li>
+<li><strong>开源免费</strong>：降低开发与商用门槛。</li>
+<li><strong>多场景覆盖</strong>：文本生成、语义理解、代码辅助、数据分析等。</li>
+</ul>
+</li>
+</ul>
+<h3><strong>1.2 DeepSeek 的核心优势</strong></h3>
+<ul>
+<li><strong>推理能力</strong>：强化逻辑分析与决策能力，优于传统语言模型。</li>
+<li><strong>应用场景</strong>：
+<ul>
+<li><strong>文本生成</strong>：营销文案、摘要改写、结构化内容（如表格、代码注释）。</li>
+<li><strong>语义分析</strong>：情感识别、意图提取、实体分类。</li>
+<li><strong>编程辅助</strong>：代码生成、调试优化、文档撰写。</li>
+<li><strong>可视化工具</strong>：流程图、数据图表（折线图、柱状图）、思维导图。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2><strong>第二部分：DeepSeek 基础使用教程</strong></h2>
+<h3><strong>2.1 快速入门</strong></h3>
+<ul>
+<li><strong>访问入口</strong>：官网 <a href="https://chat.deepseek.com" rel="nofollow">https://chat.deepseek.com</a></li>
+<li><strong>基础操作</strong>：
+<ol>
+<li>输入需求指令（如“生成一篇关于气候变化的科普文章”）。</li>
+<li>调整提示语结构，优化输出结果。</li>
+<li>使用文件上传功能，解析图片或文档中的文字内容。</li>
+</ol>
+</li>
+</ul>
+<h3><strong>2.2 提示语设计基础</strong></h3>
+<ul>
+<li>
+<p><strong>核心要素</strong>：</p>
+<ul>
+<li><strong>指令</strong>：明确任务目标（如“写一个Python快速排序函数”）。</li>
+<li><strong>上下文</strong>：提供背景信息（如“假设你是10世纪的历史学家”）。</li>
+<li><strong>期望格式</strong>：指定输出形式（如“表格呈现”或“分步骤说明”）。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>：</p>
+<pre lang="plaintext" class="notranslate"><code class="notranslate">指令：生成一篇关于人工智能伦理的短文，包含案例分析。  
+上下文：以学术论文风格撰写，引用2023年最新研究。  
+期望格式：分三段，每段配一个子标题。  
+</code></pre>
+</li>
+</ul>
+<h3><strong>2.3 避免常见陷阱</strong></h3>
+<ul>
+<li><strong>模糊指令</strong>：避免“写一篇好文章”等笼统要求，需明确主题、长度、风格。</li>
+<li><strong>过度约束</strong>：如“分三步推导勾股定理，第一步画图”，可能限制模型发挥。</li>
+<li><strong>伦理合规</strong>：不生成违法或争议内容（如虚假信息、歧视性言论）。</li>
+</ul>
+<hr>
+<h2><strong>第三部分：高级提示语设计策略</strong></h2>
+<h3><strong>3.1 结构化提示语框架</strong></h3>
+<ul>
+<li>
+<p><strong>TASTE 框架</strong>：</p>
+<ul>
+<li><strong>Task（任务）</strong>：定义核心目标。</li>
+<li><strong>Audience（受众）</strong>：明确读者群体（如“高中生”或“专业人士”）。</li>
+<li><strong>Structure（结构）</strong>：设定内容逻辑（如“问题-分析-解决方案”）。</li>
+<li><strong>Tone（语气）</strong>：选择风格（如“严肃”或“幽默”）。</li>
+<li><strong>Example（示例）</strong>：提供参考模板。</li>
+</ul>
+</li>
+<li>
+<p><strong>实战案例</strong>：</p>
+<pre lang="plaintext" class="notranslate"><code class="notranslate">Task：设计一款智能家居产品，解决独居老人安全问题。  
+Audience：科技爱好者与养老机构。  
+Structure：需求分析 → 技术方案 → 应用场景。  
+Tone：专业且具有说服力。  
+Example：参考小米智能家居产品说明书。  
+</code></pre>
+</li>
+</ul>
+<h3><strong>3.2 复杂任务分解</strong></h3>
+<ul>
+<li>
+<p><strong>SPECTRA 模型</strong>：</p>
+<ol>
+<li><strong>分割任务</strong>：将大任务拆解为独立子任务。</li>
+<li><strong>优先级排序</strong>：按逻辑顺序执行。</li>
+<li><strong>细化步骤</strong>：为每个子任务设计具体行动项。</li>
+<li><strong>连接关系</strong>：建立子任务间的依赖。</li>
+</ol>
+</li>
+<li>
+<p><strong>示例</strong>：撰写科研论文</p>
+<pre lang="plaintext" class="notranslate"><code class="notranslate">1. 分割：文献综述 → 实验设计 → 数据分析 → 结论撰写。  
+2. 优先级：先完成文献综述，再设计实验。  
+3. 细化：文献综述需包含近5年10篇核心论文。  
+</code></pre>
+</li>
+</ul>
+<h3><strong>3.3 创新思维引导</strong></h3>
+<ul>
+<li><strong>跨界映射（CMM）</strong>：将不同领域概念结合，激发创意。
+<ul>
+<li><strong>示例</strong>：用“人体免疫系统”类比“网络安全策略”，设计分层防御机制。</li>
+</ul>
+</li>
+<li><strong>极端假设（EHS）</strong>：颠覆常规假设，探索新可能。
+<ul>
+<li><strong>示例</strong>：假设“学校不再是学习主要场所”，设计分布式教育系统。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2><strong>第四部分：多平台内容生成实战</strong></h2>
+<h3><strong>4.1 微信公众号</strong></h3>
+<ul>
+<li><strong>核心策略</strong>：
+<ul>
+<li><strong>标题设计</strong>：信息密度高，结合热点与差异化视角（如“2024新能源汽车趋势：3大技术颠覆传统”）。</li>
+<li><strong>内容结构</strong>：开篇引发兴趣 → 主体深度分析 → 结尾行动引导。</li>
+<li><strong>互动设计</strong>：插入投票、提问（如“你最期待哪项技术突破？评论区聊聊”）。</li>
+</ul>
+</li>
+</ul>
+<h3><strong>4.2 小红书种草文案</strong></h3>
+<ul>
+<li><strong>关键要素</strong>：
+<ul>
+<li><strong>场景化表达</strong>：描述具体使用场景（如“周末露营时，这款便携咖啡机如何提升幸福感”）。</li>
+<li><strong>信任建设</strong>：结合个人体验与专业测评（如“实测30天，皮肤透明度提升20%”）。</li>
+<li><strong>视觉协同</strong>：封面图突出产品亮点，细节图展示使用效果。</li>
+</ul>
+</li>
+</ul>
+<h3><strong>4.3 抖音短视频脚本</strong></h3>
+<ul>
+<li><strong>爆款公式</strong>：
+<ul>
+<li><strong>开头3秒</strong>：视觉冲击或情绪引爆（如“深夜加班，如何5分钟吃上热饭？”）。</li>
+<li><strong>中间剧情</strong>：节奏紧凑，包含反转（如“看似失败，最终发现新方法”）。</li>
+<li><strong>结尾互动</strong>：引导点赞评论（如“你会怎么选？@好友试试”）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2><strong>第五部分：进阶技巧与未来趋势</strong></h2>
+<h3><strong>5.1 人机协作能力提升</strong></h3>
+<ul>
+<li><strong>四大核心能力</strong>：
+<ul>
+<li><strong>AI思维</strong>：理解模型边界，优化提示词设计。</li>
+<li><strong>整合力</strong>：融合领域知识与AI生成内容。</li>
+<li><strong>引导力</strong>：通过动态反馈优化输出质量。</li>
+<li><strong>判断力</strong>：评估结果可靠性与适用性。</li>
+</ul>
+</li>
+</ul>
+<h3><strong>5.2 知识唤醒与创新</strong></h3>
+<ul>
+<li><strong>知识库构建</strong>：
+<ul>
+<li><strong>个人经验库</strong>：整理实践案例与隐性知识。</li>
+<li><strong>AI形式化库</strong>：链接统计数据与逻辑规则。</li>
+</ul>
+</li>
+<li><strong>创新路径</strong>：通过“情感-经验-关联”螺旋，激发跨界洞察（如用游戏化思维优化在线教育）。</li>
+</ul>
+<h3><strong>5.3 未来展望</strong></h3>
+<ul>
+<li><strong>AGI 发展</strong>：DeepSeek 将持续强化推理与创造性能力，拓展医疗、金融等垂直场景。</li>
+<li><strong>伦理挑战</strong>：需平衡技术创新与隐私保护、公平性等社会价值。</li>
+</ul>
+<hr>
+<h2><strong>附录：资源推荐</strong></h2>
+<ul>
+<li><strong>官方文档</strong>：<a href="https://developer.deepseek.com" rel="nofollow">DeepSeek 开发者中心</a></li>
+<li><strong>提示语模板库</strong>：GitHub 开源项目“Awesome-AGI-Prompts”。</li>
+</ul>
+<p>通过本指南，读者可系统掌握 DeepSeek 的核心功能与高阶技巧，从基础操作到跨平台内容生成，逐步进阶为 AI 协作专家。</p>
+<p><a href="https://github.com/user-attachments/files/18744604/DeepSeek.pdf">DeepSeek 入门到精通.pdf</a></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><style>
+        /* 添加返回顶部按钮的样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a6cf7, #6c8eff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 9999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #3a5ce7, #5c7cff);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 16px rgba(74, 108, 247, 0.4);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* 链接样式 */
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: font-weight 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            font-weight: bold; /* 鼠标悬停时链接变粗 */
+            transform: scale(1.1); /* 字体变大 */
+        }
+    </style>
+    <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
+    <div id="footer2">
+        <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    </div>
+
+    <!-- 添加返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </div>
+
+    <script>
+        var now = new Date();
+        document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+
+        if ("11/24/2024" != "") {
+            var startSite = new Date("11/24/2024");
+            var diff = now.getTime() - startSite.getTime();
+            var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        }
+
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY;
+            var button = document.querySelector('.back-to-top');
+            
+            // 使用 Intersection Observer API 或简单的滚动检测
+            if (scrollPosition > 300) { // 增加显示阈值，减少不必要的显示
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+        
+        // 为支持平滑滚动添加 polyfill 检测
+        if (!('scrollBehavior' in document.documentElement.style)) {
+            // 如果浏览器不支持 smooth scroll，可以在这里添加 polyfill 或使用替代方案
+            function smoothScrollTo(element, to, duration) {
+                var start = element.scrollTop,
+                    change = to - start,
+                    currentTime = 0,
+                    increment = 20;
+                
+                var animateScroll = function() {
+                    currentTime += increment;
+                    var val = easeInOutQuad(currentTime, start, change, duration);
+                    element.scrollTop = val;
+                    if (currentTime < duration) {
+                        setTimeout(animateScroll, increment);
+                    }
+                };
+                
+                function easeInOutQuad(t, b, c, d) {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                }
+                
+                animateScroll();
+            }
+        }
+    </script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode", mode);
+    document.getElementById("themeSwitch").setAttribute("d", IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color = color;
+    if(utterancesLoad == 1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+// 使用当前主题模式初始化
+let currentTheme = document.documentElement.getAttribute('data-color-mode');
+if(themeSettings[currentTheme]){changeTheme(...themeSettings[currentTheme]);}
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+// 初始化变量
+var blogData = {
+    commentNum: 0,
+    needComment: 1,
+    themeMode: 'manual',
+    nightTheme: 'dark_colorblind',
+    repoName: 'todomy/TodoMy.github.io'
+};
+
+// 添加评论数量
+if(blogData.commentNum > 0) {
+    var cmButton = document.getElementById("cmButton");
+    var span = document.createElement("span");
+    span.setAttribute("class","Counter");
+    span.innerHTML = blogData.commentNum;
+    cmButton.appendChild(span);
+}
+
+// 评论相关功能
+if(blogData.needComment == 1) {
+function openComments() {
+    var cm = document.getElementById("comments");
+    var cmButton = document.getElementById("cmButton");
+    
+    // 显示友好的加载状态
+    cmButton.innerHTML = "加载评论中";
+    cmButton.disabled = true;
+    
+    // 添加骨架屏提升用户体验
+    cm.innerHTML = '<div class="comment-skeleton"><div class="skeleton-avatar"></div><div class="skeleton-content"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div></div>';
+    
+    // 预加载主题CSS
+    if(!document.getElementById('utterances-css-preload')) {
+        var link = document.createElement('link');
+        link.id = 'utterances-css-preload';
+        link.rel = 'preload';
+        link.as = 'style';
+        if(blogData.themeMode == 'manual') {
+            if(localStorage.getItem("meek_theme") == "dark") {
+                link.href = 'https://utteranc.es/stylesheets/themes/github-dark/utterances.css';
+            } else if(localStorage.getItem("meek_theme") == "light") {
+                link.href = 'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
+            } else {
+                link.href = window.matchMedia("(prefers-color-scheme: dark)").matches ? 
+                            'https://utteranc.es/stylesheets/themes/github-dark/utterances.css' : 
+                            'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
+            }
+        } else {
+            link.href = 'https://utteranc.es/stylesheets/themes/' + blogData.nightTheme + '/utterances.css';
+        }
+        document.head.appendChild(link);
+    }
+
+    // 使用setTimeout延迟加载脚本，允许浏览器处理当前UI更新
+    setTimeout(function() {
+        var script = document.createElement("script");
+        // 使用本地utterances评论系统脚本
+        script.setAttribute("src","/plugins/utterances.client.js");
+        script.setAttribute("repo", blogData.repoName);
+        script.setAttribute("issue-term","title");
+        if(blogData.themeMode == 'manual') {
+            if(localStorage.getItem("meek_theme") == "dark") {
+                script.setAttribute("theme","dark-blue");
+            } else if(localStorage.getItem("meek_theme") == "light") {
+                script.setAttribute("theme","github-light");
+            } else {
+                script.setAttribute("theme","preferred-color-scheme");
+            }
+        } else {
+            script.setAttribute("theme", blogData.nightTheme);
+        }
+        script.setAttribute("crossorigin","anonymous");
+        script.setAttribute("async","true");
+        
+        // 添加错误处理
+        script.onerror = function() {
+            cm.innerHTML = '<div style="color: #d73a49; text-align: center; padding: 20px;">评论加载失败，请稍后重试</div>';
+            cmButton.innerHTML = "重试";
+            cmButton.disabled = false;
+            if(window.int) clearInterval(window.int);
+        };
+        
+        cm.appendChild(script);
+
+        // 存储定时器到window对象，避免重复创建
+        window.int = setInterval(iFrameLoading, 100);
+    }, 100);
+}
+
+function iFrameLoading() {
+    var utterances = document.getElementsByClassName('utterances');
+    if(utterances.length == 1) {
+        // 一旦iframe加载完成，即使高度未设置也视为加载成功
+        var iframe = utterances[0].querySelector('.utterances-frame');
+        if(iframe && iframe.contentDocument.readyState === 'complete') {
+            window.utterancesLoad = 1;
+            clearInterval(window.int);
+            document.getElementById("cmButton").style.display = "none";
+            console.log("utterances Load OK");
+        } else if(utterances[0].style.height != "") {
+            // 原有逻辑作为备选
+            window.utterancesLoad = 1;
+            clearInterval(window.int);
+            document.getElementById("cmButton").style.display = "none";
+            console.log("utterances Load OK (by height)");
+        }
+    }
+}
+}
+</script>
+<script src='/plugins/GmeekTOC.js'></script><script src='/plugins/lightbox.js'></script>
+
+<script>
+    // 图片懒加载功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 检查浏览器是否支持原生懒加载
+        if ('loading' in HTMLImageElement.prototype) {
+            const images = document.querySelectorAll('img[lazy-src]');
+            images.forEach(img => {
+                img.src = img.getAttribute('lazy-src');
+                img.removeAttribute('lazy-src');
+            });
+        } else {
+            // 不支持原生懒加载时使用JavaScript实现
+            const lazyLoadImages = function() {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.getAttribute('lazy-src');
+                            img.removeAttribute('lazy-src');
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('img[lazy-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            };
+            
+            // 启动懒加载
+            lazyLoadImages();
+        }
+    });
+    
+    // 资源合并优化相关：动态加载非关键JavaScript
+    function loadScript(url, callback) {
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+    
+    // 页面加载完成后再加载非关键脚本
+    window.addEventListener('load', function() {
+        // 可以在这里添加非关键脚本的延迟加载
+    });
+</script>
+</html>

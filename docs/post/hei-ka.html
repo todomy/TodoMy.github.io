@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 缓存控制头 -->
+    <meta http-equiv="Cache-Control" content="max-age=31536000, public, must-revalidate">
+    <!-- 移除固定过期日期，让浏览器基于max-age自动计算 -->
+    <link href='/plugins/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="## 一念起
+早上到公司，准备冲黑咖，瓶子里的117正好就倒光了，看了空瓶发了呆，自嘲的笑了一笑；这杯黑咖放公司一两年都没喝完，今天喝光了，是不是预示着自己要离开这家公司了，今天周五也是11月份最后一天上班时间。">
+<meta property="og:title" content="黑咖">
+<meta property="og:description" content="## 一念起
+早上到公司，准备冲黑咖，瓶子里的117正好就倒光了，看了空瓶发了呆，自嘲的笑了一笑；这杯黑咖放公司一两年都没喝完，今天喝光了，是不是预示着自己要离开这家公司了，今天周五也是11月份最后一天上班时间。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://todomy.github.io/post/hei-ka.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
+<title>黑咖</title>
+
+<!-- 预连接到utteranc.es域名，减少DNS查询和连接建立时间 -->
+<link rel="preconnect" href="https://utteranc.es">
+<link rel="dns-prefetch" href="https://utteranc.es">
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+
+/* 评论骨架屏样式 */
+.comment-skeleton {
+    display: flex;
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: var(--color-canvas-subtle);
+    border-radius: 6px;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-border-default);
+    margin-right: 16px;
+    animation: skeleton-loading 1.5s linear infinite alternate;
+}
+
+.skeleton-content {
+    flex: 1;
+}
+
+.skeleton-line {
+    height: 16px;
+    background-color: var(--color-border-default);
+    margin-bottom: 8px;
+    border-radius: 4px;
+    animation: skeleton-loading 1.5s linear infinite alternate;
+}
+
+.skeleton-line.short {
+    width: 60%;
+}
+
+@keyframes skeleton-loading {
+    0% { background-color: var(--color-border-default); }
+    100% { background-color: var(--color-neutral-muted); }
+}
+
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">黑咖</h1>
+<div class="title-right">
+    <a href="https://todomy.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/14" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h2>一念起</h2>
+<p>早上到公司，准备冲黑咖，瓶子里的117正好就倒光了，看了空瓶发了呆，自嘲的笑了一笑；这杯黑咖放公司一两年都没喝完，今天喝光了，是不是预示着自己要离开这家公司了，今天周五也是11月份最后一天上班时间。</p>
+<h2>这家公司</h2>
+<h3>扩张</h3>
+<p>上一家金融交易所解散拿了赔偿，我开始换工作，投递了很多家，也尝试去干几家都不太满意，我一般对于不适合的工作一周就能知道，立马辞职离开，这样子对于双方都是好事情。后面发现没有合适的工作，就开启职业投资，专心研究项目。有天，有个人事找我，他说我很符合他们公司要求，然后两个老板要分别面试我，于是我通过了这家公司的面试。<br>
+我以售前的岗位入职了这家公司，这家公司刚拿到融资，百分之80的人都是我这批扩张进来的，销售也有十几个分散在全国，在这里我认识了我的大徒弟j，原来是两个办公室，商务研发分别一个，经历了半年，不断的换销售，而我也不断的接触各类客户，最后销售业绩还是零，一年后公司开启大裁员，只留了三个销售，其他人都没有了，j每天下班就跟我去打篮球锻炼身体，周末经常一起去财神庙拜财神，后面他表达了他想跟我学习投资，我说进入这个行业大概率会经历痛苦悔恨，亏光，但是他依然坚定的想要了解这个世界，当然后续也验证了，他也确实一步一步掉入了这个深渊。刚进入这家公司奇葩也蛮多的，有一个销售无业绩疯狂抠细节一看就是一个油子，第一眼让你不舒服的人，你不管多长时间相处还是会厌恶他；我基本上不跟他接触，这种越少接触越好，他被分配为j的小领导，每天疯狂的抠细节让他们搞汇报，j对此也蛮痛苦的，j有了业绩，他还没有，于是乎他小领导被辞退了，j是公司存在最久的员工。<br>
+这家公司工作强度还是蛮大的，做售前不管你做多少遍方案老板都不会满意，这一点我是可以理解的，每个人只会对自己做的东西满意，经常出差跑客户，早上四五点钟起来去做地铁坐高铁，凌晨坐飞机回来，工作内容也变广了，售前的事情要做，售后的事情也要做，产品交付的事情也要做，也要跟研发去交流，小公司大多数是一个人当多个人使用，我也可以理解，不过自己还是要照顾好自己身体，别人可不会管你的死活，所以我也会跟销售说让他们合理安排时间，拒绝不合理要求。j最后也离开了公司，后续hz这边至此没有了任何销售，我有一段时间一个人一个办公室。</p>
+<h3>缩减</h3>
+<p>公司减少开支，去掉了不少研发，跟我一起入职的研发不少被开除了，然后我也跟研发一个办公室，减少租金；销售人员也变成了老板，老板联系客户，我给做线上演示培训，其实大部分公司招聘的销售也不是太懂我们的产品，他们负责联系一下客户，约客户时间，我线上沟通演示，后续交付也是我，销售只是联系一下，公司也是看中他们的人脉资源而已，实际上这种方式进来的客户，试用过后大部分是不会签单。里面也有一些牛逼的销售拿两三万的底薪过来混日子，j的小领导也是其中之一，这属于公司早期摸索阶段，想通过有资源的销售迅速的打开局面，最终证明完全不行，也跟我们做的产品有关系。</p>
+<h3>突破</h3>
+<p>公司商务负责人z也是股东他负责金融客户这块，但是两年了没有任何客户，这个人也是我最开始的领导，原先有个研发x，从开发主动到我这个岗位，我判断x在我这个岗位待不了多久，他是公司第四号员工，前面三个都是公司老板股东，x开启了他跟z还有销售跑市场之路，也就是我之前的工作内容，x这个人属于自驱动奋斗型，这种上进的人主动自觉的完成工作，但是不适合跟着z，因为z他之前混大公司语言文案的艺术造诣很高，边界感很弱，他不管什么时间都会去联系你，你没周六周日休息时间，下班也会联系你，没有边界的人做你领导，一般人是干不了的，而我在他手下干了一年多，这一年多还每天写日报，要不是我之前经历过阿里的文化熏陶，也每日写日报每周周报周五开会，我肯定是撑不住的，x进来不用写日报，半年后，x跟我说他要走，他觉得自己是无用功，他跟z没有学到任何东西，而且x跟客户交流，z说你不能这么说，你要这样子，等下次x跟客户按照他说的，然后z要跟他说你这样子不对要那样；至此x知道自己不应该待在这家公司了。x是我见过的员工里的天花板，我也认为他是全公司里打工人的天花板，好员工，一号员工一路走来也已经说明了他，无需他人评价。另一个大老板h，稳扎稳打，一直搞互联网，一直通过优化产品去提高竞争力，不断的跟互联网企业交流演示沟通，慢慢的有了突破，更多的互联网企业愿意试用，渐渐的打开的局面，初次接触你会发现z比h更好，因为言语交谈等，z更有技巧，时间久了你会发现h才是务实之人，后续我也看了他的公众号他的成长经历，他从四川小山村里杀出来，并且入职外资企业，在阿里也呆过，他是吃到了互联网整个红利的人，后续通过开发产品，卖产品出售公司赚到更多的钱，这里不展开说，我个人是更偏向于h这种务实稳扎稳打的人。</p>
+<h2>视角切换</h2>
+<p>经营者角度：将想法变成产品是一个很大的鸿沟，资金问题要处理，人员开支的控制，很多时候创业要理智，甚至物化员工，因为他们只是你实现目标的一个一个棋子，你要的是节省开支招聘到性价比更高的员工，甚至是让他们加班，加班不给钱，都是很正常的事情，投入最少的钱，产出好的产品，卖出更多的产品，获利更多，这是经营者在没有法律状态下的理想状态。所以我对这家经营者做的事情还是能接受的，因为在国内这种大环境下，h他做的还不错，并不算太苛刻对待员工，经营者对于员工的好坏有时候并不取决于经营者本身，当大环境都在让员工加班加大产出，甚至不给钱让他们干活，他们产品更便宜，而你优待员工你的产品价格高，自然跟他们竞争没有任何优势，你将会倒闭亏钱。<br>
+员工视角：你的价格取决于市场，你的待遇取决于当前所处的人权保障法律执行情况，这是一个生态问题，并不是你能够解决的，而且生态是动态变化的，如果无法换打怪地图，建议是适应环境，挑选一些不太苛刻员工的公司，保证自身身体健康，身体是我们唯一活着这个世界上的容器，即使你再卷再优秀得到再多的奖状证书，最终人走了，也只是一个垃圾桶就能装满扔掉的东西而已。改变不了就接受，有时候三和大神他们并没有错，尽量做到自洽，不冲突，不要放弃自己，不伤害自己也不要伤害别人。</p></div>
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><style>
+        /* 添加返回顶部按钮的样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a6cf7, #6c8eff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 9999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #3a5ce7, #5c7cff);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 16px rgba(74, 108, 247, 0.4);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* 链接样式 */
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: font-weight 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            font-weight: bold; /* 鼠标悬停时链接变粗 */
+            transform: scale(1.1); /* 字体变大 */
+        }
+    </style>
+    <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
+    <div id="footer2">
+        <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    </div>
+
+    <!-- 添加返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </div>
+
+    <script>
+        var now = new Date();
+        document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+
+        if ("11/24/2024" != "") {
+            var startSite = new Date("11/24/2024");
+            var diff = now.getTime() - startSite.getTime();
+            var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        }
+
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY;
+            var button = document.querySelector('.back-to-top');
+            
+            // 使用 Intersection Observer API 或简单的滚动检测
+            if (scrollPosition > 300) { // 增加显示阈值，减少不必要的显示
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+        
+        // 为支持平滑滚动添加 polyfill 检测
+        if (!('scrollBehavior' in document.documentElement.style)) {
+            // 如果浏览器不支持 smooth scroll，可以在这里添加 polyfill 或使用替代方案
+            function smoothScrollTo(element, to, duration) {
+                var start = element.scrollTop,
+                    change = to - start,
+                    currentTime = 0,
+                    increment = 20;
+                
+                var animateScroll = function() {
+                    currentTime += increment;
+                    var val = easeInOutQuad(currentTime, start, change, duration);
+                    element.scrollTop = val;
+                    if (currentTime < duration) {
+                        setTimeout(animateScroll, increment);
+                    }
+                };
+                
+                function easeInOutQuad(t, b, c, d) {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                }
+                
+                animateScroll();
+            }
+        }
+    </script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode", mode);
+    document.getElementById("themeSwitch").setAttribute("d", IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color = color;
+    if(utterancesLoad == 1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+// 使用当前主题模式初始化
+let currentTheme = document.documentElement.getAttribute('data-color-mode');
+if(themeSettings[currentTheme]){changeTheme(...themeSettings[currentTheme]);}
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+// 初始化变量
+var blogData = {
+    commentNum: 0,
+    needComment: 1,
+    themeMode: 'manual',
+    nightTheme: 'dark_colorblind',
+    repoName: 'todomy/TodoMy.github.io'
+};
+
+// 添加评论数量
+if(blogData.commentNum > 0) {
+    var cmButton = document.getElementById("cmButton");
+    var span = document.createElement("span");
+    span.setAttribute("class","Counter");
+    span.innerHTML = blogData.commentNum;
+    cmButton.appendChild(span);
+}
+
+// 评论相关功能
+if(blogData.needComment == 1) {
+function openComments() {
+    var cm = document.getElementById("comments");
+    var cmButton = document.getElementById("cmButton");
+    
+    // 显示友好的加载状态
+    cmButton.innerHTML = "加载评论中";
+    cmButton.disabled = true;
+    
+    // 添加骨架屏提升用户体验
+    cm.innerHTML = '<div class="comment-skeleton"><div class="skeleton-avatar"></div><div class="skeleton-content"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div></div>';
+    
+    // 预加载主题CSS
+    if(!document.getElementById('utterances-css-preload')) {
+        var link = document.createElement('link');
+        link.id = 'utterances-css-preload';
+        link.rel = 'preload';
+        link.as = 'style';
+        if(blogData.themeMode == 'manual') {
+            if(localStorage.getItem("meek_theme") == "dark") {
+                link.href = 'https://utteranc.es/stylesheets/themes/github-dark/utterances.css';
+            } else if(localStorage.getItem("meek_theme") == "light") {
+                link.href = 'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
+            } else {
+                link.href = window.matchMedia("(prefers-color-scheme: dark)").matches ? 
+                            'https://utteranc.es/stylesheets/themes/github-dark/utterances.css' : 
+                            'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
+            }
+        } else {
+            link.href = 'https://utteranc.es/stylesheets/themes/' + blogData.nightTheme + '/utterances.css';
+        }
+        document.head.appendChild(link);
+    }
+
+    // 使用setTimeout延迟加载脚本，允许浏览器处理当前UI更新
+    setTimeout(function() {
+        var script = document.createElement("script");
+        // 使用本地utterances评论系统脚本
+        script.setAttribute("src","/plugins/utterances.client.js");
+        script.setAttribute("repo", blogData.repoName);
+        script.setAttribute("issue-term","title");
+        if(blogData.themeMode == 'manual') {
+            if(localStorage.getItem("meek_theme") == "dark") {
+                script.setAttribute("theme","dark-blue");
+            } else if(localStorage.getItem("meek_theme") == "light") {
+                script.setAttribute("theme","github-light");
+            } else {
+                script.setAttribute("theme","preferred-color-scheme");
+            }
+        } else {
+            script.setAttribute("theme", blogData.nightTheme);
+        }
+        script.setAttribute("crossorigin","anonymous");
+        script.setAttribute("async","true");
+        
+        // 添加错误处理
+        script.onerror = function() {
+            cm.innerHTML = '<div style="color: #d73a49; text-align: center; padding: 20px;">评论加载失败，请稍后重试</div>';
+            cmButton.innerHTML = "重试";
+            cmButton.disabled = false;
+            if(window.int) clearInterval(window.int);
+        };
+        
+        cm.appendChild(script);
+
+        // 存储定时器到window对象，避免重复创建
+        window.int = setInterval(iFrameLoading, 100);
+    }, 100);
+}
+
+function iFrameLoading() {
+    var utterances = document.getElementsByClassName('utterances');
+    if(utterances.length == 1) {
+        // 一旦iframe加载完成，即使高度未设置也视为加载成功
+        var iframe = utterances[0].querySelector('.utterances-frame');
+        if(iframe && iframe.contentDocument.readyState === 'complete') {
+            window.utterancesLoad = 1;
+            clearInterval(window.int);
+            document.getElementById("cmButton").style.display = "none";
+            console.log("utterances Load OK");
+        } else if(utterances[0].style.height != "") {
+            // 原有逻辑作为备选
+            window.utterancesLoad = 1;
+            clearInterval(window.int);
+            document.getElementById("cmButton").style.display = "none";
+            console.log("utterances Load OK (by height)");
+        }
+    }
+}
+}
+</script>
+<script src='/plugins/GmeekTOC.js'></script><script src='/plugins/lightbox.js'></script>
+
+<script>
+    // 图片懒加载功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 检查浏览器是否支持原生懒加载
+        if ('loading' in HTMLImageElement.prototype) {
+            const images = document.querySelectorAll('img[lazy-src]');
+            images.forEach(img => {
+                img.src = img.getAttribute('lazy-src');
+                img.removeAttribute('lazy-src');
+            });
+        } else {
+            // 不支持原生懒加载时使用JavaScript实现
+            const lazyLoadImages = function() {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.getAttribute('lazy-src');
+                            img.removeAttribute('lazy-src');
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('img[lazy-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            };
+            
+            // 启动懒加载
+            lazyLoadImages();
+        }
+    });
+    
+    // 资源合并优化相关：动态加载非关键JavaScript
+    function loadScript(url, callback) {
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+    
+    // 页面加载完成后再加载非关键脚本
+    window.addEventListener('load', function() {
+        // 可以在这里添加非关键脚本的延迟加载
+    });
+</script>
+</html>

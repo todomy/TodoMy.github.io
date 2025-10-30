@@ -1,0 +1,126 @@
+<style>
+        /* 添加返回顶部按钮的样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a6cf7, #6c8eff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 9999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #3a5ce7, #5c7cff);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 16px rgba(74, 108, 247, 0.4);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* 链接样式 */
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: font-weight 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            font-weight: bold; /* 鼠标悬停时链接变粗 */
+            transform: scale(1.1); /* 字体变大 */
+        }
+    </style>
+    <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl'] }}">{{ blogBase['title'] }}</a></div>
+    <div id="footer2">
+        {%- if blogBase['filingNum']!='' -%}
+        <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a> • </span>
+        {%- endif %}
+        <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    </div>
+
+    <!-- 添加返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </div>
+
+    <script>
+        var now = new Date();
+        document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+
+        if ("{{ blogBase['startSite'] }}" != "") {
+            var startSite = new Date("{{ blogBase['startSite'] }}");
+            var diff = now.getTime() - startSite.getTime();
+            var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("runday").innerHTML = "{{ i18n['run'] }}" + diffDay + "{{ i18n['days'] }}" + " • ";
+        }
+
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY;
+            var button = document.querySelector('.back-to-top');
+            
+            // 使用 Intersection Observer API 或简单的滚动检测
+            if (scrollPosition > 300) { // 增加显示阈值，减少不必要的显示
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+        
+        // 为支持平滑滚动添加 polyfill 检测
+        if (!('scrollBehavior' in document.documentElement.style)) {
+            // 如果浏览器不支持 smooth scroll，可以在这里添加 polyfill 或使用替代方案
+            function smoothScrollTo(element, to, duration) {
+                var start = element.scrollTop,
+                    change = to - start,
+                    currentTime = 0,
+                    increment = 20;
+                
+                var animateScroll = function() {
+                    currentTime += increment;
+                    var val = easeInOutQuad(currentTime, start, change, duration);
+                    element.scrollTop = val;
+                    if (currentTime < duration) {
+                        setTimeout(animateScroll, increment);
+                    }
+                };
+                
+                function easeInOutQuad(t, b, c, d) {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                }
+                
+                animateScroll();
+            }
+        }
+    </script>

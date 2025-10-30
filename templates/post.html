@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<meta name="description" content="{{ blogBase['description'] }}">
+<meta property="og:title" content="{{ blogBase['postTitle'] }}">
+<meta property="og:description" content="{{ blogBase['description'] }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ blogBase['postUrl'] }}">
+<meta property="og:image" content="{{ blogBase['ogImage'] }}">
+<title>{{ blogBase['postTitle'] }}</title>
+{% if blogBase['highlight']==1 %}<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />{% endif %}
+<!-- 预连接到utteranc.es域名，减少DNS查询和连接建立时间 -->
+<link rel="preconnect" href="https://utteranc.es">
+<link rel="dns-prefetch" href="https://utteranc.es">
+{{ blogBase['head'] }}
+{% endblock %}
+
+{% block style %}
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+
+/* 评论相关样式已简化 */
+
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+{{ blogBase['style'] }}
+
+{% endblock %}
+{% block header %}
+<h1 class="postTitle">{{ blogBase['postTitle'] }}</h1>
+<div class="title-right">
+    <a href="{{ blogBase['homeUrl'] }}" id="buttonHome" class="btn btn-invisible circle" title="{{ i18n['home'] }}">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    {% if blogBase['showPostSource']==1 %}
+    <a href="{{ blogBase['postSourceUrl'] }}" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    {% endif %}
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="markdown-body" id="postBody">{{ blogBase['postBody'] }}</div>
+<div style="font-size:small;margin-top:8px;float:right;">{{ blogBase['bottomText'] }}</div>
+{% if blogBase['needComment']==1 %}
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">{{ i18n['comments'] }}</button>
+<div class="comments" id="comments"></div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+// 初始化变量
+var blogData = {
+    commentNum: {{ blogBase['commentNum'] }},
+    needComment: {{ blogBase['needComment'] }},
+    themeMode: '{{ blogBase['themeMode'] }}',
+    nightTheme: '{{ blogBase['nightTheme'] }}',
+    repoName: '{{ blogBase['repoName'] }}'
+};
+
+// 添加评论数量
+if(blogData.commentNum > 0) {
+    var cmButton = document.getElementById("cmButton");
+    var span = document.createElement("span");
+    span.setAttribute("class","Counter");
+    span.innerHTML = blogData.commentNum;
+    cmButton.appendChild(span);
+}
+
+// 评论相关功能
+if(blogData.needComment == 1) {
+function openComments() {
+    var cm = document.getElementById("comments");
+    var cmButton = document.getElementById("cmButton");
+    
+    // 简化评论加载过程，不显示加载状态和骨架屏
+    cmButton.disabled = true;
+    cm.innerHTML = '';
+    
+    // 预加载主题CSS
+    if(!document.getElementById('utterances-css-preload')) {
+        var link = document.createElement('link');
+        link.id = 'utterances-css-preload';
+        link.rel = 'preload';
+        link.as = 'style';
+        if(blogData.themeMode == 'manual') {
+            if(localStorage.getItem("meek_theme") == "dark") {
+                link.href = 'https://utteranc.es/stylesheets/themes/github-dark/utterances.css';
+            } else if(localStorage.getItem("meek_theme") == "light") {
+                link.href = 'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
+            } else {
+                link.href = window.matchMedia("(prefers-color-scheme: dark)").matches ? 
+                            'https://utteranc.es/stylesheets/themes/github-dark/utterances.css' : 
+                            'https://utteranc.es/stylesheets/themes/github-light/utterances.css';
+            }
+        } else {
+            link.href = 'https://utteranc.es/stylesheets/themes/' + blogData.nightTheme + '/utterances.css';
+        }
+        document.head.appendChild(link);
+    }
+
+    // 使用setTimeout延迟加载脚本，允许浏览器处理当前UI更新
+    setTimeout(function() {
+        var script = document.createElement("script");
+        // 使用本地utterances评论系统脚本
+        script.setAttribute("src","/plugins/utterances.client.js");
+        script.setAttribute("repo", blogData.repoName);
+        script.setAttribute("issue-term","title");
+        if(blogData.themeMode == 'manual') {
+            if(localStorage.getItem("meek_theme") == "dark") {
+                script.setAttribute("theme","dark-blue");
+            } else if(localStorage.getItem("meek_theme") == "light") {
+                script.setAttribute("theme","github-light");
+            } else {
+                script.setAttribute("theme","preferred-color-scheme");
+            }
+        } else {
+            script.setAttribute("theme", blogData.nightTheme);
+        }
+        script.setAttribute("crossorigin","anonymous");
+        script.setAttribute("async","true");
+        
+        // 添加错误处理
+        script.onerror = function() {
+            cm.innerHTML = '<div style="color: #d73a49; text-align: center; padding: 20px;">评论加载失败，请稍后重试</div>';
+            cmButton.innerHTML = "重试";
+            cmButton.disabled = false;
+            if(window.int) clearInterval(window.int);
+        };
+        
+        cm.appendChild(script);
+
+        // 存储定时器到window对象，避免重复创建
+        window.int = setInterval(iFrameLoading, 100);
+    }, 100);
+}
+
+function iFrameLoading() {
+    var utterances = document.getElementsByClassName('utterances');
+    if(utterances.length == 1) {
+        // 一旦iframe加载完成，即使高度未设置也视为加载成功
+        var iframe = utterances[0].querySelector('.utterances-frame');
+        if(iframe && iframe.contentDocument.readyState === 'complete') {
+            window.utterancesLoad = 1;
+            clearInterval(window.int);
+            document.getElementById("cmButton").style.display = "none";
+            console.log("utterances Load OK");
+        } else if(utterances[0].style.height != "") {
+            // 原有逻辑作为备选
+            window.utterancesLoad = 1;
+            clearInterval(window.int);
+            document.getElementById("cmButton").style.display = "none";
+            console.log("utterances Load OK (by height)");
+        }
+    }
+}
+}
+</script>
+{{ blogBase['script'] }}
+{% endblock %}
