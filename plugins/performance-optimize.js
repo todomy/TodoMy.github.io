@@ -16,7 +16,15 @@
                 if (this.status === 200) {
                     try {
                         // 缓存完整数据
-                        postListData = JSON.parse(this.responseText);
+                        const rawData = JSON.parse(this.responseText);
+                        
+                        // 确保postListData是一个数组，适应postList.json的实际结构
+                        if (typeof rawData === 'object' && !Array.isArray(rawData) && !rawData.length) {
+                            // 转换为数组格式
+                            postListData = Object.values(rawData);
+                        } else {
+                            postListData = rawData;
+                        }
                         console.log('已缓存文章数据，共', postListData.length, '篇文章');
                         
                         // 替换响应为第一页数据
@@ -65,9 +73,25 @@
                 
                 // 使用缓存的完整数据进行搜索
                 const filteredItems = postListData.filter(item => {
-                    const titleMatch = item.title.toLowerCase().includes(searchInput);
-                    const contentMatch = item.content && item.content.toLowerCase().includes(searchInput);
-                    return titleMatch || contentMatch;
+                    try {
+                        // 尝试各种可能的标题字段名，适应不同的数据结构
+                        const title1 = item.postTitle ? item.postTitle.toLowerCase() : '';
+                        const title2 = item.title ? item.title.toLowerCase() : '';
+                        // 合并可能的标题字段进行搜索
+                        const titleText = title1 || title2;
+                        
+                        // 安全地访问content字段
+                        const contentText = item.content ? item.content.toLowerCase() : '';
+                        
+                        // 记录字段使用情况以帮助调试
+                        if (title1) console.log('使用postTitle字段');
+                        if (title2 && !title1) console.log('使用title字段');
+                        
+                        return titleText.includes(searchInput) || contentText.includes(searchInput);
+                    } catch (error) {
+                        console.error('搜索处理错误:', error, '在项目:', item);
+                        return false; // 出错时跳过该项目
+                    }
                 });
                 
                 console.log('找到', filteredItems.length, '个匹配结果');

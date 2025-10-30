@@ -335,6 +335,7 @@ class GMEEK():
             if issue.body==None:
                 self.blogBase[listJsonName][postNum]["description"]=''
                 self.blogBase[listJsonName][postNum]["wordCount"]=0
+                self.blogBase[listJsonName][postNum]["content"]=''  # 添加空内容
             else:
                 self.blogBase[listJsonName][postNum]["wordCount"]=len(issue.body)
                 if self.blogBase["rssSplit"]=="sentence":
@@ -345,6 +346,7 @@ class GMEEK():
                 else:
                     period=self.blogBase["rssSplit"]
                 self.blogBase[listJsonName][postNum]["description"]=issue.body.split(period)[0].replace("\"", "\'")+period
+                self.blogBase[listJsonName][postNum]["content"]=issue.body  # 保存完整内容
                 
             self.blogBase[listJsonName][postNum]["top"]=0
             for event in issue.get_events():
@@ -492,6 +494,7 @@ for i in blog.blogBase["postListJson"]:
     del blog.blogBase["postListJson"][i]["style"]
     del blog.blogBase["postListJson"][i]["top"]
     del blog.blogBase["postListJson"][i]["ogImage"]
+    # 注意：这里保留content字段，不删除
 
     if 'head' in blog.blogBase["postListJson"][i]:
         del blog.blogBase["postListJson"][i]["head"]
