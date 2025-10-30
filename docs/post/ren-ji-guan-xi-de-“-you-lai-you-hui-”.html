@@ -292,9 +292,11 @@ function openComments() {
     var cm = document.getElementById("comments");
     var cmButton = document.getElementById("cmButton");
     
-    // 简单的评论加载过程
+    // 禁用按钮防止重复点击
     cmButton.disabled = true;
-    cm.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--color-text-secondary, #666);">正在加载评论...</div>';
+    
+    // 清空评论区域，不添加额外的加载提示，由utterances.client.js统一处理
+    cm.innerHTML = '';
     
     // 使用setTimeout延迟加载脚本，允许浏览器处理当前UI更新
     setTimeout(function() {
@@ -335,19 +337,23 @@ function openComments() {
 function iFrameLoading() {
     var utterances = document.getElementsByClassName('utterances');
     if(utterances.length == 1) {
-        // 一旦iframe加载完成，即使高度未设置也视为加载成功
-        var iframe = utterances[0].querySelector('.utterances-frame');
-        if(iframe && iframe.contentDocument.readyState === 'complete') {
+        // 检查是否已标记为加载完成
+        if(utterances[0].classList.contains('utterances-loaded')) {
             window.utterancesLoad = 1;
             clearInterval(window.int);
             document.getElementById("cmButton").style.display = "none";
             console.log("utterances Load OK");
-        } else if(utterances[0].style.height != "") {
-            // 原有逻辑作为备选
-            window.utterancesLoad = 1;
-            clearInterval(window.int);
-            document.getElementById("cmButton").style.display = "none";
-            console.log("utterances Load OK (by height)");
+        } else {
+            // 作为备选检测，等待iframe加载完成
+            var iframe = utterances[0].querySelector('.utterances-frame');
+            if(iframe && iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                // 手动添加loaded类，确保加载提示正确隐藏
+                utterances[0].classList.add('utterances-loaded');
+                window.utterancesLoad = 1;
+                clearInterval(window.int);
+                document.getElementById("cmButton").style.display = "none";
+                console.log("utterances Load OK (by iframe readyState)");
+            }
         }
     }
 }
