@@ -877,6 +877,24 @@ class GMEEK():
             try:
                 issue = self.repo.get_issue(int(number_str))
                 if issue.state == "open":
+                    # 确保backup目录存在
+                    os.makedirs(self.backup_dir, exist_ok=True)
+                    print(f"✅ 确保backup目录存在")
+                    
+                    # 备份文章内容
+                    print(f"🔄 开始备份文章: {issue.title}...")
+                    mdFileName = re.sub(r'[<>:/\\|?*\"]|[\\0-\\31]', '-', issue.title)
+                    mdFilePath = os.path.join(self.backup_dir, mdFileName + ".md")
+                    try:
+                        with open(mdFilePath, 'w', encoding='UTF-8') as f:
+                            if issue.body is None:
+                                f.write('')
+                            else:
+                                f.write(issue.body)
+                        print(f"✅ 成功备份文章: {mdFileName}.md")
+                    except Exception as e:
+                        print(f"❌ 备份文章失败 {mdFileName}.md: {e}")
+                    
                     listJsonName = self.addOnePostJson(issue)
                     self.createPostHtml(self.blogBase[listJsonName]["P" + number_str])
                     self.createPlistHtml()
