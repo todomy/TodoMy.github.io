@@ -660,6 +660,15 @@ class GMEEK():
     def runAll(self):
         logging.info("====== 开始创建静态HTML ======")
         try:
+            # 安全处理：先备份现有备份文件到临时目录，防止API失败导致备份丢失
+            temp_backup_dir = self.backup_dir + "temp_backup_" + str(int(time.time())) + "/"
+            if os.path.exists(self.backup_dir) and os.listdir(self.backup_dir):
+                os.makedirs(temp_backup_dir)
+                logging.info(f"临时备份现有文件到: {temp_backup_dir}")
+                for file in os.listdir(self.backup_dir):
+                    if file.endswith(".md"):
+                        shutil.copy(self.backup_dir + file, temp_backup_dir + file)
+            
             # 清理文件和目录
             self.cleanFile()
             
@@ -722,10 +731,26 @@ class GMEEK():
             logging.info("开始生成RSS文件")
             self.createFeedXml()
             
+            # 如果临时备份存在，删除它
+            if os.path.exists(temp_backup_dir):
+                shutil.rmtree(temp_backup_dir)
+                
             logging.info("====== 创建静态HTML完成 ======")
             logging.info(f"总共处理了 {issue_count} 个issues")
         except Exception as e:
             logging.error(f"runAll 执行失败: {str(e)}")
+            # 尝试恢复临时备份
+            if os.path.exists(temp_backup_dir) and os.listdir(temp_backup_dir):
+                logging.info("尝试恢复之前的备份文件...")
+                # 确保备份目录存在
+                if not os.path.exists(self.backup_dir):
+                    os.makedirs(self.backup_dir)
+                # 恢复备份文件
+                for file in os.listdir(temp_backup_dir):
+                    if file.endswith(".md"):
+                        shutil.copy(temp_backup_dir + file, self.backup_dir + file)
+                shutil.rmtree(temp_backup_dir)
+                logging.info("备份文件已恢复")
             raise
 
     def runOne(self,number_str):
