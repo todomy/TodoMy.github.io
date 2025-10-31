@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js'></script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="> [!Tip]
+> 这是我真实用AI开发的学习经历，以下是一个小小的案例。">
+<meta property="og:title" content="一次学习AI编程的经历">
+<meta property="og:description" content="> [!Tip]
+> 这是我真实用AI开发的学习经历，以下是一个小小的案例。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://todomy.github.io/post/yi-ci-xue-xi-AI-bian-cheng-de-jing-li.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
+<title>一次学习AI编程的经历</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">一次学习AI编程的经历</h1>
+<div class="title-right">
+    <a href="https://todomy.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/135" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>这是我真实用AI开发的学习经历，以下是一个小小的案例。</p>
+</div>
+<hr>
+<h1>🧠 我用 AI 写博客搜索功能：从“能跑”到“能抗”的血泪成长记</h1>
+<blockquote>
+<p>作者：我，一个开发小白<br>
+工具：Trae CN（AI 编程助手）<br>
+关键词：AI编程、博客搜索、postList.json、性能优化、Trae CN、成长感悟</p>
+</blockquote>
+<hr>
+<h2>🎯 一开始，我只是想“搜得快一点”</h2>
+<p>我的博客最初只能搜标题，用户说：“搜不到内容，体验很差。”<br>
+我心想：“那就把全文内容也塞进 <code class="notranslate">postList.json</code>，一起搜呗！”</p>
+<p>于是，我打开 <strong>Trae CN</strong>，用自然语言说：</p>
+<blockquote>
+<p>“帮我改下 GitHub Actions，把文章全文也打进去，我要全文搜索。”</p>
+</blockquote>
+<p>它秒回：“已生成脚本，是否应用？”<br>
+我点了“是”，心想：AI 真香。</p>
+<hr>
+<h2>🧨 现实给我一记重拳：无限大的 JSON 文件，卡成PPT的博客界面</h2>
+<p>✅ 1000 篇文章：丝滑<br>
+<g-emoji class="g-emoji" alias="warning">⚠️</g-emoji> 10000 篇：卡顿<br>
+❌ 50000 篇：页面加载 8 秒，搜索页面卡主</p>
+<p>那一刻，我第一次意识到：</p>
+<blockquote>
+<p><strong>“让 AI 跑起来”和“让 AI 跑得好”之间，隔着一万个坑。</strong></p>
+</blockquote>
+<hr>
+<h2>🧠 我和 AI 的“拉锯式”优化之旅：从盲从到驯化</h2>
+<h3>🔍 阶段一：AI 的“完美方案”把我吓退了</h3>
+<p>我：“Trae，文件太大，搜索卡，怎么办？”<br>
+它：“建议上 Elasticsearch + 倒排索引 + 分布式集群。”</p>
+<p>我：“……我只是个静态博客。”<br>
+它：“那就 Node.js + SQLite FTS5 + 增量索引。”</p>
+<p>我：“……我只是个 GitHub Pages。”<br>
+它：“那就 WebAssembly + Lunr.js + 索引分片。”</p>
+<p>我：“……我只是个小白。”</p>
+<p>那一刻，我第一次明白：</p>
+<blockquote>
+<p><strong>AI 不会替你兜底，它只会给你“技术上的正确答案”，而不是“适合你的答案”。</strong></p>
+</blockquote>
+<hr>
+<h3>🧪 阶段二：我开始“驯化”AI，设边界、提约束</h3>
+<p>我不再问：“怎么优化搜索？”<br>
+我开始问：</p>
+<ul>
+<li>“给我一个<strong>纯前端</strong>方案，<strong>不引新库</strong>，<strong>不动后端</strong>，<strong>2 小时内能上线</strong>的。”</li>
+<li>“如果我只存<strong>前 500 字摘要</strong>，体积能降多少？”</li>
+<li>“能不能用 <strong>Fuse.js</strong> 做模糊匹配？我不想写正则。”</li>
+</ul>
+<p>Trae CN 开始给出<strong>我能看懂、敢复制、能跑通</strong>的代码。</p>
+<p>那一刻，我顿悟：</p>
+<blockquote>
+<p><strong>AI 不是架构师，它是“最勤快的实习生”</strong><br>
+——你得告诉它“边界”，它才能给你“结果”。</p>
+</blockquote>
+<hr>
+<h3>✅ 阶段三：我亲手落地的“最小可行方案”</h3>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>模块</th>
+<th>原始方案</th>
+<th>我的优化</th>
+<th>技术点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据源</td>
+<td>全文塞进 JSON</td>
+<td>只存<strong>前 500 字摘要 + 关键词</strong></td>
+<td>体积降 90%</td>
+</tr>
+<tr>
+<td>搜索逻辑</td>
+<td>前端遍历字符串</td>
+<td>用 <strong>Fuse.js</strong> 模糊匹配</td>
+<td>不引后端</td>
+</tr>
+<tr>
+<td>加载策略</td>
+<td>一次性加载</td>
+<td><strong>分页加载 + 虚拟滚动</strong></td>
+<td>首屏 &lt;1s</td>
+</tr>
+<tr>
+<td>索引构建</td>
+<td>GitHub Actions 全量</td>
+<td><strong>增量更新 + 摘要生成</strong></td>
+<td>只改 3 行脚本</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>我没有写一行后端代码，也没有引任何重型库。<br>
+我只是<strong>一次次地问 AI，一次次地缩小范围，一次次地测试回滚</strong>。</p>
+<hr>
+<h2>🧰 Trae CN 使用感悟：它不是“神器”，是“镜子”</h2>
+<h3>📌 我常用的 3 种提问模板（小白专用）</h3>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>场景</th>
+<th>模板</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生成代码</td>
+<td>“给我一个纯前端搜索组件，不引库，能搜 JSON”</td>
+<td>✅ 直接可用</td>
+</tr>
+<tr>
+<td>解释报错</td>
+<td>“这段代码报错 <code class="notranslate">Cannot read property of undefined</code> 是为什么？”</td>
+<td>✅ 逐行解释</td>
+</tr>
+<tr>
+<td>最小测试</td>
+<td>“帮我写一个最小单元测试，验证搜索函数是否返回结果”</td>
+<td>✅ 跑通 Jest</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h3><g-emoji class="g-emoji" alias="warning">⚠️</g-emoji> 我踩过的坑：AI 的“胡说八道”时刻</h3>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>AI 建议</th>
+<th>我试了之后</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“用 <code class="notranslate">localStorage</code> 存索引”</td>
+<td>存了 18MB</td>
+<td>浏览器卡死</td>
+</tr>
+<tr>
+<td>“用 <code class="notranslate">fetch</code> 流式加载”</td>
+<td>静态站不支持流</td>
+<td>报错 404</td>
+</tr>
+<tr>
+<td>“用 <code class="notranslate">eval</code> 动态执行搜索”</td>
+<td>被 CSP 拦截</td>
+<td>直接白屏</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>这些坑让我明白：</p>
+<blockquote>
+<p><strong>AI 不会替你负责，它只会“给建议”</strong><br>
+——<strong>跑不通的回滚，看不懂的不抄，测不过的不上线。</strong></p>
+</blockquote>
+<hr>
+<h2>🧩 我的“AI 协作守则”：写给所有小白的 5 条血泪建议</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>守则</th>
+<th>说明</th>
+<th>图标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ 最小边界</td>
+<td>每次只改一个点</td>
+<td>🔍</td>
+</tr>
+<tr>
+<td>✅ 可回滚</td>
+<td>改前 git commit</td>
+<td>🧷</td>
+</tr>
+<tr>
+<td>✅ 可测试</td>
+<td>每步加 console.log</td>
+<td>🧪</td>
+</tr>
+<tr>
+<td>✅ 不盲从</td>
+<td>AI 代码先读一遍</td>
+<td>🧠</td>
+</tr>
+<tr>
+<td>✅ 多方案</td>
+<td>让 AI 给 3 个选项</td>
+<td>🧭</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h2>📊 成果对比：优化前后</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>指标</th>
+<th>优化前</th>
+<th>优化后</th>
+<th>提升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件大小</td>
+<td>18MB</td>
+<td>1.2MB</td>
+<td>↓ 93%</td>
+</tr>
+<tr>
+<td>首屏加载</td>
+<td>8.2s</td>
+<td>1.1s</td>
+<td>↓ 86%</td>
+</tr>
+<tr>
+<td>搜索响应</td>
+<td>卡死</td>
+<td>200ms</td>
+<td>✅ 可用</td>
+</tr>
+<tr>
+<td>用户留存</td>
+<td>下降 40%</td>
+<td>回升 25%</td>
+<td>✅ 有效</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h2>🧭 我的 3 条成长感悟（只想记这段）</h2>
+<ol>
+<li>
+<p><strong>AI 不会替你写“好代码”，但会陪你写“能跑的代码”</strong><br>
+剩下的，靠你设边界、做测试、敢回滚。</p>
+</li>
+<li>
+<p><strong>“能跑”不是终点，“能抗”才是目标</strong><br>
+任何一个功能点，都要经历：需求 → 技术筛选 → 成本评估 → 最小上线 → 用户验证 → 再迭代。</p>
+</li>
+<li>
+<p><strong>小白用 AI，最怕的不是不会问，而是“盲信”</strong><br>
+当你开始说“给我一个 2 小时内能上线的方案”，而不是“怎么优化搜索”时，你才真的在“用 AI”，而不是“被 AI 用”。</p>
+</li>
+</ol>
+<hr>
+<h2>📎 附录：Trae CN 快速上手（小白版）</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>步骤</th>
+<th>操作</th>
+<th>图标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 下载</td>
+<td><a href="https://trae.cn" rel="nofollow">Trae CN 官网</a></td>
+<td>📥</td>
+</tr>
+<tr>
+<td>② 安装</td>
+<td>一键安装，中文界面</td>
+<td>🇨🇳</td>
+</tr>
+<tr>
+<td>③ 提问</td>
+<td>“我有一个静态博客，想加一个前端搜索，不引库，怎么做？”</td>
+<td>💬</td>
+</tr>
+<tr>
+<td>④ 测试</td>
+<td>复制代码 → 跑本地 → 看控制台</td>
+<td>🧪</td>
+</tr>
+<tr>
+<td>⑤ 迭代</td>
+<td>每改一步，问一次“有没有更小方案？”</td>
+<td>🔄</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h2>🎯 最后一句话，送给所有还在“踩坑”的小白</h2>
+<blockquote>
+<p><strong>AI 不是神，它是你最勤快的实习生</strong><br>
+——<strong>你负责想清楚，它负责干得快。</strong><br>
+只要你敢设边界、敢回滚、敢测试，它就能陪你从“能跑”走到“能抗”。</p>
+</blockquote>
+<hr></div>
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 返回顶部按钮样式 - 简洁优雅版 */
+        .circle-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: 300;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            border: none;
+            z-index: 9999;
+        }
+
+        /* 暗色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            .circle-button {
+                background-color: rgba(35, 35, 35, 0.9);
+                color: #f0f0f0;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* 显示时的样式 */
+        .circle-button.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .circle-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .circle-button:hover {
+                background-color: rgba(45, 45, 45, 1);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        .circle-button:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .circle-button {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* 链接样式 */
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: font-weight 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            font-weight: bold; /* 鼠标悬停时链接变粗 */
+            transform: scale(1.1); /* 字体变大 */
+        }
+    </style>
+</head>
+<body>
+    <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
+    <div id="footer2">
+        <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    </div>
+
+    <!-- 添加返回顶部按钮 -->
+    <div class="circle-button" onclick="scrollToTop()">↑</div>
+
+    <script>
+        var now = new Date();
+        document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+
+        if ("11/24/2024" != "") {
+            var startSite = new Date("11/24/2024");
+            var diff = now.getTime() - startSite.getTime();
+            var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        }
+
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', function() {
+            var button = document.querySelector('.circle-button');
+            if (window.scrollY > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","todomy/TodoMy.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+<script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekTOC.js'></script><script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/lightbox.js'></script>
+
+</html>
