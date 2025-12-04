@@ -81,7 +81,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>博客页面：通过修改仓库的config.json文件可以修改博客页面文字排版<a href="https://blog.meekdai.com/post/Gmeek-kuai-su-shang-shou.html" rel="nofollow">教程</a><br>
 提高安全性：这个产品巧妙的使用了github/workflows流程，Actions执行，利用上了GitHub Page，可以达到自动化生成目的，但是 workflows会拉去原作者仓库，保持仓库更新，这一点其实在开源是优势，可以保证自身博客的迭代更新，不过因为我需求很小，目前功能已经满足了，所以弄成单机版，也不用担心作者更新迭代导致不能使用（memos留下阴影，或者库被投毒），提高博客永久性运行的稳定性，方法将workflows下的脚本里Gmeek.yml，进行修改，将git拉取作者的库文件全部去上传到自己的库，脚本写成自己的路径，这是流程上修改。<br>
 README修改：自己修改了程序，开源一定要做好说明原因；因为自动化，所以README都是根据脚本生成的，仓库根目录Gmeek.py，进去修改添加自己的内容即可，这个脚本包含了程序的所有的运行，可以根据自己需要进行修改。</p></div>
-<div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，如有雷同纯属巧合，私自传播影响自负，瞎写写勿传播，谢谢！❤️</div>
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 免责声明：以上内容纯属虚构，瞎写写勿传播 ❤️</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
 <div class="comments" id="comments"></div>
