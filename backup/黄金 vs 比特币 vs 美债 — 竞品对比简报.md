@@ -1,7 +1,5 @@
-# 黄金 vs 比特币 vs 美债 — 竞品对比简报
-
-> 生成时间：2026-06-11 14:13 | 模式：`--competitors` 并行对比
-> 数据来源：WebSearch 聚合（Reddit、Hacker News、知乎、东方财富、雪球、CBS、CoinTelegraph 等）
+> [!TIP]
+> 生成时间：2026-06-11 ， 数据来源：WebSearch 聚合（Reddit、Hacker News、知乎、东方财富、雪球、CBS、CoinTelegraph 等），仅做参考。
 
 ---
 
@@ -171,21 +169,3 @@ $126,200 ────┐
 
 ---
 
-## 📚 信息来源
-
-1. [黄金、股票还是比特币:谁会是2026年的最佳资产?](https://baijiahao.baidu.com/s?id=1863329532121821891) — 百度百家号, 2026-04-24
-2. [黄金和比特币哪个更适合长期投资?](https://xueqiu.com/1054707264/389487730) — 雪球, 2026-05-18
-3. [比特币 vs 黄金:2026年哪个才是最佳投资选择?](https://www.jb51.net/blockchain/1020378.html) — 脚本之家, 2026-03-21
-4. [黄金和美债,到底谁才是你该抱紧的"避险大腿"?](https://post.smzdm.com/p/ad7pvd9d/) — 什么值得买, 6天前
-5. [Crypto Crash June 1-2, 2026](https://www.livevolatile.com/blog/2026-06-02-crypto-crash-analysis-bitcoin-plunges-below-68k) — LiveVolatile, 2026-06-02
-6. [Bitcoin June 2026 Crash: ETF Outflows and Liquidations](https://cryptothreads.io/news/bitcoin-june-2026-crash-etf-outflows-and-liquidations/) — CryptoThreads, 6天前
-7. [Bitcoin Crash Below $66K June 2026](https://www.spotedcrypto.com/bitcoin-crash-66k-us-iran-strikes-liquidations-june-2026/) — SpotedCrypto, 2026-06-04
-8. [Crypto crash 2026: bitcoin down 50% to $63K](https://financefeeds.com/crypto-crash-2026-bitcoin-down-50-percent-recovery-math/) — FinanceFeeds, 5天前
-9. [Bond prices are down, yields are up](https://www.cbsnews.com/news/treasury-yields-rising-inflation-fed-rate-cuts/) — CBS News, 2026-05-21
-10. [Market Outlook 2026: Fed Policy, Inflation & Credit Trends](https://imtc.com/insights/fixed-income-outlook-2026/) — IMTC, 2026-01-13
-11. [Gold Price Forecast 2026: What the Data Actually Says](https://gbidirect.com/insights/gold-price-forecast-2026/) — GBI Direct, 2026-04-13
-12. [France pulls last gold held in US for $15B gain](https://news.ycombinator.com/item?id=47658146) — Hacker News, 622 points, 361 comments
-
----
-
-*由 WorkBuddy `/last30days` 技能 — 竞品对比模式生成*
