@@ -1,5 +1,91 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Thu, 11 Jun 2026 02:57:47 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>你感到累，是因为这套系统本来就没给你留余地</title><link>https://todomy.github.io/post/ni-gan-dao-lei-%EF%BC%8C-shi-yin-wei-zhe-tao-xi-tong-ben-lai-jiu-mei-gei-ni-liu-yu-di.html</link><description>&gt; [!TIP]
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Thu, 11 Jun 2026 06:49:53 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>黄金 vs 比特币 vs 美债 — 竞品对比简报</title><link>https://todomy.github.io/post/huang-jin-%20vs%20-bi-te-bi-%20vs%20-mei-zhai-%20%E2%80%94%20-jing-pin-dui-bi-jian-bao.html</link><description># 黄金 vs 比特币 vs 美债 — 竞品对比简报
+
+&gt; 生成时间：2026-06-11 14:13 | 模式：`--competitors` 并行对比
+&gt; 数据来源：WebSearch 聚合（Reddit、Hacker News、知乎、东方财富、雪球、CBS、CoinTelegraph 等）
+
+---
+
+## 📊 核心数据一览
+
+| 指标 | 🥇 黄金 | 🪙 比特币 | 📈 美债 |
+|------|--------|----------|--------|
+| **年初高点** | $5,595（1月29日） | $126,200 | 10Y收益率 ~4.2% |
+| **当前价格** | ~$4,100–$4,700 | ~$63,000–$66,000 | 10Y收益率 ~4.5%+ |
+| **年内回撤** | **-26.7%** | **-50%** | 价格下跌（收益率上升） |
+| **6月单月表现** | 大跌（$5,500→$4,100） | 暴跌（$73K→$63K） | 收益率持续走高 |
+| **波动率** | ~16%（低） | ~60%+（极高） | ~8%（低） |
+| **年化收益（长期）** | 5–8% | 历史~50%，近年大幅波动 | 4–5%（当前） |
+| **最大回撤（历史）** | -50%（1980s） | -84%（多次） | 价格波动较小 |
+| **社区情绪** | 困惑/看跌短期 | 恐慌/抄底分歧 | 谨慎/看空久期 |
+
+---
+
+## 🔥 近期走势对比
+
+### 黄金：战争期间反跌
+```
+$5,595 ────┐
+           │  年初冲高
+$4,800 ────┤
+           │  震荡下行
+$4,100 ────┘  6月跳水（跌破900元/克）
+```
+**驱动因素**：中东冲突→霍尔木兹封锁→油价飙升→美国CPI 4.2%→美联储不降息→实际收益率走高→黄金ETF创纪录流出$127亿
+
+### 比特币：腰斩式崩盘
+```
+$126,200 ────┐
+             │  年初高点
+ $80,000 ────┤
+             │  4月反弹后回落
+ $73,000 ────┤
+             │  6月初跳水
+ $63,000 ────┘  6月3日低点（$1.84B清算）
+```
+**驱动因素**：美伊冲突→ETF大规模流出→杠杆清算 cascade→机构抛售→AI交易裂缝
+
+### 美债：收益率持续攀升
+```
+4.0% ────┐
+         │  年初
+4.5% ────┤
+         │  5月CPI公布后跳升
+4.8%+ ───┘  当前（市场预期加息）
+```
+**驱动因素**：通胀顽固→美联储转鹰→沃勒不排除加息→美债遭抛售
+
+---
+
+## 🏆 社区热度排名
+
+| 排名 | 资产 | 讨论热度 | 情绪倾向 | 核心争议 |
+|------|------|---------|---------|---------|
+| **1** | **比特币** | 🔥🔥🔥🔥🔥 | 极端分化 | '是抄底机会还是崩盘开始？' |
+| **2** | **黄金** | 🔥🔥🔥🔥 | 困惑/看空短期 | '战争期间黄金为何反跌？' |
+| **3** | **美债** | 🔥🔥🔥 | 谨慎/防御 | '高收益率能持续多久？' |
+
+---
+
+## 💬 社区核心观点对比
+
+### 🥇 黄金
+
+**看多逻辑**：
+- 央行持续购金（2026年Q1中国央行2,309吨，全球月均60吨）
+- 去美元化趋势不可逆
+- 美国财政赤字占GDP 6–7%，利息支出逼近$1万亿/年
+- 穆迪2025年下调美国主权评级
+- 法国运回黄金获利$150亿，示范效应
+
+**看空逻辑**：
+- 美联储2026年不降息甚至加息
+- 实际收益率走高压制无息资产
+- 北美黄金ETF 3月流出$127亿（5年最大）
+- 短期通胀预期&gt;长期避险需求
+
+**社区金句**：
+&gt; *'战争通过推高通胀，阻止了原本会驱动ETF流入的降息，从而打压了黄金最敏感于利率的购买渠道。</description><guid isPermaLink="true">https://todomy.github.io/post/huang-jin-%20vs%20-bi-te-bi-%20vs%20-mei-zhai-%20%E2%80%94%20-jing-pin-dui-bi-jian-bao.html</guid><pubDate>Thu, 11 Jun 2026 06:49:15 +0000</pubDate></item><item><title>你感到累，是因为这套系统本来就没给你留余地</title><link>https://todomy.github.io/post/ni-gan-dao-lei-%EF%BC%8C-shi-yin-wei-zhe-tao-xi-tong-ben-lai-jiu-mei-gei-ni-liu-yu-di.html</link><description>&gt; [!TIP]
 &gt; 不要怪自己多无能，看清现实，再慢慢寻找生存的空间
 
 
