@@ -518,8 +518,7 @@ if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     workspace_path = os.environ.get('GITHUB_WORKSPACE')
     
     # 计算额外统计信息
-    single_page_count = len(blog.blogBase.get("singeListJson", {}))
-    total_pages = single_page_count + len(blog.blogBase["postListJson"]) - 1
+    total_pages = len(blog.blogBase["postListJson"]) - 1
     
     # 计算标签数量
     label_count = len(blog.labelColorDict)
@@ -536,9 +535,9 @@ if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     readme += "| 统计项目 | 数量 | | 统计项目 | 数据 |\r\n"
     readme += "|---------|------|---|---------|------|\r\n"
     readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (len(blog.blogBase["postListJson"]) - 1, label_count)
-    readme += "| 📑 单页数量 | %d | | 💬 评论总数 | %d |\r\n" % (single_page_count, commentNumSum)
-    readme += "| 🔗 总页面数 | %d | | 📚 总字数 | %d |\r\n" % (total_pages, wordCount)
-    readme += "| 🌍 主页链接 | [访问博客](%s) | | ⏰ 最后更新 | %s |\r\n\r\n" % (blog.blogBase["homeUrl"], datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
+    readme += "| 💬 评论总数 | %d | | 🔗 总页面数 | %d |\r\n" % (commentNumSum, total_pages)
+    readme += "| 📚 总字数 | %d | | ⏰ 最后更新 | %s |\r\n" % (wordCount, datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
+    readme += "| 🌍 主页链接 | [访问博客](%s) |\r\n\r\n" % blog.blogBase["homeUrl"]
     
     # 功能特点部分
     readme += "## ✨ 功能特点\r\n"
