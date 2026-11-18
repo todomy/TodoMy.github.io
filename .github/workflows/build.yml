@@ -30,7 +30,7 @@ jobs:
       # Python 跟随最新稳定版：3.x = 当前大版本最新，永远不会 "not found"
       # 生成器纯标准库，其实不装 Python 也能用 runner 自带的，这里显式声明保证版本
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.x'
 
