@@ -525,6 +525,7 @@ if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     
     # 生成更专业的README
     readme="# %s :link: [%s](%s) \r\n\r\n" % (blog.blogBase["title"], blog.blogBase["title"], blog.blogBase["homeUrl"])
+    readme += "🌍 **博客主页**：[%s](%s)\r\n\r\n" % (blog.blogBase["homeUrl"], blog.blogBase["homeUrl"])
     
     # 项目简介部分
     readme += "## 📝 项目简介\r\n"
@@ -536,8 +537,7 @@ if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     readme += "|---------|------|---|---------|------|\r\n"
     readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (len(blog.blogBase["postListJson"]) - 1, label_count)
     readme += "| 💬 评论总数 | %d | | 🔗 总页面数 | %d |\r\n" % (commentNumSum, total_pages)
-    readme += "| 📚 总字数 | %d | | ⏰ 最后更新 | %s |\r\n" % (wordCount, datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
-    readme += "| 🌍 主页链接 | [访问博客](%s) |\r\n\r\n" % blog.blogBase["homeUrl"]
+    readme += "| 📚 总字数 | %d | | ⏰ 最后更新 | %s |\r\n\r\n" % (wordCount, datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
     
     # 功能特点部分
     readme += "## ✨ 功能特点\r\n"
