@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest   # 跟随最新镜像，绝不固定版本（固定会被退役拖垮）
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Python 跟随最新稳定版：3.x = 当前大版本最新，永远不会 "not found"
       # 生成器纯标准库，其实不装 Python 也能用 runner 自带的，这里显式声明保证版本
