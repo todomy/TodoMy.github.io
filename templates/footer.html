@@ -1,131 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        /* 返回顶部按钮样式 - 简洁优雅版 */
-        .circle-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 22px;
-            font-weight: 300;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-            transition: all 0.3s ease;
-            opacity: 0;
-            visibility: hidden;
-            border: none;
-            z-index: 9999;
-        }
-
-        /* 暗色模式适配 */
-        @media (prefers-color-scheme: dark) {
-            .circle-button {
-                background-color: rgba(35, 35, 35, 0.9);
-                color: #f0f0f0;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        /* 显示时的样式 */
-        .circle-button.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .circle-button:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-            background-color: rgba(255, 255, 255, 1);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .circle-button:hover {
-                background-color: rgba(45, 45, 45, 1);
-                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-            }
-        }
-
-        .circle-button:active {
-            transform: translateY(-2px) scale(0.98);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .circle-button {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-
-        /* 链接样式 */
-        a {
-            text-decoration: none;
-            color: #333;
-            transition: font-weight 0.3s ease, transform 0.3s ease;
-        }
-
-        a:hover {
-            font-weight: bold; /* 鼠标悬停时链接变粗 */
-            transform: scale(1.1); /* 字体变大 */
-        }
-    </style>
-</head>
-<body>
-    <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl'] }}">{{ blogBase['title'] }}</a></div>
-    <div id="footer2">
-        {%- if blogBase['filingNum']!='' -%}
-        <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a> • </span>
-        {%- endif %}
-        <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
-    </div>
-
-    <!-- 添加返回顶部按钮 -->
-    <div class="circle-button" onclick="scrollToTop()">↑</div>
-
-    <script>
-        var now = new Date();
-        document.getElementById("copyrightYear").innerHTML = now.getFullYear();
-
-        if ("{{ blogBase['startSite'] }}" != "") {
-            var startSite = new Date("{{ blogBase['startSite'] }}");
-            var diff = now.getTime() - startSite.getTime();
-            var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("runday").innerHTML = "{{ i18n['run'] }}" + diffDay + "{{ i18n['days'] }}" + " • ";
-        }
-
-        // 返回顶部功能
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // 监听滚动事件
-        window.addEventListener('scroll', function() {
-            var button = document.querySelector('.circle-button');
-            if (window.scrollY > 300) {
-                button.classList.add('visible');
-            } else {
-                button.classList.remove('visible');
-            }
-        });
-    </script>
-</body>
-</html>
+<style>
+  .circle-button{position:fixed;right:30px;bottom:30px;width:50px;height:50px;border-radius:50%;
+    background:rgba(255,255,255,.7);border:1px solid var(--color-border-default,#d0d7de);
+    color:var(--color-fg-default,#24292f);font-size:20px;line-height:48px;text-align:center;
+    cursor:pointer;z-index:9999;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
+    backdrop-filter:blur(4px)}
+  .circle-button.visible{opacity:1;visibility:visible}
+  @media(max-width:768px){.circle-button{width:45px;height:45px;right:20px;bottom:20px;line-height:43px}}
+  #footer a:hover{font-weight:500}
+</style>
+<div>
+  Copyright &copy; <span id="copyrightYear"></span> <a href="{{ homeUrl }}">{{ title }}</a>
+  {% if filingNum != '' %} &bull; <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{{ filingNum }}</a>{% endif %}
+  {% if startSite != '' %} &bull; <span id="runday"></span>{% endif %}
+  &bull; Powered by TodoMy-Next
+</div>
+<div class="circle-button" onclick="scrollToTop()" title="Top">&uarr;</div>
+<script>
+  (function(){
+    var now=new Date();
+    var y=document.getElementById('copyrightYear'); if(y){y.textContent=now.getFullYear();}
+    var start="{{ startSite }}";
+    if(start){
+      var d=now.getTime()-new Date(start).getTime();
+      var day=Math.floor(d/86400000);
+      var r=document.getElementById('runday');
+      if(r){r.textContent="{{ i18n['run'] }}"+day+"{{ i18n['days'] }}";}
+    }
+  })();
+  function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});}
+  window.addEventListener('scroll',function(){
+    var b=document.querySelector('.circle-button');
+    if(b){b.classList.toggle('visible',window.scrollY>300);}
+  });
+</script>

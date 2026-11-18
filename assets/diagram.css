@@ -1,0 +1,10 @@
+/* Mermaid 构建时渲染出的 SVG 样式：适应明暗主题 */
+.mermaid-figure{margin:24px 0;text-align:center;overflow-x:auto}
+.mermaid-svg{max-width:100%;height:auto;background:transparent !important}
+[data-color-mode="dark"] .mermaid-svg .node rect,
+[data-color-mode="dark"] .mermaid-svg .node polygon,
+[data-color-mode="dark"] .mermaid-svg .node path{fill:#1f242c}
+[data-color-mode="dark"] .mermaid-svg .edgePath .path{stroke:#8b949e}
+[data-color-mode="dark"] .mermaid-svg .edgeLabel{background-color:#1f242c;color:#c9d1d9}
+[data-color-mode="dark"] .mermaid-svg text{fill:#c9d1d9}
+[data-color-mode="dark"] .mermaid-svg .label{color:#c9d1d9}

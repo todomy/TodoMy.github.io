@@ -1,64 +1,79 @@
 <!DOCTYPE html>
-<html data-color-mode="light" data-dark-theme="{{ blogBase['nightTheme'] }}" data-light-theme="{{ blogBase['dayTheme'] }}" lang={% if blogBase['i18n']=='CN' %}"zh-CN"{% elif blogBase['i18n']=='RU' %}"ru"{% else -%}"en"{%- endif -%}>
+<html data-color-mode="light" data-dark-theme="{{ nightTheme }}" data-light-theme="{{ dayTheme }}" lang="{% if i18n['Search'] == '搜索' %}zh-CN{% else %}en{% endif %}">
 <head>
-    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    {{ blogBase['primerCSS'] }}
-    {{ blogBase['allHead'] }}
-    <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
-    {%- if blogBase['themeMode']=='manual' -%}
-    <script>
-        let theme = localStorage.getItem("meek_theme") || "light";
-        document.documentElement.setAttribute("data-color-mode", theme);
-    </script>
-    {%- endif -%}
-    {% block head %}{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  {{ primerCSS }}
+  {{ diagramCSS }}
+  {{ allHead }}
+  <link rel="icon" href="{{ faviconUrl }}">
+  {% if themeMode == 'manual' %}
+  <script>
+    try{var t=localStorage.getItem('meek_theme')||'light';document.documentElement.setAttribute('data-color-mode',t);}catch(e){}
+  </script>
+  {% endif %}
+  {% block head %}{% endblock %}
 </head>
 <style>
-body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
-#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
-#footer {margin-top:64px; text-align: center;font-size: small;}
-
+  *{box-sizing:border-box}
+  body{max-width:900px;margin:20px auto;padding:45px 20px;font-size:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;
+       color:var(--color-fg-default,#24292f);background:var(--color-canvas-default,#fff)}
+  #header{padding-bottom:16px;border-bottom:1px solid var(--color-border-muted,#d0d7de)}
+  #footer{margin-top:64px;text-align:center;font-size:small;color:var(--color-fg-muted,#57606a)}
+  a{color:var(--color-accent-fg,#0969da);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .btn{display:inline-block;padding:5px 16px;font-size:14px;font-weight:500;line-height:20px;border:1px solid var(--color-border-default,#d0d7de);
+       border-radius:6px;color:var(--color-btn-text,#24292f);background:var(--color-btn-bg,#f6f8fa);cursor:pointer}
+  .btn:hover{background:var(--color-btn-hover-bg,#f3f4f6);text-decoration:none}
+  .btn-block{display:block;width:100%;text-align:center}
+  .circle{border-radius:50%}
+  .octicon{fill:currentColor;vertical-align:text-bottom}
+  .Label{display:inline-block;padding:0 7px;font-size:12px;font-weight:500;line-height:18px;border-radius:2em;color:#fff}
+  .Counter{display:inline-block;min-width:20px;padding:0 6px;font-size:12px;font-weight:500;line-height:18px;text-align:center;border-radius:2em;background:rgba(175,184,193,.2)}
+  .SideNav{min-width:200px}
+  .SideNav-item{display:block;padding:8px 16px;color:var(--color-fg-default,#24292f);border-radius:6px}
+  .SideNav-item:hover{background:var(--color-canvas-subtle,#f6f8fa);text-decoration:none}
+  .d-flex{display:flex}
+  .flex-items-center{align-items:center}
+  .flex-justify-between{justify-content:space-between}
+  .border{border:1px solid var(--color-border-default,#d0d7de);border-radius:6px}
+  .AnimatedEllipsis::after{content:'';animation:dots 1s steps(4,end) infinite}
+  @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
 </style>
 {% block style %}{% endblock %}
-
 <body>
-    <div id="header">{% block header %}{% endblock %}</div>
-    <div id="content">{% block content %}{% endblock %}</div>
-    <div id="footer">{% include 'footer.html' %}</div>
+  <div id="header">{% block header %}{% endblock %}</div>
+  <div id="content">{% block content %}{% endblock %}</div>
+  <div id="footer">{% include 'footer.html' %}</div>
 </body>
 <script>
-var IconList={{ IconList }};
-var utterancesLoad=0;
-{% if blogBase['themeMode']=='manual' %}
-let themeSettings={
-    "dark": ["dark","moon","#00f0ff","dark-blue"],
-    "light": ["light","sun","#ff5000","github-light"],
-    "auto": ["auto","sync","","preferred-color-scheme"]
-};
-function changeTheme(mode, icon, color, utheme){
-    document.documentElement.setAttribute("data-color-mode",mode);
-    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
-    document.getElementById("themeSwitch").parentNode.style.color=color;
-    if(utterancesLoad==1){utterancesTheme(utheme);}
-}
-function modeSwitch(){
-    let currentMode=document.documentElement.getAttribute('data-color-mode');
-    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
-    localStorage.setItem("meek_theme", newMode);
-    if(themeSettings[newMode]){
-        changeTheme(...themeSettings[newMode]);
-    }
-}
-function utterancesTheme(theme){
-    const message={type:'set-theme',theme: theme};
-    const iframe=document.getElementsByClassName('utterances-frame')[0];
-    iframe.contentWindow.postMessage(message,'https://utteranc.es');
-}
-if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
-{%- endif %}
+  var IconList={{ IconList }};
+  var utterancesLoad=0;
+  {% if themeMode == 'manual' %}
+  var themeSettings={
+    "light":["light","sun","#ff5000"],
+    "dark":["dark","moon","#00f0ff"],
+    "auto":["auto","sync",""]
+  };
+  function changeTheme(mode,icon,color){
+    document.documentElement.setAttribute('data-color-mode',mode);
+    var el=document.getElementById('themeSwitch');
+    if(el&&IconList[icon]){el.setAttribute('d',IconList[icon]);}
+    if(el&&el.parentNode){el.parentNode.style.color=color;}
+    if(typeof applyCommentTheme==='function'){applyCommentTheme();}
+  }
+  function modeSwitch(){
+    var cur=document.documentElement.getAttribute('data-color-mode');
+    var next=cur==='light'?'dark':cur==='dark'?'auto':'light';
+    try{localStorage.setItem('meek_theme',next);}catch(e){}
+    if(themeSettings[next]){changeTheme.apply(null,themeSettings[next]);}
+  }
+  (function(){
+    var cur=document.documentElement.getAttribute('data-color-mode')||'light';
+    if(themeSettings[cur]){changeTheme.apply(null,themeSettings[cur]);}
+  })();
+  {% endif %}
 </script>
 {% block script %}{% endblock %}
 </html>
-

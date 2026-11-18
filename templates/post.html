@@ -1,120 +1,113 @@
 {% extends 'base.html' %}
-
 {% block head %}
-<meta name="description" content="{{ blogBase['description'] }}">
-<meta property="og:title" content="{{ blogBase['postTitle'] }}">
-<meta property="og:description" content="{{ blogBase['description'] }}">
+<meta name="description" content="{{ description }}">
 <meta property="og:type" content="article">
-<meta property="og:url" content="{{ blogBase['postUrl'] }}">
-<meta property="og:image" content="{{ blogBase['ogImage'] }}">
-<title>{{ blogBase['postTitle'] }}</title>
-{% if blogBase['highlight']==1 %}<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />{% endif %}
-{{ blogBase['head'] }}
+<meta property="og:title" content="{{ postTitle }}">
+<meta property="og:url" content="{{ postUrl }}">
+<meta property="og:image" content="{{ ogImage }}">
+<title>{{ postTitle }} - {{ title }}</title>
+{{ head }}
 {% endblock %}
 
 {% block style %}
 <style>
-.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
-.title-right{display:flex;margin:auto 0 0 auto;}
-.title-right .circle{padding: 14px 16px;margin-right:8px;}
-#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
-#postBody hr{height:2px;}
-#cmButton{height:48px;margin-top:48px;}
-#comments{margin-top:64px;}
-.g-emoji{font-size:24px;}
-@media (max-width: 600px) {
-    body {padding: 8px;}
-    .postTitle{font-size:24px;}
-}
+  #header h1{font-size:32px;font-weight:600;margin:0}
+  .post-tools{display:flex;gap:8px;align-items:center;float:right}
+  .markdown-body img{max-width:100%;cursor:zoom-in;border-radius:6px}
+  .markdown-body pre{overflow:auto;padding:16px;border-radius:6px;background:var(--color-canvas-subtle,#f6f8fa)}
+  .markdown-body table{border-collapse:collapse}
+  .markdown-body table th,.markdown-body table td{border:1px solid var(--color-border-default,#d0d7de);padding:6px 13px}
+  .markdown-body blockquote{padding:0 1em;color:var(--color-fg-muted,#57606a);border-left:.25em solid var(--color-border-default,#d0d7de)}
+  .mermaid-figure{margin:20px 0;text-align:center;overflow-x:auto}
+  .mermaid-svg{max-width:100%;height:auto}
+  .code-block{position:relative}
+  .copy-btn{position:absolute;top:8px;right:8px;padding:2px 8px;font-size:12px;border:1px solid var(--color-border-default,#d0d7de);
+    border-radius:6px;background:var(--color-canvas-default,#fff);color:var(--color-fg-muted,#57606a);cursor:pointer}
+  .comment-card{padding:12px 0;border-bottom:1px solid var(--color-border-muted,#d0d7de)}
+  .comment-card .meta{font-size:12px;color:var(--color-fg-muted,#57606a);margin-bottom:4px}
+  #comments{display:none;margin-top:16px}
+  {{ style }}
 </style>
-{{ blogBase['style'] }}
-
 {% endblock %}
+
 {% block header %}
-<h1 class="postTitle">{{ blogBase['postTitle'] }}</h1>
-<div class="title-right">
-    <a href="{{ blogBase['homeUrl'] }}" id="buttonHome" class="btn btn-invisible circle" title="{{ i18n['home'] }}">
-        <svg class="octicon" width="16" height="16">
-            <path id="pathHome" fill-rule="evenodd"></path>
-        </svg>
-    </a>
-    {% if blogBase['showPostSource']==1 %}
-    <a href="{{ blogBase['postSourceUrl'] }}" target="_blank" class="btn btn-invisible circle" title="Issue">
-        <svg class="octicon" width="16" height="16">
-            <path id="pathIssue" fill-rule="evenodd"></path>
-        </svg>
-    </a>
-    {% endif %}
-
-    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
-        <svg class="octicon" width="16" height="16" >
-            <path id="themeSwitch" fill-rule="evenodd"></path>
-        </svg>
-    </a>
-
+<h1>{{ postTitle }}</h1>
+<div class="post-tools">
+  <a class="tool-btn" id="buttonHome" href="{{ homeUrl }}" title="{{ i18n['home'] }}"><svg class="tool-icon" viewBox="0 0 16 16"><path id="pathHome" d=""></path></svg></a>
+  {% if showPostSource == 1 %}
+  <a class="tool-btn" id="pathIssue" href="{{ postSourceUrl }}" target="_blank" rel="noopener" title="Issue"><svg class="tool-icon" viewBox="0 0 16 16"><path id="pathIssueIcon" d=""></path></svg></a>
+  {% endif %}
+  {% if themeMode != 'fix' %}
+  <span class="tool-btn" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}"><svg class="tool-icon" viewBox="0 0 16 16"><path id="themeSwitch" d=""></path></svg></span>
+  {% endif %}
 </div>
+<div style="clear:both"></div>
 {% endblock %}
 
 {% block content %}
-<div class="markdown-body" id="postBody">{{ blogBase['postBody'] }}</div>
-<div style="font-size:small;margin-top:8px;float:right;">{{ blogBase['bottomText'] }}</div>
-{% if blogBase['needComment']==1 %}
-<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">{{ i18n['comments'] }}</button>
-<div class="comments" id="comments"></div>
+<div class="markdown-body" id="postBody">{{ postBody }}</div>
+<div style="float:right;margin-top:16px;color:var(--color-fg-muted,#57606a);font-size:small">{{ bottomText }}</div>
+<div style="clear:both"></div>
+{% if needComment == 1 %}
+<button class="btn btn-block" onclick="toggleComments()" id="cmButton" style="margin-top:24px">{{ i18n['comments'] }}{% if commentNum > 0 %} <span class="Counter">{{ commentNum }}</span>{% endif %}</button>
+<div id="comments"></div>
 {% endif %}
 {% endblock %}
 
 {% block script %}
 <script>
-document.getElementById("pathHome").setAttribute("d",IconList["home"]);
-document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
-{% if blogBase['commentNum']>0 -%}
-    cmButton=document.getElementById("cmButton");
-    span=document.createElement("span");
-    span.setAttribute("class","Counter");
-    span.innerHTML="{{ blogBase['commentNum'] }}";
-    cmButton.appendChild(span);
-{%- endif %}
+  document.getElementById('pathHome').setAttribute('d',IconList['home']);
+  var pi=document.getElementById('pathIssueIcon'); if(pi&&IconList['github'])pi.setAttribute('d',IconList['github']);
 
-{% if blogBase['needComment']==1 %}
-function openComments(){
-    cm=document.getElementById("comments");
-    cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
-    span=document.createElement("span");
-    span.setAttribute("class","AnimatedEllipsis");
-    cmButton.appendChild(span);
+  // 代码复制按钮（原文能力，原版未接线，这里补齐）
+  document.querySelectorAll('#postBody pre').forEach(function(pre){
+    var btn=document.createElement('button');
+    btn.className='copy-btn'; btn.type='button'; btn.textContent='copy';
+    pre.classList.add('code-block'); pre.appendChild(btn);
+    btn.addEventListener('click',function(){
+      var code=pre.querySelector('code')||pre;
+      navigator.clipboard.writeText(code.textContent).then(function(){
+        btn.textContent='copied'; setTimeout(function(){btn.textContent='copy';},1500);
+      }).catch(function(){btn.textContent='fail';});
+    });
+  });
 
-    script=document.createElement("script");
-    script.setAttribute("src","https://utteranc.es/client.js");
-    script.setAttribute("repo","{{ blogBase['repoName'] }}");
-    script.setAttribute("issue-term","title");
-    {% if blogBase['themeMode']=='manual' %}
-    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
-    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
-    else{script.setAttribute("theme","preferred-color-scheme");}
-    {% else %}
-    script.setAttribute("theme","{{ blogBase['nightTheme'] }}");
-    {% endif %}
-    script.setAttribute("crossorigin","anonymous");
-    script.setAttribute("async","");
-    cm.appendChild(script);
-
-    int=self.setInterval("iFrameLoading()",200);
-}
-
-function iFrameLoading(){
-    var utterances=document.getElementsByClassName('utterances');
-    if(utterances.length==1){
-        if(utterances[0].style.height!=""){
-            utterancesLoad=1;
-            int=window.clearInterval(int);
-            document.getElementById("cmButton").style.display="none";
-            console.log("utterances Load OK");
-        }
-    }
-}
-{%- endif %}
+  // 自研评论：直读本仓库 Issues 评论，零外部服务
+  var commentsLoaded=false;
+  function toggleComments(){
+    var box=document.getElementById('comments');
+    if(box.style.display==='block'){box.style.display='none';return;}
+    box.style.display='block';
+    if(commentsLoaded)return;
+    commentsLoaded=true;
+    var title="{{ postTitle|e }}";
+    var btn=document.getElementById('cmButton');
+    btn.textContent='{{ i18n["comments"] }} …';
+    var api='https://api.github.com/search/issues?q=repo:{{ repo }}+is:issue+in:title+'+encodeURIComponent('"'+title+'"');
+    fetch(api).then(function(r){return r.json();}).then(function(data){
+      if(!data.items||!data.items.length){btn.textContent='{{ i18n["comments"] }} (0)';return;}
+      var num=data.items[0].number;
+      return fetch('https://api.github.com/repos/{{ repo }}/issues/'+num+'/comments?per_page=100')
+        .then(function(r){return r.json();}).then(function(list){
+          if(!list.length){box.innerHTML='<p style="color:var(--color-fg-muted)">{{ i18n["comments"] }}: 0</p>';btn.textContent='{{ i18n["comments"] }} (0)';return;}
+          var h='';
+          list.forEach(function(c){
+            h+='<div class="comment-card"><div class="meta">'+esc(c.user.login)+' · '+c.created_at.slice(0,10)+'</div><div class="markdown-body">'+esc(c.body)+'</div></div>';
+          });
+          h+='<a class="btn" href="https://github.com/{{ repo }}/issues/'+num+'" target="_blank" rel="noopener">GitHub →</a>';
+          box.innerHTML=h;
+          btn.textContent='{{ i18n["comments"] }} ('+list.length+')';
+        });
+    }).catch(function(e){box.innerHTML='<p style="color:var(--color-fg-muted)">评论加载失败，请到 Issue 查看</p>';});
+  }
+  function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+  {% if needComment == 1 %}
+  // 保留主题同步钩子（供自研评论未来扩展）
+  function applyCommentTheme(){}
+  {% endif %}
 </script>
-{{ blogBase['script'] }}
+<script src="/assets/comments.js" defer></script>
+<script src="/assets/toc.js" defer></script>
+<script src="/assets/lightbox.js" defer></script>
+{{ script }}
 {% endblock %}

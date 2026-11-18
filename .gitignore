@@ -1,5 +1,20 @@
-temp_backup/
-__pycache__
-nohup.out
-.git-credentials
-venv/
+# Python 运行产物
+__pycache__/
+*.pyc
+*.pyo
+
+# 图形渲染临时目录
+.diagram-tmp/
+
+# 生成器的中间状态（每次构建重建）
+# 注意：docs/ 和 blogBase.json 需要提交（是发布源和增量状态），不要忽略
+
+# 编辑器 / 系统
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Cloudflare Worker
+counter-worker/node_modules/
+counter-worker/.wrangler/

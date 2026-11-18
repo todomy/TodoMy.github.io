@@ -1,0 +1,72 @@
+name: Build Blog
+
+on:
+  push:
+    branches: [main]        # 代码/配置变更自动全量重建；GITHUB_TOKEN 的提交不会再次触发，无循环
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+  issue_comment:
+    types: [created, deleted]
+  workflow_dispatch:
+  schedule:
+    # 每天全量自检一次：构建坏了当天就知道，而不是等发文时才发现
+    - cron: "0 16 * * *"
+
+permissions:
+  contents: write   # 把生成的 docs/ 提交回仓库
+  issues: read      # 生成器要通过 API 读 Issues / labels / comments / events
+
+concurrency:
+  group: build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   # 跟随最新镜像，绝不固定版本（固定会被退役拖垮）
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Python 跟随最新稳定版：3.x = 当前大版本最新，永远不会 "not found"
+      # 生成器纯标准库，其实不装 Python 也能用 runner 自带的，这里显式声明保证版本
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # 图形构建时渲染：只需 mmdc，Chrome 用 runner 自带的，跳过 Chromium 下载
+      - name: Set up Mermaid CLI
+        run: |
+          npm install -g @mermaid-js/mermaid-cli@11
+          echo "CHROME_PATH=/usr/bin/google-chrome" >> $GITHUB_ENV
+
+      # 生成本站：纯标准库，无需 pip install
+      - name: Generate site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "issues" ] || [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+            NUM="$ISSUE_NUMBER"
+          else
+            NUM="0"
+          fi
+          python generator/build.py "$GITHUB_TOKEN" "$REPO" --issue_number "$NUM" --workspace "$GITHUB_WORKSPACE"
+
+      - name: Commit generated files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "chore: rebuild site [skip ci]"
+            git push
+          fi
+
+# 发布：在仓库 Settings → Pages → Build and deployment 里选择
+#   Source = Deploy from a branch, Branch = main / docs
+# 这是 Pages 原生能力，零 Action 依赖，比 deploy-pages 更长久稳定。

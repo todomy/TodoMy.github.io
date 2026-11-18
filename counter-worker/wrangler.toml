@@ -1,0 +1,13 @@
+name = "todomy-counter"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+# 计数数据存在你自己的 KV namespace。
+# 1) 创建: npx wrangler kv namespace create COUNTER_KV
+# 2) 把返回的 id 填到下面
+[[kv_namespaces]]
+binding = "COUNTER_KV"
+id = "替换为你的KV_ID"
+
+# 管理接口令牌（可选）：npx wrangler secret put ADMIN_TOKEN
+# [vars] 里也可以明文写，但建议用 secret

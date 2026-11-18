@@ -1,0 +1,60 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: "0 18 * * 1"   # 每周一 18:00（北京时间周二 02:00）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest   # 跟随最新，不固定
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Syntax & config check
+        run: |
+          python -m py_compile generator/build.py
+          python - <<'PY'
+          import json, os
+          cfg = json.load(open('config.json'))
+          assert 'title' in cfg, 'config 缺少 title'
+          assert os.path.exists('templates/base.html'), '缺少模板'
+          assert os.path.exists('data/pinyin.json'), '缺少拼音数据'
+          print('配置与模板检查通过')
+          PY
+
+      - name: GitHub API reachability
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import os, urllib.request
+          req = urllib.request.Request(
+            'https://api.github.com/repos/' + os.environ['REPO'],
+            headers={'Authorization': 'Bearer ' + os.environ['GITHUB_TOKEN'],
+                     'User-Agent': 'healthcheck'})
+          with urllib.request.urlopen(req, timeout=30) as r:
+            assert r.status == 200
+          print('GitHub API 可达')
+          PY
+
+      # 图形渲染冒烟：确认 mmdc + Chrome 链路仍可用
+      - name: Mermaid render smoke test
+        run: |
+          npm install -g @mermaid-js/mermaid-cli@11
+          mkdir -p /tmp/hc
+          printf 'graph TD\n A-->B\n' > /tmp/hc/t.mmd
+          printf '{"args":["--no-sandbox","--disable-setuid-sandbox","--disable-dev-shm-usage"],"executablePath":"/usr/bin/google-chrome"}' > /tmp/hc/pc.json
+          mmdc -i /tmp/hc/t.mmd -o /tmp/hc/t.svg -p /tmp/hc/pc.json
+          test -s /tmp/hc/t.svg && echo 'Mermaid 渲染链路正常'
+
+      # 本工作流只读不写；失败会在 Actions 页面标红提醒

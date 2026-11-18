@@ -1,242 +1,153 @@
 {% extends 'base.html' %}
 {% block head %}
-<meta name="description" content="{{ blogBase['title'] }} search page">
-<title>{{ blogBase['title'] }} - Tag</title>
-<script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/performance-optimize.js' defer></script>
+<title>{{ i18n['Search'] }} - {{ title }}</title>
+<script src="/assets/performance.js" defer></script>
 {% endblock %}
 
 {% block style %}
 <style>
-.tagTitle{margin:auto 0;font-size:40px;font-weight:bold;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-.title-right{display:flex;margin:auto 0 0 auto;}
-.title-right .circle{padding: 14px 16px;margin-right:8px;}
-
-.subnav-search{width:222px;margin-top:8px;margin-right:8px;}
-.subnav-search-input{width:160px;border-top-right-radius:0px;border-bottom-right-radius:0px;}
-.subnav-search button{padding:5px 8px;border-top-left-radius:0px;border-bottom-left-radius:0px;}
-
-.SideNav-icon{margin-right:16px}
-.Label{color: #fff;margin-left:4px;}
-#taglabel .Label {margin-bottom:8px;}
-.Counter{color:#fff;background-color:rgba(234, 238, 242, 0.5)}
-
-.genTime{float: right;}
-.d-flex{min-width:0;}
-.listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
-.listLabels{white-space:nowrap;}
-
-@media (max-width: 600px) {
-    body { padding: 8px;}
-    .tagTitle{display:none;}
-    .LabelTime{display:none;}
-}
+  .tagTitle{font-size:24px;font-weight:600;margin:0 0 16px}
+  .search-bar{display:flex;gap:8px;margin-bottom:20px}
+  .search-bar input{flex:1;padding:8px 12px;font-size:16px;border:1px solid var(--color-border-default,#d0d7de);border-radius:6px;
+    background:var(--color-canvas-default,#fff);color:var(--color-fg-default,#24292f)}
+  .tag-buttons{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+  .tag-buttons .Label{cursor:pointer}
+  .listTitle{font-size:15px;max-width:540px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .listLabels{display:flex;gap:4px;align-items:center}
+  .notFind{color:var(--color-fg-muted,#57606a);padding:24px 0}
 </style>
 {% endblock %}
 
 {% block header %}
-<span class="tagTitle"><span>Loading</span><span class="AnimatedEllipsis"></span></span>
+<h1 class="tagTitle">Loading<span class="AnimatedEllipsis"></span></h1>
+<div class="search-bar">
+  <input class="subnav-search-input" type="text" placeholder="{{ i18n['Search'] }}…" onkeydown="if(event.key==='Enter')searchShow()">
+  <button class="btn" onclick="searchShow()">{{ i18n['Search'] }}</button>
+</div>
 <div class="title-right">
-    <div class="subnav-search">
-        <input type="search" class="form-control subnav-search-input float-left" aria-label="Search site" value="" style="height:32px;">
-        <button class="btn float-left" type="submit" onclick="javascript:searchShow()">{{ i18n['Search'] }}</button>
-        <svg class="subnav-search-icon octicon octicon-search" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-            <path id="searchSVG" fill-rule="evenodd"></path>
-        </svg>
-    </div>
-    <a href="{{ blogBase['homeUrl'] }}" id="buttonHome" class="btn btn-invisible circle" title="{{ i18n['home'] }}">
-        <svg class="octicon" width="16" height="16">
-            <path id="pathHome" fill-rule="evenodd"></path>
-        </svg>
-    </a>
-    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
-        <svg class="octicon" width="16" height="16" >
-            <path id="themeSwitch" fill-rule="evenodd"></path>
-        </svg>
-    </a>
+  <a class="tool-btn" href="{{ homeUrl }}" title="{{ i18n['home'] }}"><svg class="tool-icon" viewBox="0 0 16 16"><path id="pathHome" d=""></path></svg></a>
+  {% if themeMode != 'fix' %}
+  <span class="tool-btn" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}"><svg class="tool-icon" viewBox="0 0 16 16"><path id="themeSwitch" d=""></path></svg></span>
+  {% endif %}
 </div>
 {% endblock %}
 
 {% block content %}
-<div id="taglabel" style="margin-bottom:8px;"></div>
-<nav class="SideNav"></nav>
-<div class="notFind" style="display:none;font-size:24px;margin:8px;">Not Find</div>
+<div class="tag-buttons" id="taglabel"></div>
+<nav class="SideNav border" id="postList"></nav>
+<div class="notFind" id="notFind" style="display:none"></div>
 {% endblock %}
 
 {% block script %}
 <script>
-document.getElementById("pathHome").setAttribute("d",IconList["home"]);
-document.getElementById("searchSVG").setAttribute("d",IconList["search"]);
+  var SITE_TITLE={{ title|e }};
+  var I18N={notFind:"{{ i18n['notFind'] }}",search:"{{ i18n['Search'] }}",loadMore:"{{ i18n['loadMore'] }}",viewMore:"{{ i18n['viewMore'] }}"};
+  var HOME_URL="{{ homeUrl }}";
+  var ICON_POST={{ IconList['post']|e }};
+  var jsonData={},tagList=[],labelsCount={},originalKeys=[];
 
-tagList=[];
-labelsCount={};
-jsonData='';
-let requestJson="postList.json"
-let request=new XMLHttpRequest();
-request.open("GET",requestJson);
-request.responseType='text';
-request.send();
-request.onload=function(){
-    jsonData=JSON.parse(request.response);
-    console.log(jsonData);
-    showList(labelsCount);
-    setClassDisplay(decodeURI(window.location.hash.slice(1)));
-}
+  fetch('postList.json').then(function(r){return r.json();}).then(function(d){
+    jsonData=d;
+    buildList();
+    setClassDisplay(decodeURIComponent(window.location.hash.slice(1))||'All');
+  }).catch(function(e){
+    document.getElementById('postList').innerHTML='<p>数据加载失败</p>';
+  });
 
-function showList(labelsCount){
-    let SideNav=document.getElementsByClassName("SideNav")[0];
-    SideNav.classList.add("border");
-    let taglabel=document.getElementById("taglabel");
-
-    jsonData['labelColorDict']["All"]="#000";
-    labelsCount["All"]=0;
-    for (let key in jsonData) {
-        if (key !== 'labelColorDict' && Array.isArray(jsonData[key]['labels'])) {
-            labelsCount["All"]++;
-            for (let label of jsonData[key]['labels']) {
-                labelsCount[label] = (labelsCount[label] || 0) + 1;
-            }
-        }
+  function buildList(){
+    var taglabel=document.getElementById('taglabel');
+    var list=document.getElementById('postList');
+    var colors=jsonData['labelColorDict']||{};
+    colors['All']='#24292f';
+    labelsCount['All']=0;
+    for(var k in jsonData){
+      if(k==='labelColorDict'||!Array.isArray(jsonData[k]['labels']))continue;
+      originalKeys.push(k);
+      labelsCount['All']++;
+      (jsonData[k]['labels']||[]).forEach(function(label){labelsCount[label]=(labelsCount[label]||0)+1;});
     }
+    Object.keys(labelsCount).sort(function(a,b){return labelsCount[b]-labelsCount[a];}).forEach(function(label){
+      tagList.push(label);
+      var b=document.createElement('button');
+      b.className='Label';
+      b.style.background=(colors[label]||'#666'); b.style.padding='4px 8px'; b.style.cursor='pointer';
+      b.innerHTML='&nbsp;'+esc(label)+' <span class="Counter">'+labelsCount[label]+'</span>';
+      b.onclick=function(){updateShowTag(label);};
+      taglabel.appendChild(b);
+    });
+    originalKeys.forEach(function(k){
+      var p=jsonData[k];
+      var row=document.createElement('div');
+      row.className='lists '+(p['labels']||[]).join(' ');
+      row.setAttribute('data-content',p['content']||'');
+      var a=document.createElement('a');
+      a.className='SideNav-item d-flex flex-items-center flex-justify-between';
+      a.href=p['postUrl'];
+      var left=document.createElement('span'); left.className='d-flex flex-items-center';
+      var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('class','tool-icon'); svg.style.marginRight='8px'; svg.setAttribute('viewBox','0 0 16 16');
+      var path=document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('d',ICON_POST);
+      svg.appendChild(path);
+      var t=document.createElement('span'); t.className='listTitle'; t.textContent=p['postTitle'];
+      left.appendChild(svg); left.appendChild(t);
+      var right=document.createElement('span'); right.className='listLabels';
+      (p['labels']||[]).forEach(function(label){
+        var lb=document.createElement('span'); lb.className='Label LabelName';
+        lb.style.background=(colors[label]||'#666'); lb.textContent=label; right.appendChild(lb);
+      });
+      var dt=document.createElement('span'); dt.className='Label LabelTime';
+      dt.style.background=(p['dateLabelColor']||'#666'); dt.textContent=p['createdDate']; right.appendChild(dt);
+      a.appendChild(left); a.appendChild(right); row.appendChild(a); list.appendChild(row);
+    });
+  }
 
-    let sortedLabelsList = Object.keys(labelsCount).sort((a, b) => labelsCount[b] - labelsCount[a]);
-    for (let label of sortedLabelsList) {
-        tagList.push(label);
-        let showLabels = document.createElement("button");
-        showLabels.setAttribute("class", "Label");
-        showLabels.setAttribute("style", "background-color:" + jsonData['labelColorDict'][label]+";padding:4px;");
-        showLabels.innerHTML="&nbsp;&nbsp;"+label+" ";
-        showLabels.setAttribute("onclick", "javascript:updateShowTag('" + label + "');");
-
-        let LabelNum=document.createElement("span");
-        LabelNum.setAttribute("class","Counter");
-        LabelNum.innerHTML=labelsCount[label];
-        showLabels.appendChild(LabelNum);
-        taglabel.appendChild(showLabels);
+  function updateShowTag(label){
+    if(decodeURIComponent(window.location.hash.slice(1))!==label){
+      window.location.hash='#'+encodeURIComponent(label);
+      setClassDisplay(label);
     }
-
-    for(i in jsonData){
-        if(i!='labelColorDict'){
-            let div=document.createElement("div");
-            div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
-            div.setAttribute("data-content", jsonData[i]['content'] || '');
-
-            let item=document.createElement("a");
-            item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between");
-            item.setAttribute("href",jsonData[i]['postUrl']);
-
-            let center=document.createElement("div");
-            center.setAttribute("class","d-flex flex-items-center");
-
-            svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-            path=document.createElementNS("http://www.w3.org/2000/svg","path"); 
-            span=document.createElement("span");
-            svg.setAttributeNS(null,"class","SideNav-icon octicon");
-            svg.setAttributeNS(null,"style","width:16px;height:16px");
-            path.setAttributeNS(null, "d", IconList["post"]);
-            svg.appendChild(path);
-
-            let title=document.createElement("span");
-            title.setAttribute("class","listTitle");
-            title.innerHTML=jsonData[i]['postTitle'];
-            center.appendChild(svg);
-            center.appendChild(title);
-
-            let listLabels=document.createElement("div");
-            listLabels.setAttribute("class","listLabels");
-            
-            for(label of jsonData[i]['labels']){
-                let LabelName=document.createElement("span");
-                LabelName.setAttribute("class","Label LabelName");
-                LabelName.setAttribute("style","background-color:"+jsonData['labelColorDict'][label]);
-                LabelName.innerHTML=label;
-                listLabels.appendChild(LabelName);
-            }
-            let LabelTime=document.createElement("span");
-            LabelTime.setAttribute("class","Label LabelTime");
-            LabelTime.setAttribute("style","background-color:"+jsonData[i]['dateLabelColor']);
-            LabelTime.innerHTML=jsonData[i]['createdDate'];
-            listLabels.appendChild(LabelTime);
-
-            item.appendChild(center);
-            item.appendChild(listLabels);
-            div.appendChild(item);
-            SideNav.appendChild(div);
-        }
+  }
+  function setClassDisplay(label){
+    var lists=document.getElementsByClassName('lists');
+    var title=document.getElementsByClassName('tagTitle')[0];
+    var input=document.getElementsByClassName('subnav-search-input')[0];
+    input.value='';
+    if(label==='All'||!label){
+      title.textContent='All';
+      document.title=SITE_TITLE;
+      for(var i=0;i<lists.length;i++)lists[i].style.display='block';
+      document.getElementById('notFind').style.display='none';
+    }else if(tagList.indexOf(label)!==-1){
+      title.textContent='Tag #'+label;
+      document.title=label+' - '+SITE_TITLE;
+      for(var i=0;i<lists.length;i++){lists[i].style.display=lists[i].classList.contains(label)?'block':'none';}
+      document.getElementById('notFind').style.display='none';
+    }else{
+      input.value=label; searchShow();
     }
-}
-
-function updateShowTag(label){
-    if(window.location.hash.slice(1)!=encodeURI(label)){
-        window.location.hash="#"+(label);
-        setClassDisplay(label);
+  }
+  function searchShow(){
+    var lists=document.getElementsByClassName('lists');
+    var input=document.getElementsByClassName('subnav-search-input')[0];
+    var q=input.value.trim();
+    var title=document.getElementsByClassName('tagTitle')[0];
+    title.textContent='Search #'+q;
+    document.title=(q?q+' - ':'')+SITE_TITLE;
+    if(q)window.location.hash='#'+encodeURIComponent(q);
+    var term=q.toUpperCase(),hit=0;
+    for(var i=0;i<lists.length;i++){
+      var item=lists[i];
+      var t=item.querySelector('.listTitle');
+      var tt=(t?t.textContent:'')+' '+(item.children[0]?item.children[0].textContent:'');
+      var ct=item.getAttribute('data-content')||'';
+      if(tt.toUpperCase().indexOf(term)!==-1||ct.toUpperCase().indexOf(term)!==-1){item.style.display='block';hit++;}
+      else item.style.display='none';
     }
-}
-
-function setClassDisplay(label){
-    let lists = document.getElementsByClassName("lists");
-    let tagTitle = document.getElementsByClassName("tagTitle")[0];
-    tagTitle.innerHTML="Tag #"+label;
-    document.title=label+" - {{ blogBase['title'] }}";
-    document.getElementsByClassName("subnav-search-input")[0].value='';
-    if(label=="All"){
-        for(let i = 0; i < lists.length; i++){lists[i].style.display='block';}
-        document.getElementsByClassName("notFind")[0].style.display='none';
-    }
-    else if(tagList.indexOf(label)!=-1){
-        for(let i = 0; i < lists.length; i++){
-            lists[i].style.display='none';
-        }
-
-        let labels = document.getElementsByClassName(label);
-        for(let i = 0; i < labels.length; i++){
-            labels[i].style.display='block';
-        }
-        document.getElementsByClassName("notFind")[0].style.display='none';
-    }
-    else{
-        document.getElementsByClassName("subnav-search-input")[0].value=label;
-        searchShow();
-    }
-}
-
-function searchShow(){
-    let lists = document.getElementsByClassName("lists");
-    let tagTitle = document.getElementsByClassName("tagTitle")[0];
-    let searchInput = document.getElementsByClassName("subnav-search-input")[0].value;
-    tagTitle.innerHTML="Search #"+searchInput;
-    if(searchInput==''){document.title="Search - {{ blogBase['title'] }}";}
-    else{document.title=searchInput+" - {{ blogBase['title'] }}";}
-    let a=0;
-    window.location.hash="#"+(searchInput);
-    
-    // 转换为大写以进行不区分大小写的搜索
-    let searchTerm = searchInput.toUpperCase();
-    
-    for(let i = 0; i < lists.length; i++){
-        let item = lists[i];
-        let titleElement = item.childNodes[0].childNodes[0].childNodes[1];
-        let titleText = titleElement ? titleElement.innerHTML.toUpperCase() : '';
-        
-        // 获取文章内容（从data-content属性中）
-        let contentText = item.getAttribute('data-content') || '';
-        contentText = contentText.toUpperCase();
-        
-        // 同时搜索标题和内容
-        if(titleText.indexOf(searchTerm) !== -1 || contentText.indexOf(searchTerm) !== -1){
-            item.style.display='block';
-            a++;
-        } else {
-            item.style.display='none';
-        }
-    }
-    
-    if(a==0){
-        let notFind=document.getElementsByClassName("notFind")[0];
-        notFind.style.display='block';
-        notFind.innerHTML='Not Find "'+searchInput+'"';
-    }
-    else{document.getElementsByClassName("notFind")[0].style.display='none';}
-}
-
+    var nf=document.getElementById('notFind');
+    if(hit===0&&q){nf.style.display='block';nf.textContent=I18N.notFind+' "'+q+'"';}
+    else nf.style.display='none';
+  }
+  function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+  var ph=document.getElementById('pathHome'); if(ph&&ICON_POST)ph.setAttribute('d',"M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Z");
 </script>
 {% endblock %}
