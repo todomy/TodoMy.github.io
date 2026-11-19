@@ -89,7 +89,7 @@ class GMEEK():
             print("static does not exist")
 
     def defaultConfig(self):
-        dconfig={"singlePage":[],"startSite":"","filingNum":"","onePageListNum":15,"commentLabelColor":"#006b75","yearColorList":["#bc4c00", "#0969da", "#1f883d", "#A333D0"],"i18n":"CN","themeMode":"manual","dayTheme":"light","nightTheme":"dark","urlMode":"pinyin","script":"","style":"","head":"","indexScript":"","indexStyle":"","bottomText":"","showPostSource":1,"iconList":{},"UTC":+8,"rssSplit":"sentence","exlink":{},"needComment":1,"allHead":""}
+        dconfig={"singlePage":[],"startSite":"","filingNum":"","onePageListNum":15,"commentLabelColor":"#006b75","yearColorList":["#bc4c00", "#0969da", "#1f883d", "#A333D0"],"i18n":"CN","themeMode":"manual","dayTheme":"light","nightTheme":"dark","urlMode":"pinyin","script":"","style":"","head":"","indexScript":"","indexStyle":"","bottomText":"","showPostSource":1,"iconList":{},"UTC":+8,"rssSplit":"sentence","rssFullText":0,"exlink":{},"needComment":1,"allHead":""}
         config=json.loads(open('config.json', 'r', encoding='utf-8').read())
         self.blogBase={**dconfig,**config}.copy()
         self.blogBase["postListJson"]=json.loads('{}')
@@ -150,6 +150,9 @@ class GMEEK():
         f = open(self.backup_dir+mdFileName+".md", 'r', encoding='UTF-8')
         post_body=self.markdown2html(f.read())
         f.close()
+
+        # 图片懒加载：长文不再一次性下载全部图片
+        post_body=re.sub(r'<img (?![^>]*loading=)', '<img loading="lazy" decoding="async" ', post_body)
 
         postBase=self.blogBase.copy()
 
@@ -264,6 +267,32 @@ class GMEEK():
         self.renderHtml('tag.html',self.blogBase,onePageList,self.root_dir+"tag.html",tagIcon)
         print("create tag.html")
 
+    def getFeedDescription(self,post):
+        description=post["description"]
+        if self.blogBase.get("rssFullText",0)==1:
+            full=self.getPostFullText(post)
+            if full!='':
+                description=full
+        return description
+
+    def getPostFullText(self,post):
+        # 从已生成的文章 HTML 中提取正文，避免为 RSS 额外调用 Markdown API
+        try:
+            f=open(post["htmlDir"],'r',encoding='UTF-8')
+            htmlText=f.read()
+            f.close()
+            marker='<div class="markdown-body" id="postBody">'
+            start=htmlText.find(marker)
+            if start<0:
+                return ''
+            start+=len(marker)
+            end=htmlText.find('<div style="font-size:small;margin-top:8px;float:right;">',start)
+            if end<0:
+                return ''
+            return htmlText[start:end].strip()
+        except Exception:
+            return ''
+
     def createFeedXml(self):
         self.blogBase["postListJson"]=dict(sorted(self.blogBase["postListJson"].items(),key=lambda x:x[1]["createdAt"],reverse=False))#使列表由时间排序
         feed = FeedGenerator()
@@ -280,7 +309,7 @@ class GMEEK():
             item=feed.add_item()
             item.guid(self.blogBase["homeUrl"]+"/"+self.blogBase["singeListJson"][num]["postUrl"],permalink=True)
             item.title(self.blogBase["singeListJson"][num]["postTitle"])
-            item.description(self.blogBase["singeListJson"][num]["description"])
+            item.description(self.getFeedDescription(self.blogBase["singeListJson"][num]))
             item.link(href=self.blogBase["homeUrl"]+"/"+self.blogBase["singeListJson"][num]["postUrl"])
             item.pubDate(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(self.blogBase["singeListJson"][num]["createdAt"])))
 
@@ -288,7 +317,7 @@ class GMEEK():
             item=feed.add_item()
             item.guid(self.blogBase["homeUrl"]+"/"+self.blogBase["postListJson"][num]["postUrl"],permalink=True)
             item.title(self.blogBase["postListJson"][num]["postTitle"])
-            item.description(self.blogBase["postListJson"][num]["description"])
+            item.description(self.getFeedDescription(self.blogBase["postListJson"][num]))
             item.link(href=self.blogBase["homeUrl"]+"/"+self.blogBase["postListJson"][num]["postUrl"])
             item.pubDate(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(self.blogBase["postListJson"][num]["createdAt"])))
 

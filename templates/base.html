@@ -9,7 +9,7 @@
     <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
     {%- if blogBase['themeMode']=='manual' -%}
     <script>
-        let theme = localStorage.getItem("meek_theme") || "light";
+        let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
     {%- endif -%}
