@@ -10,7 +10,7 @@ import requests
 import argparse
 import html
 from github import Github
-from github.GithubException import UnknownObjectException
+from github.GithubException import GithubException
 from xpinyin import Pinyin
 from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
@@ -469,10 +469,12 @@ class GMEEK():
         print("====== start create static html ======")
         try:
             issue=self.repo.get_issue(int(number_str))
-        except UnknownObjectException:
-            print("====== issue is deleted, remove post ======")
-            self.removeOnePost(number_str)
-            return
+        except GithubException as e:
+            if e.status in (404,410):
+                print("====== issue is deleted (HTTP %d), remove post ======" % e.status)
+                self.removeOnePost(number_str)
+                return
+            raise
         if issue.state == "open":
             listJsonName=self.addOnePostJson(issue)
             self.createPostHtml(self.blogBase[listJsonName]["P"+number_str])
