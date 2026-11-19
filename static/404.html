@@ -1,23 +1,134 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>404 - 页面不存在</title>
-    <style>
-        body{box-sizing:border-box;min-width:200px;max-width:900px;margin:20px auto;padding:45px;font-size:16px;font-family:sans-serif;line-height:1.5;text-align:center;}
-        .code{font-size:88px;font-weight:bold;color:#0969da;letter-spacing:8px;}
-        .msg{font-size:20px;margin:16px 0 8px;color:#1f2328;}
-        .tip{font-size:14px;color:#656d76;margin-bottom:32px;}
-        .btn{display:inline-block;padding:10px 24px;border:1px solid #d0d7de;border-radius:6px;text-decoration:none;color:#0969da;font-size:15px;}
-        .btn:hover{background:#0969da;color:#fff;border-color:#0969da;}
-        @media (prefers-color-scheme: dark){body{background:#0d1117;color:#e6edf3;}.msg{color:#e6edf3;}.tip{color:#8b949e;}.btn{border-color:#30363d;color:#58a6ff;}.btn:hover{background:#58a6ff;color:#0d1117;}.code{color:#58a6ff;}}
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>404 - 该页面已退市</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#1f2328; --muted:#656d76; --card:#f6f8fa;
+  --accent:#0969da; --down:#1a7f37; --border:#d0d7de; --coin:#f7b32b; --coin-dark:#d99a12;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --card:#161b22;
+         --accent:#58a6ff; --down:#3fb950; --border:#30363d; --coin:#f7b32b; --coin-dark:#d99a12; }
+}
+*{box-sizing:border-box;}
+body{margin:0;padding:45px 20px;min-height:100vh;background:var(--bg);color:var(--fg);
+     font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;text-align:center;
+     display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;}
+.big{font-size:96px;font-weight:900;letter-spacing:12px;display:flex;align-items:center;line-height:1;
+     user-select:none;-webkit-user-select:none;}
+.coin{display:inline-block;color:var(--coin);text-shadow:0 2px 0 var(--coin-dark);
+      cursor:pointer;animation:spin 3.2s linear infinite;transition:transform .15s;}
+.coin:hover{filter:brightness(1.1);}
+.coin.fly{animation:pop .35s ease-out;}
+@keyframes spin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.5) rotate(-12deg)}100%{transform:scale(1)}}
+.chart{width:min(420px,86vw);margin-top:4px;}
+.chart polyline{fill:none;stroke:var(--down);stroke-width:3;stroke-linejoin:round;
+  stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.6s ease-out forwards;}
+.chart circle{fill:var(--down);opacity:0;animation:drop .3s ease-out 1.5s forwards;}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes drop{to{opacity:1;transform:translateY(0)}}
+.chart circle{transform:translateY(-14px)}
+.msg{min-height:1.6em;font-size:19px;font-weight:600;margin-top:10px;}
+.tip{font-size:13px;color:var(--muted);}
+.pocket{font-size:14px;color:var(--muted);margin-top:2px;}
+.pocket b{color:var(--coin-dark);}
+.btns{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;justify-content:center;}
+.btn{padding:11px 26px;border-radius:8px;border:1px solid var(--border);background:var(--card);
+     color:var(--accent);font-size:15px;text-decoration:none;cursor:pointer;transition:all .15s;}
+.btn:hover{transform:translateY(-2px);border-color:var(--accent);}
+.btn.main{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+.btn.main:hover{opacity:.88;}
+.footer{margin-top:40px;font-size:12px;color:var(--muted);}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);
+       background:var(--fg);color:var(--bg);padding:10px 22px;border-radius:99px;font-size:14px;
+       opacity:0;pointer-events:none;transition:all .3s;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
 </head>
 <body>
-    <div class="code">404</div>
-    <div class="msg">页面不存在或已移动</div>
-    <div class="tip">你要找的内容可能被删了，或者地址打错了</div>
-    <a class="btn" href="/">← 回到博客首页</a>
+
+<div class="big" aria-label="404">4<span class="coin" id="coin" title="点我试试">₿</span>4</div>
+
+<svg class="chart" viewBox="0 0 420 90" aria-hidden="true">
+  <polyline points="10,18 60,22 100,16 140,34 180,30 225,52 270,48 320,72 370,68 410,84"/>
+  <circle cx="410" cy="84" r="5"/>
+</svg>
+
+<div class="msg" id="msg">加载中…</div>
+<div class="tip">状态码 404 · 原因：连巴菲特都没找到它</div>
+<div class="pocket">已从页面废墟里捡回 <b id="money">¥0.00</b></div>
+
+<div class="btns">
+  <a class="btn main" href="/">回首页抄底</a>
+  <a class="btn" id="randomBtn" href="javascript:void(0)">随便挑一篇看</a>
+</div>
+
+<div class="footer">免责声明：本页面纯属虚构，404 也是瞎写的 ❤️</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var msgs=[
+  "你访问的页面已退市，不再复牌",
+  "该页面正在停牌自查，暂停交易",
+  "页面被套牢了，正在山腰上等解套",
+  "页面趁大盘不注意，连夜跑路了",
+  "该页面已完成清仓，余额清零",
+  "404：连巴菲特都没找到它",
+  "页面已被人抄底，请耐心持有等待反弹",
+  "它去了 SEC 没敢披露的地方",
+  "页面只剩 4 折，但已售罄",
+  "你猜它存进冷钱包了，还是归零了",
+  "页面正在抄底自己，请勿打扰",
+  "此处曾有内容，现已归零，节哀"
+];
+document.getElementById("msg").textContent=msgs[Math.floor(Math.random()*msgs.length)];
+
+var pocket=0, toasts=[
+  "捡到了，但记得及时止损",
+  "又捡到一分，复利的力量！",
+  "这枚币怕不是空气币",
+  "恭喜！已超过 0.00% 的投资者",
+  "别捡了，落袋为安",
+  "这钱来路不明，建议严查",
+  "拾金不昧是美德，但你没有",
+  "页面碎了，这是它的遗产"
+];
+var coin=document.getElementById("coin"),
+    money=document.getElementById("money"),
+    toast=document.getElementById("toast"),
+    tId;
+coin.addEventListener("click",function(){
+  pocket+=0.01;
+  money.textContent="¥"+pocket.toFixed(2);
+  coin.classList.remove("fly"); void coin.offsetWidth; coin.classList.add("fly");
+  toast.textContent=toasts[Math.floor(Math.random()*toasts.length)];
+  toast.classList.add("show");
+  clearTimeout(tId); tId=setTimeout(function(){toast.classList.remove("show");},1600);
+  if(pocket>=1){
+    toast.textContent="捡到一块钱了！这页面对你有恩，回首页赞一篇吧";
+    clearTimeout(tId); tId=setTimeout(function(){toast.classList.remove("show");},2600);
+  }
+});
+
+document.getElementById("randomBtn").addEventListener("click",function(){
+  var btn=this;
+  btn.textContent="翻牌中…";
+  fetch("/postList.json")
+    .then(function(r){return r.json()})
+    .then(function(d){
+      var arr=Object.values(d);
+      var p=arr[Math.floor(Math.random()*arr.length)];
+      window.location.href="/"+p.postUrl;
+    })
+    .catch(function(){
+      btn.textContent="翻牌失败，回首页吧";
+      setTimeout(function(){btn.textContent="随便挑一篇看";},2000);
+    });
+});
+</script>
 </body>
 </html>
