@@ -451,7 +451,24 @@ class GMEEK():
             self.createSitemapXml()
             print("====== create static html end ======")
         else:
-            print("====== issue is closed ======")
+            print("====== issue is closed, remove post ======")
+            postNum="P"+number_str
+            for listJsonName in ("postListJson","singeListJson"):
+                if postNum in self.blogBase[listJsonName]:
+                    oldPost=self.blogBase[listJsonName][postNum]
+                    htmlDir=oldPost.get("htmlDir","")
+                    if htmlDir and os.path.exists(htmlDir):
+                        os.remove(htmlDir)
+                        print("removed html: "+htmlDir)
+                    del self.blogBase[listJsonName][postNum]
+            mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue.title)
+            mdPath=self.backup_dir+mdFileName+".md"
+            if os.path.exists(mdPath):
+                os.remove(mdPath)
+                print("removed backup: "+mdPath)
+            self.createPlistHtml()
+            self.createFeedXml()
+            self.createSitemapXml()
 
     def createFileName(self,issue,useLabel=False):
         if useLabel==True:
