@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/primer.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js' defer></script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
-        let theme = localStorage.getItem("meek_theme") || "light";
+        let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="> [!TIP]
@@ -77,7 +77,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="markdown-body" id="postBody"><div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg data-component="Octicon" class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>所有的安全都逃脱不掉，网络链路要加固，系统加固，业务加固，已经账号权限加固，数据保护加固；个人用户要求要更低一点，攻击价值也更低。（文章使用DeepSeek进行优化排版）</p>
 </div>
 <p>根据网络环境（固定公网ip，动态公网IP + 飞牛OS + Lucky反向代理），这份指南将把所有核心安全逻辑、操作细节、避坑要点和运维技巧进行最细致的拆解。即使您是新手，只要严格照做，也能构建一个让黑客几乎无法发现的“隐形”私有云。</p>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/df234dfc-ce11-43e6-96b1-f8d1aab2fb1a"><img width="1403" height="932" alt="Image" src="https://github.com/user-attachments/assets/df234dfc-ce11-43e6-96b1-f8d1aab2fb1a" style="max-width: 100%; height: auto; max-height: 932px;; aspect-ratio: 1403 / 932; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/df234dfc-ce11-43e6-96b1-f8d1aab2fb1a"><img loading="lazy" decoding="async" width="1403" height="932" alt="Image" src="https://github.com/user-attachments/assets/df234dfc-ce11-43e6-96b1-f8d1aab2fb1a" style="max-width: 100%; height: auto; max-height: 932px;; aspect-ratio: 1403 / 932; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <h2>🧱 第一章：NAS 核心自身加固（内网防线）</h2>
 <p>即使外网防护再好，如果NAS本机被入侵，一切白搭。请先完成以下基础安全设置。</p>
 <h3>1.1 启用访问码（网关层第一道锁）</h3>

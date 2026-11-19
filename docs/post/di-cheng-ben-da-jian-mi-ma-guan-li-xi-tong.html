@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/primer.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js' defer></script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
-        let theme = localStorage.getItem("meek_theme") || "light";
+        let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="> [!TIP]
@@ -225,7 +225,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </ul>
 </li>
 </ol>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/b309ad74-4dbe-4cd9-9a50-1cefbe90a674"><img width="470" height="114" alt="Image" src="https://github.com/user-attachments/assets/b309ad74-4dbe-4cd9-9a50-1cefbe90a674" style="max-width: 100%; height: auto; max-height: 114px;; aspect-ratio: 470 / 114; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/b309ad74-4dbe-4cd9-9a50-1cefbe90a674"><img loading="lazy" decoding="async" width="470" height="114" alt="Image" src="https://github.com/user-attachments/assets/b309ad74-4dbe-4cd9-9a50-1cefbe90a674" style="max-width: 100%; height: auto; max-height: 114px;; aspect-ratio: 470 / 114; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <ol start="6">
 <li>点击 <strong>部署</strong>，等待 Cloudflare 完成构建和部署</li>
 </ol>
@@ -237,8 +237,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <li><strong>访问初始化页面</strong>：在浏览器中打开上述地址</li>
 <li><strong>如果打不开</strong>，被墙了，建议在 Cloudflare 控制台为此 Workers 绑定一个域名，可以绑定其他家免费二级域名，进行托管，这里推荐直接在他家买一个长数字的xyz域名，一年也就七八块钱 ，在图片中位置绑定你购买的那个域名即可，后续就不用操作，Cloudflare会帮你设置好证书，做好dns解析，以及网站的防护。</li>
 </ol>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/5184dab5-5b75-4915-b8c7-42acd8bcac45"><img width="1474" height="216" alt="Image" src="https://github.com/user-attachments/assets/5184dab5-5b75-4915-b8c7-42acd8bcac45" style="max-width: 100%; height: auto; max-height: 216px;; aspect-ratio: 1474 / 216; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/0927bf5f-252f-4094-98cb-eccb71fe0760"><img width="664" height="337" alt="Image" src="https://github.com/user-attachments/assets/0927bf5f-252f-4094-98cb-eccb71fe0760" style="max-width: 100%; height: auto; max-height: 337px;; aspect-ratio: 664 / 337; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/5184dab5-5b75-4915-b8c7-42acd8bcac45"><img loading="lazy" decoding="async" width="1474" height="216" alt="Image" src="https://github.com/user-attachments/assets/5184dab5-5b75-4915-b8c7-42acd8bcac45" style="max-width: 100%; height: auto; max-height: 216px;; aspect-ratio: 1474 / 216; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/0927bf5f-252f-4094-98cb-eccb71fe0760"><img loading="lazy" decoding="async" width="664" height="337" alt="Image" src="https://github.com/user-attachments/assets/0927bf5f-252f-4094-98cb-eccb71fe0760" style="max-width: 100%; height: auto; max-height: 337px;; aspect-ratio: 664 / 337; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <p>初始化设置包括以下关键步骤 ：</p>
 <h4>3.1 设置 JWT_SECRET</h4>
 <ul>
@@ -248,20 +248,20 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </li>
 <li>将生成的字符串填入 <code class="notranslate">JWT_SECRET</code> 字段</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/495fac4c-3868-4e0b-abbd-1a641c1f76dc"><img width="1493" height="243" alt="Image" src="https://github.com/user-attachments/assets/495fac4c-3868-4e0b-abbd-1a641c1f76dc" style="max-width: 100%; height: auto; max-height: 243px;; aspect-ratio: 1493 / 243; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/495fac4c-3868-4e0b-abbd-1a641c1f76dc"><img loading="lazy" decoding="async" width="1493" height="243" alt="Image" src="https://github.com/user-attachments/assets/495fac4c-3868-4e0b-abbd-1a641c1f76dc" style="max-width: 100%; height: auto; max-height: 243px;; aspect-ratio: 1493 / 243; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <h4>3.2 配置自动更新（可选）</h4>
 <ul>
 <li>设置 GitHub 自动同步，确保能及时获取上游更新</li>
 <li>支持手动同步（Sync fork）或自动同步（通过 GitHub Actions 每天凌晨 3 点自动同步）</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/9579e95a-e5d1-43eb-bcac-2436dba94241"><img width="948" height="234" alt="Image" src="https://github.com/user-attachments/assets/9579e95a-e5d1-43eb-bcac-2436dba94241" style="max-width: 100%; height: auto; max-height: 234px;; aspect-ratio: 948 / 234; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/9579e95a-e5d1-43eb-bcac-2436dba94241"><img loading="lazy" decoding="async" width="948" height="234" alt="Image" src="https://github.com/user-attachments/assets/9579e95a-e5d1-43eb-bcac-2436dba94241" style="max-width: 100%; height: auto; max-height: 234px;; aspect-ratio: 948 / 234; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <h4>3.3 创建主账号</h4>
 <ul>
 <li>设置你的主登录邮箱和密码（这是你的管理员账号）</li>
 <li><strong>注意</strong>：此密码是解锁密码库的主密码，务必使用高强度密码并牢记</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/7791ee8a-be08-4640-9295-1177cef2e5a8"><img width="1052" height="584" alt="Image" src="https://github.com/user-attachments/assets/7791ee8a-be08-4640-9295-1177cef2e5a8" style="max-width: 100%; height: auto; max-height: 584px;; aspect-ratio: 1052 / 584; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/feef8458-515a-4c0d-ac36-2a173a09df90"><img width="1328" height="826" alt="Image" src="https://github.com/user-attachments/assets/feef8458-515a-4c0d-ac36-2a173a09df90" style="max-width: 100%; height: auto; max-height: 826px;; aspect-ratio: 1328 / 826; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/7791ee8a-be08-4640-9295-1177cef2e5a8"><img loading="lazy" decoding="async" width="1052" height="584" alt="Image" src="https://github.com/user-attachments/assets/7791ee8a-be08-4640-9295-1177cef2e5a8" style="max-width: 100%; height: auto; max-height: 584px;; aspect-ratio: 1052 / 584; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/feef8458-515a-4c0d-ac36-2a173a09df90"><img loading="lazy" decoding="async" width="1328" height="826" alt="Image" src="https://github.com/user-attachments/assets/feef8458-515a-4c0d-ac36-2a173a09df90" style="max-width: 100%; height: auto; max-height: 826px;; aspect-ratio: 1328 / 826; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <h4>3.4 启用二次验证（TOTP）</h4>
 <ul>
 <li>强烈建议开启 TOTP 二次验证</li>
@@ -285,7 +285,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <li>使用初始化时设置的<strong>邮箱</strong>和<strong>主密码</strong>登录</li>
 <li>如果开启了 TOTP 2FA，输入验证码完成登录</li>
 </ol>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/8264378d-e282-4862-b8d3-1b6e836e4735"><img width="485" height="595" alt="Image" src="https://github.com/user-attachments/assets/8264378d-e282-4862-b8d3-1b6e836e4735" style="max-width: 100%; height: auto; max-height: 595px;; aspect-ratio: 485 / 595; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/8264378d-e282-4862-b8d3-1b6e836e4735"><img loading="lazy" decoding="async" width="485" height="595" alt="Image" src="https://github.com/user-attachments/assets/8264378d-e282-4862-b8d3-1b6e836e4735" style="max-width: 100%; height: auto; max-height: 595px;; aspect-ratio: 485 / 595; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <h3>iOS / Android 移动端</h3>
 <ol>
 <li>下载 <a href="https://bitwarden.com/download/" rel="nofollow">Bitwarden App</a></li>
@@ -310,7 +310,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <li>Bitwarden 密码库 + 附件 ZIP</li>
 <li>其他浏览器/密码管理器格式（通过网页导入器）</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/1509a943-e935-4e60-9d3b-474d1debbcd8"><img width="1785" height="957" alt="Image" src="https://github.com/user-attachments/assets/1509a943-e935-4e60-9d3b-474d1debbcd8" style="max-width: 100%; height: auto; max-height: 957px;; aspect-ratio: 1785 / 957; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/1509a943-e935-4e60-9d3b-474d1debbcd8"><img loading="lazy" decoding="async" width="1785" height="957" alt="Image" src="https://github.com/user-attachments/assets/1509a943-e935-4e60-9d3b-474d1debbcd8" style="max-width: 100%; height: auto; max-height: 957px;; aspect-ratio: 1785 / 957; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <p><strong>导入步骤</strong>：</p>
 <ol>
 <li>登录 NodeWarden Web 界面（你的 Workers 地址）</li>
@@ -330,7 +330,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <li>可设置自动备份到私有云存储</li>
 <li>附件采用增量备份，避免重复上传</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/5562c1f3-75e6-4440-ba8b-3d623f98fd54"><img width="1785" height="957" alt="Image" src="https://github.com/user-attachments/assets/5562c1f3-75e6-4440-ba8b-3d623f98fd54" style="max-width: 100%; height: auto; max-height: 957px;; aspect-ratio: 1785 / 957; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/5562c1f3-75e6-4440-ba8b-3d623f98fd54"><img loading="lazy" decoding="async" width="1785" height="957" alt="Image" src="https://github.com/user-attachments/assets/5562c1f3-75e6-4440-ba8b-3d623f98fd54" style="max-width: 100%; height: auto; max-height: 957px;; aspect-ratio: 1785 / 957; background-color: var(--bgColor-muted); border-radius: 6px" class="js-gh-image-fallback"></a></p>
 <p><strong>恢复机制</strong>：</p>
 <ul>
 <li>从备份 ZIP 恢复时，附件会从 <code class="notranslate">attachments/</code> 目录按需读取</li>
