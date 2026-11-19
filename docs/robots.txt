@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://todomy.github.io/sitemap.xml
