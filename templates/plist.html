@@ -26,6 +26,12 @@
 .listLabels{white-space:nowrap;display:flex;}
 .listLabels object{max-height:16px;max-width:24px;}
 
+/* 悬停放大效果：只作用于本页顶部导航与文章列表 */
+#header a{transition: transform .2s ease;}
+#header a:hover{transform: scale(1.1);}
+.SideNav-item{transition: transform .2s ease, background-color .15s ease;}
+.SideNav-item:hover{transform: scale(1.02); font-weight: bold;}
+
 @media (max-width: 600px) {
     body {padding: 8px;}
     .avatar {width:40px;height:40px;}
