@@ -17,6 +17,9 @@ jobs:
       issues: read
       pages: write
       id-token: write
+    concurrency:
+      group: gmeek-build
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -35,6 +38,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: 3.12
+          cache: 'pip'
 
       - name: Install dependencies
         run: |

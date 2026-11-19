@@ -311,6 +311,24 @@ class GMEEK():
         print("====== create rss xml ======")
         feed.rss_file(self.root_dir+'rss.xml')
 
+    def createSitemapXml(self):
+        urls=[self.blogBase["homeUrl"]+"/", self.blogBase["homeUrl"]+"/tag.html"]
+        for num in self.blogBase["singeListJson"]:
+            urls.append(self.blogBase["homeUrl"]+"/"+self.blogBase["singeListJson"][num]["postUrl"])
+        for num in self.blogBase["postListJson"]:
+            urls.append(self.blogBase["homeUrl"]+"/"+self.blogBase["postListJson"][num]["postUrl"])
+
+        xml='<?xml version="1.0" encoding="UTF-8"?>\r\n'
+        xml+='<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\r\n'
+        for url in urls:
+            xml+='  <url><loc>%s</loc></url>\r\n' % url
+        xml+='</urlset>\r\n'
+
+        sitemapFile=open(self.root_dir+'sitemap.xml',"w",encoding='utf-8')
+        sitemapFile.write(xml)
+        sitemapFile.close()
+        print("====== create sitemap xml ======")
+
     def addOnePostJson(self,issue):
         if len(issue.labels)>=1:
             if issue.labels[0].name in self.blogBase["singlePage"]:
@@ -419,6 +437,7 @@ class GMEEK():
 
         self.createPlistHtml()
         self.createFeedXml()
+        self.createSitemapXml()
         print("====== create static html end ======")
 
     def runOne(self,number_str):
@@ -429,6 +448,7 @@ class GMEEK():
             self.createPostHtml(self.blogBase[listJsonName]["P"+number_str])
             self.createPlistHtml()
             self.createFeedXml()
+            self.createSitemapXml()
             print("====== create static html end ======")
         else:
             print("====== issue is closed ======")
