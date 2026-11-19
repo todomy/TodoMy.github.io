@@ -120,7 +120,7 @@ document.getElementById("randomBtn").addEventListener("click",function(){
   fetch("/postList.json")
     .then(function(r){return r.json()})
     .then(function(d){
-      var arr=Object.values(d);
+      var arr=Object.values(d).filter(function(p){return p && p.postUrl;});
       var p=arr[Math.floor(Math.random()*arr.length)];
       window.location.href="/"+p.postUrl;
     })
