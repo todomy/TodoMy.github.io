@@ -10,6 +10,7 @@ import requests
 import argparse
 import html
 from github import Github
+from github.GithubException import UnknownObjectException
 from xpinyin import Pinyin
 from feedgen.feed import FeedGenerator
 from jinja2 import Environment, FileSystemLoader
@@ -440,9 +441,38 @@ class GMEEK():
         self.createSitemapXml()
         print("====== create static html end ======")
 
+    def removeOnePost(self,number_str):
+        postNum="P"+number_str
+        removed=False
+        for listJsonName in ("postListJson","singeListJson"):
+            if postNum in self.blogBase[listJsonName]:
+                oldPost=self.blogBase[listJsonName][postNum]
+                htmlDir=oldPost.get("htmlDir","")
+                if htmlDir and os.path.exists(htmlDir):
+                    os.remove(htmlDir)
+                    print("removed html: "+htmlDir)
+                mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', oldPost["postTitle"])
+                mdPath=self.backup_dir+mdFileName+".md"
+                if os.path.exists(mdPath):
+                    os.remove(mdPath)
+                    print("removed backup: "+mdPath)
+                del self.blogBase[listJsonName][postNum]
+                removed=True
+        if removed:
+            self.createPlistHtml()
+            self.createFeedXml()
+            self.createSitemapXml()
+        else:
+            print("post not found in blogBase: "+postNum)
+
     def runOne(self,number_str):
         print("====== start create static html ======")
-        issue=self.repo.get_issue(int(number_str))
+        try:
+            issue=self.repo.get_issue(int(number_str))
+        except UnknownObjectException:
+            print("====== issue is deleted, remove post ======")
+            self.removeOnePost(number_str)
+            return
         if issue.state == "open":
             listJsonName=self.addOnePostJson(issue)
             self.createPostHtml(self.blogBase[listJsonName]["P"+number_str])
@@ -452,23 +482,7 @@ class GMEEK():
             print("====== create static html end ======")
         else:
             print("====== issue is closed, remove post ======")
-            postNum="P"+number_str
-            for listJsonName in ("postListJson","singeListJson"):
-                if postNum in self.blogBase[listJsonName]:
-                    oldPost=self.blogBase[listJsonName][postNum]
-                    htmlDir=oldPost.get("htmlDir","")
-                    if htmlDir and os.path.exists(htmlDir):
-                        os.remove(htmlDir)
-                        print("removed html: "+htmlDir)
-                    del self.blogBase[listJsonName][postNum]
-            mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue.title)
-            mdPath=self.backup_dir+mdFileName+".md"
-            if os.path.exists(mdPath):
-                os.remove(mdPath)
-                print("removed backup: "+mdPath)
-            self.createPlistHtml()
-            self.createFeedXml()
-            self.createSitemapXml()
+            self.removeOnePost(number_str)
 
     def createFileName(self,issue,useLabel=False):
         if useLabel==True:
