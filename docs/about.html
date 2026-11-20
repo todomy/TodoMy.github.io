@@ -61,34 +61,7 @@
     .postTitle{font-size:24px;}
 }
 </style>
-<style>#postBody{--coin:#f7b32b;--coin-dark:#d99a12;--down:var(--color-success-fg,#1a7f37);border-bottom:0;padding-bottom:8px}
-#postBody hr{height:2px;border:0;background:var(--color-border-default);margin:22px 0}
-#postBody .gm-hero-title{font-size:30px;font-weight:900;letter-spacing:6px;text-align:center;line-height:1.2;margin:10px 0 4px}
-.gm-coin{display:inline-block;color:var(--coin);font-size:38px;text-shadow:0 2px 0 var(--coin-dark);cursor:pointer;animation:gmSpin 3.2s linear infinite;transition:transform .15s;vertical-align:middle;margin-right:6px}
-.gm-coin:hover{filter:brightness(1.1)}
-.gm-coin.fly{animation:gmPop .35s ease-out}
-.gm-chart{width:min(420px,86vw);margin:6px auto 0}
-.gm-chart svg{width:100%;height:auto;display:block}
-.gm-chart polyline{fill:none;stroke:var(--down);stroke-width:3;stroke-linejoin:round;stroke-dasharray:600;stroke-dashoffset:600;animation:gmDraw 1.6s ease-out forwards}
-.gm-chart circle{fill:var(--down);opacity:0;animation:gmDrop .3s ease-out 1.5s forwards;transform:translateY(-14px)}
-#postBody .gm-status{text-align:center;font-size:19px;font-weight:600;margin:10px 0 4px}
-#postBody .gm-hero-title+p{font-size:16px;line-height:1.9;padding:14px 18px;margin:8px 0 26px;border-left:3px solid var(--coin);background:var(--color-canvas-subtle);border-radius:0 10px 10px 0}
-#postBody h2{font-size:19px;font-weight:600;margin:28px 0 14px;padding:10px 16px;border-left:4px solid var(--coin);background:var(--color-canvas-subtle);border-radius:0 8px 8px 0}
-#postBody table{border-collapse:collapse;width:100%;margin:0 0 22px;border-radius:8px;overflow:hidden}
-#postBody th,#postBody td{border:1px solid var(--color-border-default);padding:12px 14px;line-height:1.7}
-#postBody th{background:var(--color-canvas-subtle);font-weight:600}
-#postBody ul{list-style:none;padding:0;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:20px}
-#postBody ul li{padding:0}
-#postBody ul a{display:inline-block;padding:11px 26px;border-radius:8px;border:1px solid var(--color-border-default);background:var(--color-canvas-subtle);color:var(--color-accent-fg);font-size:15px;text-decoration:none;transition:all .15s}
-#postBody ul a:hover{transform:translateY(-2px);border-color:var(--color-accent-fg)}
-#postBody .gm-disclaimer{text-align:center;font-size:12px;color:var(--color-fg-muted);margin-top:36px}
-.gm-toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);background:var(--color-fg-default);color:var(--color-canvas-default);padding:10px 22px;border-radius:99px;font-size:14px;opacity:0;pointer-events:none;transition:all .3s;z-index:9999}
-.gm-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@keyframes gmSpin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
-@keyframes gmPop{0%{transform:scale(1)}40%{transform:scale(1.5) rotate(-12deg)}100%{transform:scale(1)}}
-@keyframes gmDraw{to{stroke-dashoffset:0}}
-@keyframes gmDrop{to{opacity:1;transform:translateY(0)}}
-@media (prefers-reduced-motion:reduce){.gm-coin,.gm-chart polyline,.gm-chart circle{animation:none}}</style>
+
 
 
 </head>
@@ -268,42 +241,7 @@ function iFrameLoading(){
     }
 }
 </script>
-<script src='https://todomy.github.io/plugins/GmeekTOC.js'></script><script src='https://todomy.github.io/plugins/lightbox.js'></script><script>
-(function(){
-  var b=document.getElementById('postBody');if(!b)return;
-  var ps=b.querySelectorAll('p'),title,status,disc;
-  for(var i=0;i<ps.length;i++){
-    var t=ps[i].textContent.trim();
-    if(t.indexOf('₿')===0)title=ps[i];
-    else if(t==='加载中…')status=ps[i];
-    else if(t.indexOf('免责声明')===0){disc=ps[i];ps[i].className='gm-disclaimer';}
-  }
-  if(title){
-    title.className='gm-hero-title';
-    var coin=document.createElement('span');
-    coin.textContent='₿';coin.className='gm-coin';coin.title='点我试试';
-    title.insertBefore(coin,title.firstChild);
-    var toast=document.createElement('div');toast.className='gm-toast';b.appendChild(toast);
-    var pocket=0,tid;
-    var tx=['捡到了，但记得及时止损','又捡到一分，复利的力量！','这枚币怕不是空气币','别捡了，落袋为安','拾金不昧是美德，但你没有'];
-    coin.addEventListener('click',function(){
-      pocket+=0.01;
-      coin.classList.remove('fly');void coin.offsetWidth;coin.classList.add('fly');
-      toast.textContent='¥'+pocket.toFixed(2)+' · '+tx[Math.floor(Math.random()*tx.length)];
-      toast.classList.add('show');
-      clearTimeout(tid);tid=setTimeout(function(){toast.classList.remove('show')},1800);
-    });
-  }
-  if(status){
-    var lines=['本站已上市，代码 ABOUT','今日行情：独立思考，持续上涨','欢迎价值投资者长期持有','内容免费，童叟无欺','阅读风险低，收益靠自己'];
-    status.textContent=lines[Math.floor(Math.random()*lines.length)];
-    status.className='gm-status';
-    var wrap=document.createElement('div');wrap.className='gm-chart';
-    wrap.innerHTML="<svg viewBox='0 0 420 90'><polyline points='10,18 60,22 100,16 140,34 180,30 225,52 270,48 320,72 370,68 410,84'/><circle cx='410' cy='84' r='5'/></svg>";
-    b.insertBefore(wrap,status);
-  }
-})();
-</script>
+<script src='https://todomy.github.io/plugins/GmeekTOC.js'></script><script src='https://todomy.github.io/plugins/lightbox.js'></script><script src='/plugins/singlepage.js'></script>
 
 </body>
 </html>
