@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Fri, 20 Nov 2026 06:26:15 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>企业网络设备迁移更换指南</title><link>https://todomy.github.io/post/qi-ye-wang-luo-she-bei-qian-yi-geng-huan-zhi-nan.html</link><description>&lt;p&gt;换一台出口路由器或核心交换机，最容易低估的从来不是采购预算，而是「原来那些配置能不能带过去」。真正让业务中断的，往往也不是设备本身，而是某个没人记录在案的隐含依赖，比如一条被全网默认引用的回程路由、一个早就没人记得为什么存在的 DHCP 池、或者一台其实并不归这台设备管的无线 AP。&lt;/p&gt;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Fri, 20 Nov 2026 06:55:04 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>企业网络设备迁移更换指南</title><link>https://todomy.github.io/post/qi-ye-wang-luo-she-bei-qian-yi-geng-huan-zhi-nan.html</link><description>&lt;p&gt;换一台出口路由器或核心交换机，最容易低估的从来不是采购预算，而是「原来那些配置能不能带过去」。真正让业务中断的，往往也不是设备本身，而是某个没人记录在案的隐含依赖，比如一条被全网默认引用的回程路由、一个早就没人记得为什么存在的 DHCP 池、或者一台其实并不归这台设备管的无线 AP。&lt;/p&gt;
 &lt;p&gt;这篇不谈具体品牌、型号、地址与人员，只谈一套可复用的判断框架。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;一、先回答前置问题 这次到底在换什么&lt;/h2&gt;
@@ -17273,7 +17273,17 @@ README修改：自己修改了程序，开源一定要做好说明原因；因�
 &lt;p&gt;于是，我清掉了挖矿池子里的稳定币，全部买入了这个 BabyDoge。第三天，大家都涨了十倍，开始出货，我和 GE 老师没有出货。我每时每刻盯着链上价格，忘记了哪天，有利好消息，它又上了其他家交易所，然后 CZ 又评论转发。至此，这个币从我买入时一路冲到了百倍。但我这个时候并没有出货，下午它开始一路下跌，我喊 GE 老师一起止盈了。至此，我赚到了人生中的第一个 50 倍币，我的账户也达到了百万千万的行列。&lt;/p&gt;
 &lt;h2&gt;痛苦（2020 年 - 至今）&lt;/h2&gt;
 &lt;p&gt;可能是这个币把我的所有运气都用完了，后续我开启了不断亏损之路（后续再展开）。&lt;/p&gt;
-&lt;hr&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/wo-de-tou-zi-li-shi.html</guid><pubDate>Mon, 25 Nov 2024 09:26:00 +0000</pubDate></item><item><title>关于</title><link>https://todomy.github.io/about.html</link><description>&lt;p&gt;₿ ABOUT · 关于本站&lt;/p&gt;
+&lt;hr&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/wo-de-tou-zi-li-shi.html</guid><pubDate>Mon, 25 Nov 2024 09:26:00 +0000</pubDate></item><item><title>友情链接</title><link>https://todomy.github.io/link.html</link><description>&lt;p&gt;₿ LINKS · 友情链接&lt;/p&gt;
+&lt;p&gt;这里收录了一些值得常去的地方。想串门，点开看看。&lt;/p&gt;
+&lt;p&gt;加载中…&lt;/p&gt;
+&lt;h2&gt;友链列表&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://example.com" rel="nofollow"&gt;示例站点一&lt;/a&gt; 把这里换成对方的站点名和一句话介绍&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://example.org" rel="nofollow"&gt;示例站点二&lt;/a&gt; 复制上面这行就能新增，删掉整行即移除&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/todomy"&gt;我的 GitHub&lt;/a&gt; 示例：也可以放自己的其他主页&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;免责声明：本页面纯属虚构，友链也是瞎加的 ❤️&lt;/p&gt;
+&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/link.html</guid><pubDate>Fri, 20 Nov 2026 06:54:42 +0000</pubDate></item><item><title>关于</title><link>https://todomy.github.io/about.html</link><description>&lt;p&gt;₿ ABOUT · 关于本站&lt;/p&gt;
 &lt;p&gt;你好，这里是 TodoMy，一个记录观察与想法的地方。话题很杂，从投资、历史到日常，共同点是都值得停下来多想一会儿。&lt;/p&gt;
 &lt;p&gt;加载中…&lt;/p&gt;
 &lt;h2&gt;这里写什么&lt;/h2&gt;
