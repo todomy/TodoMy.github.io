@@ -11,9 +11,14 @@ function createTOC() {
     
     tocElement.insertAdjacentHTML('afterbegin', '<div class="toc-title">文章目录</div>');
     
+    const usedIds = new Set();
     headings.forEach(heading => {
         if (!heading.id) {
-            heading.id = heading.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+            let base = heading.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+            let id = base, n = 1;
+            while (usedIds.has(id)) { id = base + '-' + (n++); }
+            usedIds.add(id);
+            heading.id = id;
         }
         const link = document.createElement('a');
         link.href = '#' + heading.id;
@@ -89,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.onscroll = function() {
         const backToTopButton = document.querySelector('.toc-end');
+        if (!backToTopButton) { return; }
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
             backToTopButton.style="visibility: visible;"
         } else {
