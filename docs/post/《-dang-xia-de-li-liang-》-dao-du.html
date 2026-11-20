@@ -25,7 +25,7 @@
 ### 1. 书本快照｜8章维修手册结构  
 - 诊断：Ch1-3 你被“思维+心理时间”绑架  
 - 处方：Ch4-6 用“临在”切断反刍，用“臣服”解除对抗  
-- 升级：Ch7-8 把当下意识带进关系&集体  
+- 升级：Ch7-8 把当下意识带进关系&amp;集体  
 - 附录：呼吸锚定、身体扫描、倾听间隙、认知去融合  
 - 体量：≈8万词，3小时读完；金句密度高，可当每日便签
 
@@ -58,7 +58,7 @@
 ### 1. 书本快照｜8章维修手册结构  
 - 诊断：Ch1-3 你被“思维+心理时间”绑架  
 - 处方：Ch4-6 用“临在”切断反刍，用“臣服”解除对抗  
-- 升级：Ch7-8 把当下意识带进关系&集体  
+- 升级：Ch7-8 把当下意识带进关系&amp;集体  
 - 附录：呼吸锚定、身体扫描、倾听间隙、认知去融合  
 - 体量：≈8万词，3小时读完；金句密度高，可当每日便签
 
@@ -129,7 +129,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/139" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/139" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -277,7 +277,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -286,13 +286,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -349,7 +349,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

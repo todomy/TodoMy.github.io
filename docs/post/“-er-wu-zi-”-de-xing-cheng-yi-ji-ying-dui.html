@@ -10,8 +10,8 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="> [!NOTE]
-> 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的
+<meta name="description" content="&gt; [!NOTE]
+&gt; 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的
 
 
 # 亲密关系中“息事宁人”行为的心理拆解与应对策略
@@ -20,8 +20,8 @@
 ### （一）冲突回避型人格（Conflict Avoidance）
 - **杏仁核过度激活**：导致对负面情绪的生理性排斥。">
 <meta property="og:title" content="“二五仔”的形成以及应对">
-<meta property="og:description" content="> [!NOTE]
-> 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的
+<meta property="og:description" content="&gt; [!NOTE]
+&gt; 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的
 
 
 # 亲密关系中“息事宁人”行为的心理拆解与应对策略
@@ -83,7 +83,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/72" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/72" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -385,7 +385,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -394,13 +394,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -457,7 +457,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

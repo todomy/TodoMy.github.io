@@ -10,8 +10,8 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="> [!TIP]
-> 在“政府”这头大象的肋骨下，重新理解中国
+<meta name="description" content="&gt; [!TIP]
+&gt; 在“政府”这头大象的肋骨下，重新理解中国
 
 “中国为什么能增长？”
 “房价为什么这么高？”
@@ -19,8 +19,8 @@
 “去杠杆、共同富裕、‘双循环’到底在说什么？”
 如果你曾被这些问题困扰，又嫌教科书太枯燥、媒体碎片太肤浅，那么请把《置身事内》放在手边。">
 <meta property="og:title" content="《置身事内》导读">
-<meta property="og:description" content="> [!TIP]
-> 在“政府”这头大象的肋骨下，重新理解中国
+<meta property="og:description" content="&gt; [!TIP]
+&gt; 在“政府”这头大象的肋骨下，重新理解中国
 
 “中国为什么能增长？”
 “房价为什么这么高？”
@@ -81,7 +81,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/121" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/121" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -245,7 +245,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -254,13 +254,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -314,14 +314,14 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 cmButton=document.getElementById("cmButton");
     span=document.createElement("span");
     span.setAttribute("class","Counter");
-    span.innerHTML="49";
+    span.textContent="49";
     cmButton.appendChild(span);
 
 
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

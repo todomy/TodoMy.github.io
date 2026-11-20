@@ -10,11 +10,11 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="> [!TIP]
-> 现在密码管理系统1password三方的订阅越来越贵，自己搭建的话断电，断网，准备服务器也是一个问题，意外情况太多，如何来解决这个问题，以下是教程。">
+<meta name="description" content="&gt; [!TIP]
+&gt; 现在密码管理系统1password三方的订阅越来越贵，自己搭建的话断电，断网，准备服务器也是一个问题，意外情况太多，如何来解决这个问题，以下是教程。">
 <meta property="og:title" content="低成本搭建密码管理系统">
-<meta property="og:description" content="> [!TIP]
-> 现在密码管理系统1password三方的订阅越来越贵，自己搭建的话断电，断网，准备服务器也是一个问题，意外情况太多，如何来解决这个问题，以下是教程。">
+<meta property="og:description" content="&gt; [!TIP]
+&gt; 现在密码管理系统1password三方的订阅越来越贵，自己搭建的话断电，断网，准备服务器也是一个问题，意外情况太多，如何来解决这个问题，以下是教程。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://todomy.github.io/post/di-cheng-ben-da-jian-mi-ma-guan-li-xi-tong.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
@@ -31,7 +31,7 @@
 }
 </script>
 <title>低成本搭建密码管理系统</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
     <style>
@@ -69,7 +69,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/146" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/146" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -255,8 +255,7 @@
 <ul>
 <li>这是一个用于加密会话的安全密钥</li>
 <li><strong>生成方法</strong>：在终端运行以下命令生成强随机字符串：
-<pre lang="bash" class="notranslate"><code class="notranslate">openssl rand -hex 32
-</code></pre>
+<div class="highlight highlight-source-shell"><pre class="notranslate">openssl rand -hex 32</pre></div>
 </li>
 <li>将生成的字符串填入 <code class="notranslate">JWT_SECRET</code> 字段</li>
 </ul>
@@ -364,25 +363,24 @@
 </ul>
 <h3>CLI 手动部署（开发者适用）</h3>
 <p>如果你需要二次开发或更精细的控制：</p>
-<pre lang="bash" class="notranslate"><code class="notranslate"># 克隆项目
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 克隆项目</span>
 git clone https://github.com/shuaiplus/NodeWarden.git
-cd NodeWarden
+<span class="pl-c1">cd</span> NodeWarden
 
-# 安装依赖
+<span class="pl-c"><span class="pl-c">#</span> 安装依赖</span>
 npm install
 
-# 登录 Cloudflare
+<span class="pl-c"><span class="pl-c">#</span> 登录 Cloudflare</span>
 npx wrangler login
 
-# 部署（R2 模式）
+<span class="pl-c"><span class="pl-c">#</span> 部署（R2 模式）</span>
 npm run deploy
 
-# 或 KV 模式
+<span class="pl-c"><span class="pl-c">#</span> 或 KV 模式</span>
 npm run deploy:kv
 
-# 本地开发
-npm run dev
-</code></pre>
+<span class="pl-c"><span class="pl-c">#</span> 本地开发</span>
+npm run dev</pre></div>
 <hr>
 <h2>安全建议</h2>
 <ol>
@@ -470,7 +468,7 @@ A: 由于数据存储在 D1 和 R2 中，你可以随时导出数据迁移到其
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -479,13 +477,13 @@ A: 由于数据存储在 D1 和 R2 中，你可以随时导出数据迁移到其
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -542,7 +540,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

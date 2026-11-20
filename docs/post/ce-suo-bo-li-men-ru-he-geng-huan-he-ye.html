@@ -10,11 +10,11 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="> [!NOTE]
-> 日常生活中，总会遇到一些门损坏情况，而合页长期使用导致损坏有事最多的情况，合页是一种铰链结构，下面是铰链的科普。">
+<meta name="description" content="&gt; [!NOTE]
+&gt; 日常生活中，总会遇到一些门损坏情况，而合页长期使用导致损坏有事最多的情况，合页是一种铰链结构，下面是铰链的科普。">
 <meta property="og:title" content="厕所玻璃门如何更换合页">
-<meta property="og:description" content="> [!NOTE]
-> 日常生活中，总会遇到一些门损坏情况，而合页长期使用导致损坏有事最多的情况，合页是一种铰链结构，下面是铰链的科普。">
+<meta property="og:description" content="&gt; [!NOTE]
+&gt; 日常生活中，总会遇到一些门损坏情况，而合页长期使用导致损坏有事最多的情况，合页是一种铰链结构，下面是铰链的科普。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://todomy.github.io/post/ce-suo-bo-li-men-ru-he-geng-huan-he-ye.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
@@ -69,7 +69,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/87" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/87" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -243,7 +243,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -252,13 +252,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -315,7 +315,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

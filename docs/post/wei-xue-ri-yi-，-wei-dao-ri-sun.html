@@ -11,7 +11,7 @@
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="**题目**  
-人的发展：先读取遗传底稿，再对世界做“减法 & 加法”  
+人的发展：先读取遗传底稿，再对世界做“减法 &amp; 加法”  
 ——跨国双生子研究 × 行为遗传学 ×《道德经》的一次科学对话  
 
 ---  
@@ -24,7 +24,7 @@
 人格相关系数 **r ≈ 0.55**，自尊 **r ≈ 0.40**，IQ 差异 ≈ 7 分。">
 <meta property="og:title" content="为学日益，为道日损">
 <meta property="og:description" content="**题目**  
-人的发展：先读取遗传底稿，再对世界做“减法 & 加法”  
+人的发展：先读取遗传底稿，再对世界做“减法 &amp; 加法”  
 ——跨国双生子研究 × 行为遗传学 ×《道德经》的一次科学对话  
 
 ---  
@@ -89,7 +89,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/137" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/137" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -392,7 +392,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -401,13 +401,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -464,7 +464,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

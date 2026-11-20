@@ -10,9 +10,9 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="> 2026 年 3 月，某互联网大厂。">
+<meta name="description" content="&gt; 2026 年 3 月，某互联网大厂。">
 <meta property="og:title" content="从「努力就能赢」到「弱者不配活」，一条思想的毒链">
-<meta property="og:description" content="> 2026 年 3 月，某互联网大厂。">
+<meta property="og:description" content="&gt; 2026 年 3 月，某互联网大厂。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://todomy.github.io/post/cong-%E3%80%8C-nu-li-jiu-neng-ying-%E3%80%8D-dao-%E3%80%8C-ruo-zhe-bu-pei-huo-%E3%80%8D%EF%BC%8C-yi-tiao-si-xiang-de-du-lian.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
@@ -67,7 +67,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/168" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/168" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -241,7 +241,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -250,13 +250,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -313,7 +313,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);

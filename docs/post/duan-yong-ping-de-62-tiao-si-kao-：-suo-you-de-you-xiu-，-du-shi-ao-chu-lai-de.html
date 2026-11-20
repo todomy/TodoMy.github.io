@@ -10,23 +10,23 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="> [!TIP]
-> 段永平：大道至简的商业与人生智慧 [原文](https://mp.weixin.qq.com/s/lKt1t_fYU71N65WDTvPGwQ)
+<meta name="description" content="&gt; [!TIP]
+&gt; 段永平：大道至简的商业与人生智慧 [原文](https://mp.weixin.qq.com/s/lKt1t_fYU71N65WDTvPGwQ)
 
 
 
 ## 关于成长：做人要本分，做事要平常心
 1. **坚持的本质**  
-   '一个你真正相信的事不需要坚持，你自然会持之以恒地去做。">
+   &#39;一个你真正相信的事不需要坚持，你自然会持之以恒地去做。">
 <meta property="og:title" content="段永平的62条思考：所有的优秀，都是熬出来的">
-<meta property="og:description" content="> [!TIP]
-> 段永平：大道至简的商业与人生智慧 [原文](https://mp.weixin.qq.com/s/lKt1t_fYU71N65WDTvPGwQ)
+<meta property="og:description" content="&gt; [!TIP]
+&gt; 段永平：大道至简的商业与人生智慧 [原文](https://mp.weixin.qq.com/s/lKt1t_fYU71N65WDTvPGwQ)
 
 
 
 ## 关于成长：做人要本分，做事要平常心
 1. **坚持的本质**  
-   '一个你真正相信的事不需要坚持，你自然会持之以恒地去做。">
+   &#39;一个你真正相信的事不需要坚持，你自然会持之以恒地去做。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://todomy.github.io/post/duan-yong-ping-de-62-tiao-si-kao-%EF%BC%9A-suo-you-de-you-xiu-%EF%BC%8C-du-shi-ao-chu-lai-de.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
@@ -81,7 +81,7 @@
         </svg>
     </a>
     
-    <a href="https://github.com/todomy/TodoMy.github.io/issues/66" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/todomy/TodoMy.github.io/issues/66" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -418,7 +418,7 @@
 
 <div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -427,13 +427,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
     if ("11/24/2024" != "") {
         var startSite = new Date("11/24/2024");
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "网站运行" + diffDay + "天" + " • ";
+        document.getElementById("runday").textContent = "\u7f51\u7ad9\u8fd0\u884c" + diffDay + "\u5929" + " • ";
     }
 
     // 返回顶部
@@ -490,7 +490,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);
