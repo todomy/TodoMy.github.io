@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Fri, 20 Nov 2026 03:30:42 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>企业网络设备迁移更换指南</title><link>https://todomy.github.io/post/qi-ye-wang-luo-she-bei-qian-yi-geng-huan-zhi-nan.html</link><description>&lt;p&gt;换一台出口路由器或核心交换机，最容易低估的从来不是采购预算，而是「原来那些配置能不能带过去」。真正让业务中断的，往往也不是设备本身，而是某个没人记录在案的隐含依赖，比如一条被全网默认引用的回程路由、一个早就没人记得为什么存在的 DHCP 池、或者一台其实并不归这台设备管的无线 AP。&lt;/p&gt;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Fri, 20 Nov 2026 06:26:15 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>企业网络设备迁移更换指南</title><link>https://todomy.github.io/post/qi-ye-wang-luo-she-bei-qian-yi-geng-huan-zhi-nan.html</link><description>&lt;p&gt;换一台出口路由器或核心交换机，最容易低估的从来不是采购预算，而是「原来那些配置能不能带过去」。真正让业务中断的，往往也不是设备本身，而是某个没人记录在案的隐含依赖，比如一条被全网默认引用的回程路由、一个早就没人记得为什么存在的 DHCP 池、或者一台其实并不归这台设备管的无线 AP。&lt;/p&gt;
 &lt;p&gt;这篇不谈具体品牌、型号、地址与人员，只谈一套可复用的判断框架。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;一、先回答前置问题 这次到底在换什么&lt;/h2&gt;
@@ -17273,4 +17273,40 @@ README修改：自己修改了程序，开源一定要做好说明原因；因�
 &lt;p&gt;于是，我清掉了挖矿池子里的稳定币，全部买入了这个 BabyDoge。第三天，大家都涨了十倍，开始出货，我和 GE 老师没有出货。我每时每刻盯着链上价格，忘记了哪天，有利好消息，它又上了其他家交易所，然后 CZ 又评论转发。至此，这个币从我买入时一路冲到了百倍。但我这个时候并没有出货，下午它开始一路下跌，我喊 GE 老师一起止盈了。至此，我赚到了人生中的第一个 50 倍币，我的账户也达到了百万千万的行列。&lt;/p&gt;
 &lt;h2&gt;痛苦（2020 年 - 至今）&lt;/h2&gt;
 &lt;p&gt;可能是这个币把我的所有运气都用完了，后续我开启了不断亏损之路（后续再展开）。&lt;/p&gt;
-&lt;hr&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/wo-de-tou-zi-li-shi.html</guid><pubDate>Mon, 25 Nov 2024 09:26:00 +0000</pubDate></item></channel></rss>
+&lt;hr&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/wo-de-tou-zi-li-shi.html</guid><pubDate>Mon, 25 Nov 2024 09:26:00 +0000</pubDate></item><item><title>关于</title><link>https://todomy.github.io/about.html</link><description>&lt;p&gt;₿ ABOUT · 关于本站&lt;/p&gt;
+&lt;p&gt;你好，这里是 TodoMy，一个记录观察与想法的地方。话题很杂，从投资、历史到日常，共同点是都值得停下来多想一会儿。&lt;/p&gt;
+&lt;p&gt;加载中…&lt;/p&gt;
+&lt;h2&gt;这里写什么&lt;/h2&gt;
+&lt;markdown-accessiblity-table&gt;&lt;table role="table"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;方向&lt;/th&gt;
+&lt;th align="left"&gt;主要内容&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;strong&gt;认知&lt;/strong&gt;&lt;/td&gt;
+&lt;td align="left"&gt;读了什么、想了什么，以及一些不愿随大流的判断&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;strong&gt;投资&lt;/strong&gt;&lt;/td&gt;
+&lt;td align="left"&gt;市场与人性的观察，记录判断，也记录错误&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;strong&gt;日常&lt;/strong&gt;&lt;/td&gt;
+&lt;td align="left"&gt;生活里值得记一笔的碎片&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/markdown-accessiblity-table&gt;
+&lt;h2&gt;为什么写&lt;/h2&gt;
+&lt;p&gt;写作是把模糊的念头逼成清晰句子的过程。这里不急着给结论，只保留推演的过程，包括那些后来被自己推翻的部分。如果某篇文章能让你在合上页面后多想三分钟，那它就值了。&lt;/p&gt;
+&lt;h2&gt;声明&lt;/h2&gt;
+&lt;p&gt;本站内容多为个人视角的整理与推演，不构成任何投资建议或行动指南。正如每篇末尾那句：以上内容纯属虚构，瞎写写勿传播。&lt;/p&gt;
+&lt;h2&gt;找到我&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/todomy/TodoMy.github.io"&gt;GitHub&lt;/a&gt; 本站源码与 Issues，欢迎提意见&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://todomy.github.io/rss.xml" rel="nofollow"&gt;RSS&lt;/a&gt; 订阅更新&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;免责声明：本页面纯属虚构，关于也是瞎写的 ❤️&lt;/p&gt;
+&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/about.html</guid><pubDate>Fri, 20 Nov 2026 06:25:55 +0000</pubDate></item></channel></rss>
