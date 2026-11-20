@@ -9,6 +9,11 @@
 <!-- 返回顶部按钮 -->
 <div class="circle-button" onclick="scrollToTop()">↑</div>
 
+{%- if blogBase['postTitle'] is defined %}
+<!-- 返回上一页按钮 - 仅文章/阅读页显示；独立 class，不改动 .circle-button -->
+<div class="back-button visible" title="返回上一页" role="button" aria-label="返回上一页" tabindex="0">←</div>
+{%- endif %}
+
 <script>
 (function(){
     var now = new Date();
@@ -33,5 +38,30 @@
         if (window.scrollY > 300) { btn.classList.add('visible'); }
         else { btn.classList.remove('visible'); }
     });
+
+    // 返回上一页（方案C：站内来源用 history.back 保留滚动位置，外部/直达回首页）
+    var backBtn = document.querySelector('.back-button');
+    if (backBtn) {
+        var goBack = function(){
+            var home = {{ blogBase['homeUrl']|tojson }};
+            var ref = document.referrer || '';
+            var homeHost = '';
+            try { homeHost = new URL(home).hostname; } catch (e) {}
+            var refHost = '';
+            if (ref) {
+                try { refHost = new URL(ref).hostname; }
+                catch (e) { refHost = ''; }
+            }
+            if (refHost && refHost === homeHost && window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = home;
+            }
+        };
+        backBtn.addEventListener('click', goBack);
+        backBtn.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goBack(); }
+        });
+    }
 })();
 </script>
