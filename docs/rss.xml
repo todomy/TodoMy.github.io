@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Thu, 19 Nov 2026 08:47:47 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>企业网络设备迁移更换指南</title><link>https://todomy.github.io/post/qi-ye-wang-luo-she-bei-qian-yi-geng-huan-zhi-nan.html</link><description>&lt;p&gt;换一台出口路由器或核心交换机，最容易低估的从来不是采购预算，而是「原来那些配置能不能带过去」。真正让业务中断的，往往也不是设备本身，而是某个没人记录在案的隐含依赖，比如一条被全网默认引用的回程路由、一个早就没人记得为什么存在的 DHCP 池、或者一台其实并不归这台设备管的无线 AP。&lt;/p&gt;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Fri, 20 Nov 2026 02:12:32 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>企业网络设备迁移更换指南</title><link>https://todomy.github.io/post/qi-ye-wang-luo-she-bei-qian-yi-geng-huan-zhi-nan.html</link><description>&lt;p&gt;换一台出口路由器或核心交换机，最容易低估的从来不是采购预算，而是「原来那些配置能不能带过去」。真正让业务中断的，往往也不是设备本身，而是某个没人记录在案的隐含依赖，比如一条被全网默认引用的回程路由、一个早就没人记得为什么存在的 DHCP 池、或者一台其实并不归这台设备管的无线 AP。&lt;/p&gt;
 &lt;p&gt;这篇不谈具体品牌、型号、地址与人员，只谈一套可复用的判断框架。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;一、先回答前置问题 这次到底在换什么&lt;/h2&gt;
@@ -7561,7 +7561,8 @@ $4,100 ────┘  6月跳水（跌破900元/克）
 &lt;ul&gt;
 &lt;li&gt;这是一个用于加密会话的安全密钥&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;生成方法&lt;/strong&gt;：在终端运行以下命令生成强随机字符串：
-&lt;div class="highlight highlight-source-shell"&gt;&lt;pre class="notranslate"&gt;openssl rand -hex 32&lt;/pre&gt;&lt;/div&gt;
+&lt;pre lang="bash" class="notranslate"&gt;&lt;code class="notranslate"&gt;openssl rand -hex 32
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;将生成的字符串填入 &lt;code class="notranslate"&gt;JWT_SECRET&lt;/code&gt; 字段&lt;/li&gt;
 &lt;/ul&gt;
@@ -7669,24 +7670,25 @@ $4,100 ────┘  6月跳水（跌破900元/克）
 &lt;/ul&gt;
 &lt;h3&gt;CLI 手动部署（开发者适用）&lt;/h3&gt;
 &lt;p&gt;如果你需要二次开发或更精细的控制：&lt;/p&gt;
-&lt;div class="highlight highlight-source-shell"&gt;&lt;pre class="notranslate"&gt;&lt;span class="pl-c"&gt;&lt;span class="pl-c"&gt;#&lt;/span&gt; 克隆项目&lt;/span&gt;
+&lt;pre lang="bash" class="notranslate"&gt;&lt;code class="notranslate"&gt;# 克隆项目
 git clone https://github.com/shuaiplus/NodeWarden.git
-&lt;span class="pl-c1"&gt;cd&lt;/span&gt; NodeWarden
+cd NodeWarden
 
-&lt;span class="pl-c"&gt;&lt;span class="pl-c"&gt;#&lt;/span&gt; 安装依赖&lt;/span&gt;
+# 安装依赖
 npm install
 
-&lt;span class="pl-c"&gt;&lt;span class="pl-c"&gt;#&lt;/span&gt; 登录 Cloudflare&lt;/span&gt;
+# 登录 Cloudflare
 npx wrangler login
 
-&lt;span class="pl-c"&gt;&lt;span class="pl-c"&gt;#&lt;/span&gt; 部署（R2 模式）&lt;/span&gt;
+# 部署（R2 模式）
 npm run deploy
 
-&lt;span class="pl-c"&gt;&lt;span class="pl-c"&gt;#&lt;/span&gt; 或 KV 模式&lt;/span&gt;
+# 或 KV 模式
 npm run deploy:kv
 
-&lt;span class="pl-c"&gt;&lt;span class="pl-c"&gt;#&lt;/span&gt; 本地开发&lt;/span&gt;
-npm run dev&lt;/pre&gt;&lt;/div&gt;
+# 本地开发
+npm run dev
+&lt;/code&gt;&lt;/pre&gt;
 &lt;hr&gt;
 &lt;h2&gt;安全建议&lt;/h2&gt;
 &lt;ol&gt;
@@ -14741,17 +14743,18 @@ mtd write /tmp/uboot.bin FIP
 &lt;hr&gt;
 &lt;h2&gt;二、即时反击话术库&lt;/h2&gt;
 &lt;h3&gt;🛡️ 万能防御公式&lt;/h3&gt;
-&lt;div class="highlight highlight-text-md"&gt;&lt;pre class="notranslate"&gt;&lt;span class="pl-s"&gt;1&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;复读机模式&lt;span class="pl-s"&gt;**&lt;/span&gt;  
+&lt;pre lang="markdown" class="notranslate"&gt;&lt;code class="notranslate"&gt;1. **复读机模式**  
    👉 对方："你这人真自私！"  
    🔄 回应："你说我自私？"（等待对方解释消耗其能量）  
 
-&lt;span class="pl-s"&gt;2&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;焦点转移术&lt;span class="pl-s"&gt;**&lt;/span&gt;  
+2. **焦点转移术**  
    👉 对方："别人都能加班你怎么不行？"  
    🔄 回应："您似乎对行业加班文化很有研究？"  
 
-&lt;span class="pl-s"&gt;3&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;降维打击法&lt;span class="pl-s"&gt;**&lt;/span&gt;  
+3. **降维打击法**  
    👉 对方："你不听话就分手！"  
-   🔄 回应："用威胁得到的关系你要吗？"（微笑直视）&lt;/pre&gt;&lt;/div&gt;
+   🔄 回应："用威胁得到的关系你要吗？"（微笑直视）
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;📌 分场景应对矩阵&lt;/h3&gt;
 &lt;h4&gt;职场篇&lt;/h4&gt;
 &lt;markdown-accessiblity-table&gt;&lt;table role="table"&gt;
