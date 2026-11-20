@@ -514,7 +514,9 @@ class GMEEK():
                     self.blogBase[listJsonName][postNum]["top"]=0
 
             try:
-                postConfig=json.loads(issue.body.split("\r\n")[-1:][0].split("##")[1])
+                # 兼容 \n / \r\n 两种换行：GitHub API 返回 \n，本地 webhook 可能是 \r\n
+                body_lines=issue.body.replace("\r\n","\n").replace("\r","\n").split("\n")
+                postConfig=json.loads(body_lines[-1].split("##")[1])
                 print("Has Custom JSON parameters")
                 print(postConfig)
             except:
