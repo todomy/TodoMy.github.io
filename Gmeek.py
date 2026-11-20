@@ -99,6 +99,17 @@ class GMEEK():
         else:
             print("static does not exist")
 
+        # 本地化插件：把 plugins/ 复制到 docs/plugins/，供相对路径引用
+        plugins_src = 'plugins/'
+        plugins_dst = os.path.join(self.root_dir, 'plugins')
+        if os.path.exists(plugins_src):
+            if os.path.exists(plugins_dst):
+                shutil.rmtree(plugins_dst)
+            shutil.copytree(plugins_src, plugins_dst)
+            print("Copied plugins/ to docs/plugins/")
+        else:
+            print("plugins does not exist")
+
     def defaultConfig(self):
         dconfig={"singlePage":[],"startSite":"","filingNum":"","onePageListNum":15,"commentLabelColor":"#006b75","yearColorList":["#bc4c00", "#0969da", "#1f883d", "#A333D0"],"i18n":"CN","themeMode":"manual","dayTheme":"light","nightTheme":"dark","urlMode":"pinyin","script":"","style":"","head":"","indexScript":"","indexStyle":"","bottomText":"","showPostSource":1,"iconList":{},"UTC":+8,"rssSplit":"sentence","rssFullText":0,"exlink":{},"needComment":1,"allHead":""}
         config=json.loads(open('config.json', 'r', encoding='utf-8').read())
@@ -116,7 +127,7 @@ class GMEEK():
             self.blogBase["ogImage"]=self.blogBase["avatarUrl"]
 
         if "primerCSS" not in self.blogBase:
-            self.blogBase["primerCSS"]="<link href='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/primer.css' rel='stylesheet' />"
+            self.blogBase["primerCSS"]="<link href='%s/plugins/primer.css' rel='stylesheet' />" % self.blogBase["homeUrl"]
 
         if "homeUrl" not in self.blogBase:
             if str(self.repo.name).lower() == (str(self.repo.owner.login) + ".github.io").lower():
