@@ -20,7 +20,9 @@
 
 .SideNav{min-width: 360px;}
 .SideNav-icon{margin-right: 16px}
-.SideNav-item .Label{color: #fff;margin-left:4px;}
+.SideNav-item .Label{margin-left:4px;}
+.SideNav-item .LabelName a{color:inherit;}
+.SideNav-item .LabelMeta{color:var(--color-fg-muted,#6B7280);background-color:var(--color-canvas-subtle,#F1F3F5);}
 .d-flex{min-width:0;}
 .listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
 .listLabels{white-space:nowrap;display:flex;}
@@ -105,11 +107,11 @@
         <span class="listTitle">{{ postListJson[num]['postTitle']|e }}</span>
     </div>
     <div class="listLabels">
-        {% if postListJson[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['commentLabelColor'] }}">{{ postListJson[num]['commentNum'] }}</span>{% endif %}
+        {% if postListJson[num]['commentNum']>0 %}<span class="Label LabelMeta">{{ postListJson[num]['commentNum'] }}</span>{% endif %}
         {% for label in postListJson[num]['labels'] -%}
-        <span class="Label LabelName" style="background-color:{{ blogBase['labelColorDict'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
+        <span class="Label LabelName" style="color:{{ blogBase['labelColorDict'][label] }};background-color:{{ blogBase['labelBgDict'][label] }}"><object><a href="tag.html#{{ label }}">{{ label }}</a></object></span>
         {%- endfor %}
-        <span class="Label LabelTime" style="background-color:{{ postListJson[num]['dateLabelColor'] }}">{{ postListJson[num]['createdDate'] }}</span>
+        <span class="Label LabelTime LabelMeta">{{ postListJson[num]['createdDate'] }}</span>
     </div>
 </a>
 {%- endfor %}

@@ -8,6 +8,26 @@
     "onePageListNum": 1000000,
     "commentLabelColor": "#006b75",
     "yearColorList": ["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
+    "labelTheme": {
+        "preset": {
+            "认知": {"color": "#1A56C4", "bg": "#E8F0FE"},
+            "投资": {"color": "#9A5B0B", "bg": "#FEF3E0"},
+            "日常": {"color": "#1E6B3A", "bg": "#E6F4EA"},
+            "about": {"color": "#4135BF", "bg": "#EEEDFE"},
+            "link": {"color": "#1E6B3A", "bg": "#E6F4EA"}
+        },
+        "pool": [
+            {"color": "#1D4ED8", "bg": "#DBEAFE"},
+            {"color": "#7C3AED", "bg": "#EDE9FE"},
+            {"color": "#BE185D", "bg": "#FCE7F3"},
+            {"color": "#B45309", "bg": "#FEF3C7"},
+            {"color": "#0E7490", "bg": "#CFFAFE"},
+            {"color": "#047857", "bg": "#D1FAE5"},
+            {"color": "#4D7C0F", "bg": "#ECFCCB"},
+            {"color": "#4338CA", "bg": "#E0E7FF"}
+        ],
+        "meta": {"color": "#6B7280", "bg": "#F1F3F5"}
+    },
     "i18n": "CN",
     "script": "<script src='https://todomy.github.io/plugins/GmeekTOC.js'></script><script src='https://todomy.github.io/plugins/lightbox.js'></script>",
     "nightTheme": "dark_colorblind",

@@ -3,6 +3,7 @@ import os
 import re
 import json
 import time
+import zlib
 import datetime
 import shutil
 import urllib
@@ -38,6 +39,29 @@ IconBase={
     "check":"M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"
 }
 ######################################################################################
+
+# 标签配色：精调表优先，新分类用稳定 hash 从色池确定性取色（浅底深字）
+# 同一分类名在任何时候/任何设备都得到同一组颜色；新增分类零维护，撞色时往 preset 加一行即可。
+def buildLabelColors(labelNames, theme):
+    preset = theme.get('preset', {})
+    pool = theme.get('pool', [])
+    meta = theme.get('meta', {})
+    colorDict = {}
+    bgDict = {}
+    for name in labelNames:
+        if name in preset:
+            colorDict[name] = preset[name]['color']
+            bgDict[name] = preset[name]['bg']
+        elif pool:
+            # zlib.crc32 是跨平台、跨进程稳定的 hash，不用 Python 内置 hash()
+            idx = zlib.crc32(name.encode('utf-8')) % len(pool)
+            colorDict[name] = pool[idx]['color']
+            bgDict[name] = pool[idx]['bg']
+        else:
+            colorDict[name] = meta.get('color', '#6B7280')
+            bgDict[name] = meta.get('bg', '#F1F3F5')
+    return colorDict, bgDict
+
 class GMEEK():
     def __init__(self,options):
         self.options=options
@@ -116,7 +140,12 @@ class GMEEK():
         self.blogBase={**dconfig,**config}.copy()
         self.blogBase["postListJson"]=json.loads('{}')
         self.blogBase["singeListJson"]=json.loads('{}')
+        # 标签配色：精调表优先 + 新分类稳定 hash 取色，生成深字色/浅底色
+        self.labelColorDict, self.labelBgDict = buildLabelColors(
+            list(self.labelColorDict.keys()), self.blogBase.get('labelTheme', {}))
         self.blogBase["labelColorDict"]=self.labelColorDict
+        self.blogBase["labelBgDict"]=self.labelBgDict
+        self.blogBase["metaLabelColor"]=self.blogBase.get('labelTheme', {}).get('meta', {})
         if "displayTitle" not in self.blogBase:
             self.blogBase["displayTitle"]=self.blogBase["title"]
 
@@ -675,6 +704,8 @@ else:
             blog.blogBase[key] = value
         f.close()
         blog.blogBase["labelColorDict"]=blog.labelColorDict
+        blog.blogBase["labelBgDict"]=blog.labelBgDict
+        blog.blogBase["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
         blog.runOne(options.issue_number)
 
 listFile=open("blogBase.json","w")
@@ -708,6 +739,8 @@ for i in blog.blogBase["postListJson"]:
         del blog.blogBase["postListJson"][i]["wordCount"]
 
 blog.blogBase["postListJson"]["labelColorDict"]=blog.labelColorDict
+blog.blogBase["postListJson"]["labelBgDict"]=blog.labelBgDict
+blog.blogBase["postListJson"]["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
 
 docListFile=open(blog.root_dir+"postList.json","w")
 docListFile.write(json.dumps(blog.blogBase["postListJson"]))

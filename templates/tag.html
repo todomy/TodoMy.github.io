@@ -15,9 +15,11 @@
 .subnav-search button{padding:5px 8px;border-top-left-radius:0px;border-bottom-left-radius:0px;}
 
 .SideNav-icon{margin-right:16px}
-.Label{color: #fff;margin-left:4px;}
+.Label{margin-left:4px;}
+.LabelName a{color:inherit;}
+.LabelMeta{color:var(--color-fg-muted,#6B7280);background-color:var(--color-canvas-subtle,#F1F3F5);}
 #taglabel .Label {margin-bottom:8px;}
-.Counter{color:#fff;background-color:rgba(234, 238, 242, 0.5)}
+.Counter{color:var(--color-fg-muted,#6B7280);background-color:rgba(175,184,193,.35)}
 
 .genTime{float: right;}
 .d-flex{min-width:0;}
@@ -92,7 +94,11 @@ function showList(labelsCount){
     SideNav.classList.add("border");
     let taglabel=document.getElementById("taglabel");
 
-    jsonData['labelColorDict']["All"]="#000";
+    let metaColor=(jsonData['metaLabelColor']&&jsonData['metaLabelColor']['color'])||'#6B7280';
+    let metaBg=(jsonData['metaLabelColor']&&jsonData['metaLabelColor']['bg'])||'#F1F3F5';
+    jsonData['labelColorDict']["All"]=metaColor;
+    if(!jsonData['labelBgDict'])jsonData['labelBgDict']={};
+    jsonData['labelBgDict']["All"]=metaBg;
     labelsCount["All"]=0;
     for (let key in jsonData) {
         if (key !== 'labelColorDict' && Array.isArray(jsonData[key]['labels'])) {
@@ -108,7 +114,7 @@ function showList(labelsCount){
         tagList.push(label);
         let showLabels = document.createElement("button");
         showLabels.setAttribute("class", "Label");
-        showLabels.setAttribute("style", "background-color:" + jsonData['labelColorDict'][label]+";padding:4px;");
+        showLabels.setAttribute("style", "color:" + jsonData['labelColorDict'][label]+";background-color:" + (jsonData['labelBgDict'][label]||'#F1F3F5')+";padding:4px;");
         showLabels.textContent="\u00a0\u00a0"+label+" ";
         showLabels.addEventListener("click", function(){ updateShowTag(label); });
 
@@ -120,7 +126,7 @@ function showList(labelsCount){
     }
 
     for(i in jsonData){
-        if(i!='labelColorDict'){
+        if(i!='labelColorDict' && i!='labelBgDict' && i!='metaLabelColor' && Array.isArray(jsonData[i]['labels'])){
             let div=document.createElement("div");
             div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
             div.setAttribute("data-content", jsonData[i]['content'] || '');
@@ -152,13 +158,12 @@ function showList(labelsCount){
             for(label of jsonData[i]['labels']){
                 let LabelName=document.createElement("span");
                 LabelName.setAttribute("class","Label LabelName");
-                LabelName.setAttribute("style","background-color:"+jsonData['labelColorDict'][label]);
+                LabelName.setAttribute("style","color:"+jsonData['labelColorDict'][label]+";background-color:"+(jsonData['labelBgDict'][label]||'#F1F3F5'));
                 LabelName.textContent=label;
                 listLabels.appendChild(LabelName);
             }
             let LabelTime=document.createElement("span");
-            LabelTime.setAttribute("class","Label LabelTime");
-            LabelTime.setAttribute("style","background-color:"+jsonData[i]['dateLabelColor']);
+            LabelTime.setAttribute("class","Label LabelTime LabelMeta");
             LabelTime.textContent=jsonData[i]['createdDate'];
             listLabels.appendChild(LabelTime);
 
