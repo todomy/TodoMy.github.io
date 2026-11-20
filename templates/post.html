@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<meta name="description" content="{{ blogBase['description'] }}">
+<meta name="description" content="{{ blogBase['description']|e }}">
 <meta property="og:title" content="{{ blogBase['postTitle']|e }}">
-<meta property="og:description" content="{{ blogBase['description'] }}">
+<meta property="og:description" content="{{ blogBase['description']|e }}">
 <meta property="og:type" content="article">
-<meta property="og:url" content="{{ blogBase['postUrl'] }}">
-<meta property="og:image" content="{{ blogBase['ogImage'] }}">
-<link rel="canonical" href="{{ blogBase['postUrl'] }}">
+<meta property="og:url" content="{{ blogBase['postUrl']|e }}">
+<meta property="og:image" content="{{ blogBase['ogImage']|e }}">
+<link rel="canonical" href="{{ blogBase['postUrl']|e }}">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -51,7 +51,7 @@
         </svg>
     </a>
     {% if blogBase['showPostSource']==1 %}
-    <a href="{{ blogBase['postSourceUrl'] }}" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="{{ blogBase['postSourceUrl']|e }}" target="_blank" rel="noopener noreferrer" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -84,7 +84,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     cmButton=document.getElementById("cmButton");
     span=document.createElement("span");
     span.setAttribute("class","Counter");
-    span.innerHTML="{{ blogBase['commentNum'] }}";
+    span.textContent="{{ blogBase['commentNum'] }}";
     cmButton.appendChild(span);
 {%- endif %}
 
@@ -92,21 +92,21 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 function openComments(){
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
+    cmButton.textContent="loading";
     span=document.createElement("span");
     span.setAttribute("class","AnimatedEllipsis");
     cmButton.appendChild(span);
 
     script=document.createElement("script");
     script.setAttribute("src","https://utteranc.es/client.js");
-    script.setAttribute("repo","{{ blogBase['repoName'] }}");
+    script.setAttribute("repo",{{ blogBase['repoName']|tojson }});
     script.setAttribute("issue-term","title");
     {% if blogBase['themeMode']=='manual' %}
     if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
     else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
     else{script.setAttribute("theme","preferred-color-scheme");}
     {% else %}
-    script.setAttribute("theme","{{ blogBase['nightTheme'] }}");
+    script.setAttribute("theme",{{ blogBase['nightTheme']|tojson }});
     {% endif %}
     script.setAttribute("crossorigin","anonymous");
     script.setAttribute("async","");

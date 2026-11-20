@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block head %}
-<meta name="description" content="{{ blogBase['title'] }} search page">
-<title>{{ blogBase['title'] }} - Tag</title>
+<meta name="description" content="{{ blogBase['title']|e }} search page">
+<title>{{ blogBase['title']|e }} - Tag</title>
 <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/performance-optimize.js' defer></script>
 {% endblock %}
 
@@ -110,12 +110,12 @@ function showList(labelsCount){
         let showLabels = document.createElement("button");
         showLabels.setAttribute("class", "Label");
         showLabels.setAttribute("style", "background-color:" + jsonData['labelColorDict'][label]+";padding:4px;");
-        showLabels.innerHTML="&nbsp;&nbsp;"+label+" ";
-        showLabels.setAttribute("onclick", "javascript:updateShowTag('" + label + "');");
+        showLabels.textContent="\u00a0\u00a0"+label+" ";
+        showLabels.addEventListener("click", function(){ updateShowTag(label); });
 
         let LabelNum=document.createElement("span");
         LabelNum.setAttribute("class","Counter");
-        LabelNum.innerHTML=labelsCount[label];
+        LabelNum.textContent=labelsCount[label];
         showLabels.appendChild(LabelNum);
         taglabel.appendChild(showLabels);
     }
@@ -143,7 +143,7 @@ function showList(labelsCount){
 
             let title=document.createElement("span");
             title.setAttribute("class","listTitle");
-            title.innerHTML=jsonData[i]['postTitle'];
+            title.textContent=jsonData[i]['postTitle'];
             center.appendChild(svg);
             center.appendChild(title);
 
@@ -154,13 +154,13 @@ function showList(labelsCount){
                 let LabelName=document.createElement("span");
                 LabelName.setAttribute("class","Label LabelName");
                 LabelName.setAttribute("style","background-color:"+jsonData['labelColorDict'][label]);
-                LabelName.innerHTML=label;
+                LabelName.textContent=label;
                 listLabels.appendChild(LabelName);
             }
             let LabelTime=document.createElement("span");
             LabelTime.setAttribute("class","Label LabelTime");
             LabelTime.setAttribute("style","background-color:"+jsonData[i]['dateLabelColor']);
-            LabelTime.innerHTML=jsonData[i]['createdDate'];
+            LabelTime.textContent=jsonData[i]['createdDate'];
             listLabels.appendChild(LabelTime);
 
             item.appendChild(center);
@@ -181,8 +181,8 @@ function updateShowTag(label){
 function setClassDisplay(label){
     let lists = document.getElementsByClassName("lists");
     let tagTitle = document.getElementsByClassName("tagTitle")[0];
-    tagTitle.innerHTML="Tag #"+label;
-    document.title=label+" - {{ blogBase['title'] }}";
+    tagTitle.textContent="Tag #"+label;
+    document.title=label+" - "+{{ blogBase['title']|tojson }};
     document.getElementsByClassName("subnav-search-input")[0].value='';
     if(label=="All"){
         for(let i = 0; i < lists.length; i++){lists[i].style.display='block';}
@@ -209,9 +209,9 @@ function searchShow(){
     let lists = document.getElementsByClassName("lists");
     let tagTitle = document.getElementsByClassName("tagTitle")[0];
     let searchInput = document.getElementsByClassName("subnav-search-input")[0].value;
-    tagTitle.innerHTML="Search #"+searchInput;
-    if(searchInput==''){document.title="Search - {{ blogBase['title'] }}";}
-    else{document.title=searchInput+" - {{ blogBase['title'] }}";}
+    tagTitle.textContent="Search #"+searchInput;
+    if(searchInput==''){document.title="Search - "+{{ blogBase['title']|tojson }};}
+    else{document.title=searchInput+" - "+{{ blogBase['title']|tojson }};}
     let a=0;
     window.location.hash="#"+(searchInput);
     
@@ -221,7 +221,7 @@ function searchShow(){
     for(let i = 0; i < lists.length; i++){
         let item = lists[i];
         let titleElement = item.childNodes[0].childNodes[0].childNodes[1];
-        let titleText = titleElement ? titleElement.innerHTML.toUpperCase() : '';
+        let titleText = titleElement ? titleElement.textContent.toUpperCase() : '';
         
         // 获取文章内容（从data-content属性中）
         let contentText = item.getAttribute('data-content') || '';
@@ -239,7 +239,7 @@ function searchShow(){
     if(a==0){
         let notFind=document.getElementsByClassName("notFind")[0];
         notFind.style.display='block';
-        notFind.innerHTML='Not Find "'+searchInput+'"';
+        notFind.textContent='Not Find "'+searchInput+'"';
     }
     else{document.getElementsByClassName("notFind")[0].style.display='none';}
 }

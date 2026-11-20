@@ -53,12 +53,12 @@
 }
 </style>
 
-<div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl'] }}">{{ blogBase['title'] }}</a></div>
+<div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="{{ blogBase['homeUrl']|e }}">{{ blogBase['title']|e }}</a></div>
 <div id="footer2">
     {%- if blogBase['filingNum']!='' -%}
-    <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">{{ blogBase['filingNum'] }}</a> • </span>
+    <span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">{{ blogBase['filingNum']|e }}</a> • </span>
     {%- endif %}
-    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
 
 <!-- 返回顶部按钮 -->
@@ -67,13 +67,13 @@
 <script>
 (function(){
     var now = new Date();
-    document.getElementById("copyrightYear").innerHTML = now.getFullYear();
+    document.getElementById("copyrightYear").textContent = now.getFullYear();
 
-    if ("{{ blogBase['startSite'] }}" != "") {
-        var startSite = new Date("{{ blogBase['startSite'] }}");
+    if ({{ blogBase['startSite']|tojson }} != "") {
+        var startSite = new Date({{ blogBase['startSite']|tojson }});
         var diff = now.getTime() - startSite.getTime();
         var diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById("runday").innerHTML = "{{ i18n['run'] }}" + diffDay + "{{ i18n['days'] }}" + " • ";
+        document.getElementById("runday").textContent = {{ i18n['run']|tojson }} + diffDay + {{ i18n['days']|tojson }} + " • ";
     }
 
     // 返回顶部

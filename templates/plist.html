@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block head %}
-<meta name="description" content="{{ blogBase['subTitle'] }}">
-<meta property="og:title" content="{{ blogBase['title'] }}">
-<meta property="og:description" content="{{ blogBase['subTitle'] }}">
+<meta name="description" content="{{ blogBase['subTitle']|e }}">
+<meta property="og:title" content="{{ blogBase['title']|e }}">
+<meta property="og:description" content="{{ blogBase['subTitle']|e }}">
 <meta property="og:type" content="blog">
-<meta property="og:url" content="{{ blogBase['homeUrl'] }}">
-<meta property="og:image" content="{{ blogBase['ogImage'] }}">
-<title>{{ blogBase['title'] }}</title>
+<meta property="og:url" content="{{ blogBase['homeUrl']|e }}">
+<meta property="og:image" content="{{ blogBase['ogImage']|e }}">
+<title>{{ blogBase['title']|e }}</title>
 {% endblock %}
 
 {% block style %}
@@ -45,21 +45,21 @@
 
 {% block header %}
 <h1>
-    <img src="{{ blogBase['avatarUrl'] }}" class="avatar circle" id="avatarImg" alt="avatar">
+    <img src="{{ blogBase['avatarUrl']|e }}" class="avatar circle" id="avatarImg" alt="avatar">
     {%- if blogBase['displayTitle']=='eekdai' -%}
-    <a class="blogTitle" href="https://meekdai.com">{{ blogBase['displayTitle'] }}</a>
+    <a class="blogTitle" href="https://meekdai.com">{{ blogBase['displayTitle']|e }}</a>
     {% else -%}
-    <a class="blogTitle">{{ blogBase['displayTitle'] }}</a>
+    <a class="blogTitle">{{ blogBase['displayTitle']|e }}</a>
     {%- endif -%}
 </h1>
 <div class="title-right">
-    <a href="{{ blogBase['homeUrl'] }}/tag.html" id="buttonSearch" class="btn btn-invisible circle" title="{{ i18n['Search'] }}">
+    <a href="{{ blogBase['homeUrl']|e }}/tag.html" id="buttonSearch" class="btn btn-invisible circle" title="{{ i18n['Search']|e }}">
         <svg class="octicon" width="16" height="16" >
             <path id="pathSearch" fill-rule="evenodd"></path>
         </svg>
     </a>
     {% for key, value in blogBase['exlink'].items() -%}
-    <a href="{{ value }}" class="btn btn-invisible circle" title="{{ key }}" target="_blank">
+    <a href="{{ value|e }}" class="btn btn-invisible circle" title="{{ key|e }}" target="_blank" rel="noopener noreferrer">
         <svg class="octicon" width="16" height="16" >
             <path id="{{ key }}" fill-rule="evenodd"></path>
         </svg>
@@ -72,7 +72,7 @@
         </svg>
     </a>
     {%- endfor %}
-    <a href="{{ blogBase['homeUrl'] }}/rss.xml" target="_blank" id="buttonRSS" class="btn btn-invisible circle" title="RSS">
+    <a href="{{ blogBase['homeUrl']|e }}/rss.xml" target="_blank" rel="noopener noreferrer" id="buttonRSS" class="btn btn-invisible circle" title="RSS">
         <svg class="octicon" width="16" height="16" >
             <path id="pathRSS" fill-rule="evenodd"></path>
         </svg>
