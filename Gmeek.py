@@ -7,6 +7,8 @@ import datetime
 import shutil
 import urllib
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import argparse
 import html
 from github import Github
@@ -48,6 +50,12 @@ class GMEEK():
 
         # Jinja 环境只建一次，模板带缓存，避免每篇文章重复加载
         self.jinja_env=Environment(loader=FileSystemLoader('templates'))
+
+        # 共享 Session + 重试：全量构建约 500 次 API 调用，遇 429/5xx/网络抖动自动退避
+        self.http = requests.Session()
+        retry = Retry(total=5, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504],
+                      allowed_methods=frozenset(['GET', 'POST']), respect_retry_after_header=True)
+        self.http.mount('https://', HTTPAdapter(max_retries=retry))
 
         user = Github(self.options.github_token)
         self.repo = self.get_repo(user, options.repo_name)
@@ -133,11 +141,42 @@ class GMEEK():
         payload = {"text": mdstr, "mode": "gfm"}
         headers = {"Authorization": "token {}".format(self.options.github_token)}
         try:
-            response = requests.post("https://api.github.com/markdown", json=payload, headers=headers)
+            response = self.http.post("https://api.github.com/markdown", json=payload, headers=headers, timeout=30)
             response.raise_for_status()  # Raises an exception if status code is not 200
             return response.text
         except requests.RequestException as e:
             raise Exception("markdown2html error: {}".format(e))
+
+    @staticmethod
+    def cleanDescription(body, period, max_len=160):
+        """从 Markdown 正文生成纯文本摘要：去标记、压空白、限长度，避免污染 meta 属性。"""
+        if not body:
+            return ''
+        text = body
+        # 去掉自定义 JSON 配置尾行 ##{...}
+        text = re.sub(r'##\{.*?\}\s*$', '', text, flags=re.S)
+        # 去掉围栏代码块与行内代码
+        text = re.sub(r'```.*?```', '', text, flags=re.S)
+        text = re.sub(r'`[^`]*`', '', text)
+        # 图片去掉、链接保留可见文字
+        text = re.sub(r'!\[([^\]]*)\]\([^)]*\)', '', text)
+        text = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)
+        # 去掉 HTML 标签
+        text = re.sub(r'<[^>]+>', '', text)
+        # 去掉 Markdown 标题/引用/列表/分隔线等行首标记
+        text = re.sub(r'^\s*(#{1,6}|>|[-*+]\s|\d+\.\s|---|\*\*\*)\s*', '', text, flags=re.M)
+        # 去掉强调符号
+        text = re.sub(r'(\*\*|__|\*|_|~~)', '', text)
+        # 压平空白
+        text = re.sub(r'\s+', ' ', text).strip()
+        # 优先取首句，再按长度截断
+        if period and period in text:
+            first = text.split(period)[0].strip()
+            if first:
+                text = first + period
+        if len(text) > max_len:
+            text = text[:max_len].rstrip() + '…'
+        return text.replace('"', "'")
 
     def renderHtml(self,template,blogBase,postListJson,htmlDir,icon):
         template = self.jinja_env.get_template(template)
@@ -371,18 +410,62 @@ class GMEEK():
         sitemapFile.close()
         print("====== create sitemap xml ======")
 
+    def uniqueHtmlPath(self, issue, postNum, useLabel=False):
+        """生成 HTML 路径；仅当 slug 被其他文章占用时追加 -P编号，保证既有 URL 不变。"""
+        base = self.createFileName(issue, useLabel=useLabel)
+        prefix = self.root_dir if useLabel else self.post_dir
+        candidate = base
+        suffix = 0
+        while True:
+            html_path = prefix + candidate + '.html'
+            taken = False
+            for coll in ('postListJson', 'singeListJson'):
+                for num, post in self.blogBase.get(coll, {}).items():
+                    if num != postNum and post.get('htmlDir') == html_path:
+                        taken = True
+                        break
+                if taken:
+                    break
+            if not taken:
+                return html_path
+            suffix += 1
+            candidate = '{}-P{}-{}'.format(base, issue.number, suffix)
+
+    def purgePrevious(self, postNum, keepHtml, keepList):
+        """增量更新前清理旧产物：跨集合残留、改名/换标签后的旧 HTML 与旧备份 md。"""
+        for coll in ('postListJson', 'singeListJson'):
+            old = self.blogBase.get(coll, {}).get(postNum)
+            if not old:
+                continue
+            old_html = old.get('htmlDir', '')
+            # 旧集合或旧路径与新位置不同 -> 删除旧文件
+            if old_html and old_html != keepHtml and os.path.exists(old_html):
+                try:
+                    os.remove(old_html)
+                    print("removed stale html: " + old_html)
+                except OSError as e:
+                    print("warn: cannot remove stale html {}: {}".format(old_html, e))
+            old_title = old.get('postTitle', '')
+            if old_title:
+                old_md = self.backup_dir + re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', old_title) + '.md'
+                if os.path.exists(old_md):
+                    try:
+                        os.remove(old_md)
+                        print("removed stale backup: " + old_md)
+                    except OSError as e:
+                        print("warn: cannot remove stale backup {}: {}".format(old_md, e))
+            # 旧集合已不再是目标集合 -> 从旧集合中摘除
+            if coll != keepList:
+                del self.blogBase[coll][postNum]
+
     def addOnePostJson(self,issue):
         if len(issue.labels)>=1:
-            if issue.labels[0].name in self.blogBase["singlePage"]:
-                listJsonName='singeListJson'
-                htmlFile='{}.html'.format(self.createFileName(issue,useLabel=True))
-                gen_Html = self.root_dir+htmlFile
-            else:
-                listJsonName='postListJson'
-                htmlFile='{}.html'.format(self.createFileName(issue))
-                gen_Html = self.post_dir+htmlFile
-
             postNum="P"+str(issue.number)
+            is_single = issue.labels[0].name in self.blogBase["singlePage"]
+            listJsonName='singeListJson' if is_single else 'postListJson'
+            gen_Html = self.uniqueHtmlPath(issue, postNum, useLabel=is_single)
+            # 覆盖前先清理该编号的旧产物（全量构建时两个集合为空，此步为空操作）
+            self.purgePrevious(postNum, gen_Html, listJsonName)
             self.blogBase[listJsonName][postNum]=json.loads('{}')
             self.blogBase[listJsonName][postNum]["htmlDir"]=gen_Html
             self.blogBase[listJsonName][postNum]["labels"]=[label.name for label in issue.labels]
@@ -405,7 +488,7 @@ class GMEEK():
                         period="."
                 else:
                     period=self.blogBase["rssSplit"]
-                self.blogBase[listJsonName][postNum]["description"]=issue.body.split(period)[0].replace("\"", "\'")+period
+                self.blogBase[listJsonName][postNum]["description"]=self.cleanDescription(issue.body, period)
                 self.blogBase[listJsonName][postNum]["content"]=issue.body  # 保存完整内容
                 
             self.blogBase[listJsonName][postNum]["top"]=0
@@ -518,6 +601,11 @@ class GMEEK():
             raise
         if issue.state == "open":
             listJsonName=self.addOnePostJson(issue)
+            if listJsonName is None:
+                # 无标签视为不发布；若此前发布过则下架，避免 KeyError 与残留
+                print("====== issue has no label, unpublish if exists ======")
+                self.removeOnePost(number_str)
+                return
             self.createPostHtml(self.blogBase[listJsonName]["P"+number_str])
             self.createPlistHtml()
             self.createFeedXml()
