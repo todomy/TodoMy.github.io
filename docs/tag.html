@@ -4,8 +4,8 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/primer.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/gh/todomy/TodoMy.github.io@main/plugins/GmeekVercount.js' defer></script>
+    <link href='https://todomy.github.io/plugins/primer.css' rel='stylesheet' />
+    <script src='https://todomy.github.io/plugins/GmeekVercount.js' defer></script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -66,7 +66,7 @@
 <span class="tagTitle"><span>Loading</span><span class="AnimatedEllipsis"></span></span>
 <div class="title-right">
     <div class="subnav-search">
-        <input type="search" class="form-control subnav-search-input float-left" aria-label="Search site" value="" style="height:32px;">
+        <input type="search" class="form-control subnav-search-input float-left" aria-label="Search site" value="" style="height:32px;" onkeydown="if(event.key==='Enter'){searchShow();}">
         <button class="btn float-left" type="submit" onclick="javascript:searchShow()">搜索</button>
         <svg class="subnav-search-icon octicon octicon-search" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
             <path id="searchSVG" fill-rule="evenodd"></path>

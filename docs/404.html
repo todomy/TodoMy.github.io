@@ -64,7 +64,7 @@ body{margin:0;padding:45px 20px;min-height:100vh;background:var(--bg);color:var(
 
 <div class="btns">
   <a class="btn main" href="/">回首页抄底</a>
-  <a class="btn" id="randomBtn" href="javascript:void(0)">随便挑一篇看</a>
+  <button class="btn" id="randomBtn" type="button">随便挑一篇看</button>
 </div>
 
 <div class="footer">免责声明：本页面纯属虚构，404 也是瞎写的 ❤️</div>
@@ -117,12 +117,14 @@ coin.addEventListener("click",function(){
 document.getElementById("randomBtn").addEventListener("click",function(){
   var btn=this;
   btn.textContent="翻牌中…";
-  fetch("/postList.json")
-    .then(function(r){return r.json()})
-    .then(function(d){
-      var arr=Object.values(d).filter(function(p){return p && p.postUrl;});
-      var p=arr[Math.floor(Math.random()*arr.length)];
-      window.location.href="/"+p.postUrl;
+  fetch("/sitemap.xml")
+    .then(function(r){return r.text()})
+    .then(function(txt){
+      var urls=[];
+      var re=/<loc>([^<]*\/post\/[^<]+)<\/loc>/g, m;
+      while((m=re.exec(txt))!==null){ urls.push(m[1]); }
+      if(!urls.length){ throw new Error("no posts"); }
+      window.location.href=urls[Math.floor(Math.random()*urls.length)];
     })
     .catch(function(){
       btn.textContent="翻牌失败，回首页吧";
