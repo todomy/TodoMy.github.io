@@ -167,6 +167,8 @@ class GMEEK():
         text = re.sub(r'^\s*(#{1,6}|>|[-*+]\s|\d+\.\s|---|\*\*\*)\s*', '', text, flags=re.M)
         # 去掉强调符号
         text = re.sub(r'(\*\*|__|\*|_|~~)', '', text)
+        # 去掉 GitHub alert 标记 [!NOTE] [!tip] 等
+        text = re.sub(r'\[![A-Za-z]+\]', '', text)
         # 压平空白
         text = re.sub(r'\s+', ' ', text).strip()
         # 优先取首句，再按长度截断
