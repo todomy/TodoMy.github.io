@@ -10,9 +10,9 @@
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="[!NOTE] 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的 亲密关系中“息事宁人”行为的心理拆解与应对策略 一、A 的潜在心理机制 （一）冲突回避型人格（Conflict Avoidance）…">
+<meta name="description" content="在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的 亲密关系中“息事宁人”行为的心理拆解与应对策略 一、A 的潜在心理机制 （一）冲突回避型人格（Conflict Avoidance） 杏仁核过度激活：…">
 <meta property="og:title" content="“二五仔”的形成以及应对">
-<meta property="og:description" content="[!NOTE] 在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的 亲密关系中“息事宁人”行为的心理拆解与应对策略 一、A 的潜在心理机制 （一）冲突回避型人格（Conflict Avoidance）…">
+<meta property="og:description" content="在亲密关系中例如亲朋好友A，当 B 遭受第三方侵害、损害权益或受到不公对待时，A 却总是站出来让 B 息事宁人，不为 B 讨公道，这种行为背后的心理动机是复杂且多层次的 亲密关系中“息事宁人”行为的心理拆解与应对策略 一、A 的潜在心理机制 （一）冲突回避型人格（Conflict Avoidance） 杏仁核过度激活：…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://todomy.github.io/post/%E2%80%9C-er-wu-zi-%E2%80%9D-de-xing-cheng-yi-ji-ying-dui.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/62632079?v=4">
@@ -36,7 +36,15 @@
     body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
     #header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
     #footer {margin-top:64px; text-align: center;font-size: small;}
-
+    /* 页脚链接：样式只作用于页脚内部 */
+    #footer a{text-decoration: none;color: var(--color-accent-fg, #0969da);transition: font-weight 0.3s ease;}
+    #footer a:hover{ font-weight: bold; }
+    /* 返回顶部按钮 - 简洁优雅版，配色跟随站点主题 */
+    .circle-button{position: fixed;bottom: 30px;right: 30px;width: 50px;height: 50px;background-color: var(--color-canvas-overlay, rgba(255,255,255,.9));color: var(--color-fg-default, #333);border-radius: 50%;display: flex;justify-content: center;align-items: center;cursor: pointer;font-size: 22px;font-weight: 300;box-shadow: 0 4px 12px rgba(0,0,0,.12);border: 1px solid var(--color-border-default, transparent);transition: all 0.3s ease;opacity: 0;visibility: hidden;z-index: 9999;}
+    .circle-button.visible{opacity: 1;visibility: visible;}
+    .circle-button:hover{transform: translateY(-4px) scale(1.05);box-shadow: 0 8px 16px rgba(0,0,0,.15);}
+    .circle-button:active{transform: translateY(-2px) scale(0.98);box-shadow: 0 4px 8px rgba(0,0,0,.12);}
+    @media (max-width: 768px){.circle-button{width: 45px;height: 45px;font-size: 20px;bottom: 20px;right: 20px;}}
     </style>
     
 <style>
@@ -312,62 +320,7 @@
 <div class="comments" id="comments"></div>
 
 </div>
-    <div id="footer"><style>
-/* 页脚链接：样式只作用于页脚内部 */
-#footer a{
-    text-decoration: none;
-    color: var(--color-accent-fg, #0969da);
-    transition: font-weight 0.3s ease;
-}
-#footer a:hover{ font-weight: bold; }
-
-/* 返回顶部按钮 - 简洁优雅版，配色跟随站点主题 */
-.circle-button{
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background-color: var(--color-canvas-overlay, rgba(255,255,255,.9));
-    color: var(--color-fg-default, #333);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 22px;
-    font-weight: 300;
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
-    border: 1px solid var(--color-border-default, transparent);
-    transition: all 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-    z-index: 9999;
-}
-.circle-button.visible{
-    opacity: 1;
-    visibility: visible;
-}
-.circle-button:hover{
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 8px 16px rgba(0,0,0,.15);
-}
-.circle-button:active{
-    transform: translateY(-2px) scale(0.98);
-    box-shadow: 0 4px 8px rgba(0,0,0,.12);
-}
-@media (max-width: 768px){
-    .circle-button{
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-        bottom: 20px;
-        right: 20px;
-    }
-}
-</style>
-
-<div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://todomy.github.io">TodoMy</a></div>
 <div id="footer2">
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank" rel="noopener noreferrer">Gmeek</a></span>
 </div>
