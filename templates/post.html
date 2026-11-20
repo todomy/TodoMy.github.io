@@ -2,12 +2,24 @@
 
 {% block head %}
 <meta name="description" content="{{ blogBase['description'] }}">
-<meta property="og:title" content="{{ blogBase['postTitle'] }}">
+<meta property="og:title" content="{{ blogBase['postTitle']|e }}">
 <meta property="og:description" content="{{ blogBase['description'] }}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ blogBase['postUrl'] }}">
 <meta property="og:image" content="{{ blogBase['ogImage'] }}">
-<title>{{ blogBase['postTitle'] }}</title>
+<link rel="canonical" href="{{ blogBase['postUrl'] }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ blogBase['postTitle']|tojson }},
+  "url": {{ blogBase['postUrl']|tojson }},
+  "image": {{ blogBase['ogImage']|tojson }},
+  "datePublished": {{ blogBase['createdDate']|tojson }},
+  "author": {"@type": "Person", "name": {{ blogBase['title']|tojson }}}
+}
+</script>
+<title>{{ blogBase['postTitle']|e }}</title>
 {% if blogBase['highlight']==1 %}<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />{% endif %}
 {{ blogBase['head'] }}
 {% endblock %}
@@ -31,7 +43,7 @@
 
 {% endblock %}
 {% block header %}
-<h1 class="postTitle">{{ blogBase['postTitle'] }}</h1>
+<h1 class="postTitle">{{ blogBase['postTitle']|e }}</h1>
 <div class="title-right">
     <a href="{{ blogBase['homeUrl'] }}" id="buttonHome" class="btn btn-invisible circle" title="{{ i18n['home'] }}">
         <svg class="octicon" width="16" height="16">

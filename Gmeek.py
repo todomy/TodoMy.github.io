@@ -46,6 +46,9 @@ class GMEEK():
         self.backup_dir='backup/'
         self.post_dir=self.root_dir+self.post_folder
 
+        # Jinja 环境只建一次，模板带缓存，避免每篇文章重复加载
+        self.jinja_env=Environment(loader=FileSystemLoader('templates'))
+
         user = Github(self.options.github_token)
         self.repo = self.get_repo(user, options.repo_name)
         self.feed = FeedGenerator()
@@ -137,9 +140,7 @@ class GMEEK():
             raise Exception("markdown2html error: {}".format(e))
 
     def renderHtml(self,template,blogBase,postListJson,htmlDir,icon):
-        file_loader = FileSystemLoader('templates')
-        env = Environment(loader=file_loader)
-        template = env.get_template(template)
+        template = self.jinja_env.get_template(template)
         output = template.render(blogBase=blogBase,postListJson=postListJson,i18n=self.i18n,IconList=icon)
         f = open(htmlDir, 'w', encoding='UTF-8')
         f.write(output)
@@ -185,6 +186,7 @@ class GMEEK():
             post_body = re.sub(r'<code class="notranslate">Gmeek-html(.*?)</code>', lambda match: html.unescape(match.group(1)), post_body, flags=re.DOTALL)
 
         postBase["postTitle"]=issue["postTitle"]
+        postBase["createdDate"]=issue.get("createdDate","")
         postBase["postUrl"]=self.blogBase["homeUrl"]+"/"+issue["postUrl"]
         postBase["description"]=issue["description"]
         postBase["ogImage"]=issue["ogImage"]
@@ -342,16 +344,26 @@ class GMEEK():
         feed.rss_file(self.root_dir+'rss.xml')
 
     def createSitemapXml(self):
-        urls=[self.blogBase["homeUrl"]+"/", self.blogBase["homeUrl"]+"/tag.html"]
+        home=self.blogBase["homeUrl"]
+        entries=[(home+"/",None),(home+"/tag.html",None)]
         for num in self.blogBase["singeListJson"]:
-            urls.append(self.blogBase["homeUrl"]+"/"+self.blogBase["singeListJson"][num]["postUrl"])
+            p=self.blogBase["singeListJson"][num]
+            entries.append((home+"/"+p["postUrl"],p.get("createdDate")))
         for num in self.blogBase["postListJson"]:
-            urls.append(self.blogBase["homeUrl"]+"/"+self.blogBase["postListJson"][num]["postUrl"])
+            p=self.blogBase["postListJson"][num]
+            entries.append((home+"/"+p["postUrl"],p.get("createdDate")))
+
+        dates=[d for _,d in entries if d]
+        latest=max(dates) if dates else ""
 
         xml='<?xml version="1.0" encoding="UTF-8"?>\r\n'
         xml+='<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\r\n'
-        for url in urls:
-            xml+='  <url><loc>%s</loc></url>\r\n' % url
+        for url,date in entries:
+            lastmod=date or latest
+            if lastmod:
+                xml+='  <url><loc>%s</loc><lastmod>%s</lastmod></url>\r\n' % (url,lastmod)
+            else:
+                xml+='  <url><loc>%s</loc></url>\r\n' % url
         xml+='</urlset>\r\n'
 
         sitemapFile=open(self.root_dir+'sitemap.xml',"w",encoding='utf-8')
