@@ -45,6 +45,12 @@
     .circle-button:hover{transform: translateY(-4px) scale(1.05);box-shadow: 0 8px 16px rgba(0,0,0,.15);}
     .circle-button:active{transform: translateY(-2px) scale(0.98);box-shadow: 0 4px 8px rgba(0,0,0,.12);}
     @media (max-width: 768px){.circle-button{width: 45px;height: 45px;font-size: 20px;bottom: 20px;right: 20px;}}
+    /* 返回上一页按钮 - 仅文章/阅读页显示，与回顶部按钮上下成组；独立 class，不改动 .circle-button */
+    .back-button{position: fixed;bottom: 90px;right: 30px;width: 50px;height: 50px;background-color: var(--color-canvas-overlay, rgba(255,255,255,.9));color: var(--color-fg-default, #333);border-radius: 50%;display: flex;justify-content: center;align-items: center;cursor: pointer;font-size: 26px;font-weight: 300;box-shadow: 0 4px 12px rgba(0,0,0,.12);border: 1px solid var(--color-border-default, transparent);transition: all 0.3s ease;opacity: 0;visibility: hidden;z-index: 9999;}
+    .back-button.visible{opacity: 1;visibility: visible;}
+    .back-button:hover{transform: translateY(-4px) scale(1.05);box-shadow: 0 8px 16px rgba(0,0,0,.15);}
+    .back-button:active{transform: translateY(-2px) scale(0.98);box-shadow: 0 4px 8px rgba(0,0,0,.12);}
+    @media (max-width: 768px){.back-button{width: 45px;height: 45px;font-size: 22px;bottom: 80px;right: 20px;}}
     </style>
     
 <style>
@@ -172,6 +178,8 @@
 
 <!-- 返回顶部按钮 -->
 <div class="circle-button" onclick="scrollToTop()">↑</div>
+<!-- 返回上一页按钮 - 仅文章/阅读页显示；独立 class，不改动 .circle-button -->
+<div class="back-button visible" title="返回上一页" role="button" aria-label="返回上一页" tabindex="0">←</div>
 
 <script>
 (function(){
@@ -197,6 +205,31 @@
         if (window.scrollY > 300) { btn.classList.add('visible'); }
         else { btn.classList.remove('visible'); }
     });
+
+    // 返回上一页（方案C：站内来源用 history.back 保留滚动位置，外部/直达回首页）
+    var backBtn = document.querySelector('.back-button');
+    if (backBtn) {
+        var goBack = function(){
+            var home = "https://todomy.github.io";
+            var ref = document.referrer || '';
+            var homeHost = '';
+            try { homeHost = new URL(home).hostname; } catch (e) {}
+            var refHost = '';
+            if (ref) {
+                try { refHost = new URL(ref).hostname; }
+                catch (e) { refHost = ''; }
+            }
+            if (refHost && refHost === homeHost && window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = home;
+            }
+        };
+        backBtn.addEventListener('click', goBack);
+        backBtn.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goBack(); }
+        });
+    }
 })();
 </script></div>
     <script>
