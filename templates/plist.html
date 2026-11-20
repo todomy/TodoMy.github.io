@@ -30,10 +30,10 @@
 #header a{transition: transform 130ms ease-out;}
 #header a:hover{transform: scale(1.05);}
 
-/* 列表项：聚焦式浮起——不缩放文字（避免发虚/溢出），用背景+色条+标题变色表达聚焦 */
-.SideNav-item{position: relative;transition: background-color 200ms ease-out, box-shadow 200ms ease-out;}
+/* 列表项：聚焦式浮起——不缩放文字（避免发虚/溢出），用背景+色条+标题变色+上浮阴影表达聚焦 */
+.SideNav-item{position: relative;z-index:0;transition: background-color 200ms ease-out, box-shadow 200ms ease-out, transform 200ms ease-out;}
 .SideNav-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background-color:var(--color-accent-fg, #0969da);opacity:0;transition:opacity 200ms ease-out;}
-.SideNav-item:hover{background-color:var(--color-canvas-subtle, rgba(175,184,193,.15));box-shadow:0 1px 3px rgba(0,0,0,.08);text-decoration:none;}
+.SideNav-item:hover{background-color:var(--color-canvas-subtle, rgba(175,184,193,.15));box-shadow:0 6px 16px rgba(0,0,0,.14);transform:translateY(-2px);z-index:1;text-decoration:none;}
 .SideNav-item:hover::before{opacity:1;}
 .SideNav-item:hover .listTitle{color:var(--color-accent-fg, #0969da);}
 .listTitle{transition:color 200ms ease-out;}
