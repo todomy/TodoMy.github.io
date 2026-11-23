@@ -51,8 +51,8 @@
 .Label{margin-left:4px;}
 .LabelName a{color:inherit;}
 .LabelMeta{color:var(--color-fg-muted,#6B7280);background-color:var(--color-canvas-subtle,#F1F3F5);}
-/* 日期等宽数字：与首页一致，避免日期框左边缘参差 */
-.LabelTime{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}
+/* 日期框固定宽度+文字居中：与首页一致，不依赖字体 tnum 特性 */
+.LabelTime{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;width:88px;font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}
 #taglabel .Label {margin-bottom:8px;}
 .Counter{color:var(--color-fg-muted,#6B7280);background-color:rgba(175,184,193,.35)}
 
