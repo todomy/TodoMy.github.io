@@ -124,7 +124,11 @@ class GMEEK():
         else:
             print("static does not exist")
 
-        # 本地化插件：把 plugins/ 复制到 docs/plugins/，供相对路径引用
+        self.syncPlugins()
+
+    def syncPlugins(self):
+        """把 plugins/ 同步到 docs/plugins/。全量与增量构建均调用，避免增量构建时本地插件缺失或滞后。"""
+        os.makedirs(self.root_dir, exist_ok=True)
         plugins_src = 'plugins/'
         plugins_dst = os.path.join(self.root_dir, 'plugins')
         if os.path.exists(plugins_src):
@@ -639,6 +643,7 @@ class GMEEK():
 
     def runOne(self,number_str):
         print("====== start create static html ======")
+        self.syncPlugins()  # 增量构建也同步本地插件，避免只改 plugins 后不生效
         try:
             issue=self.repo.get_issue(int(number_str))
         except GithubException as e:
