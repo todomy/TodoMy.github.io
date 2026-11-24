@@ -94,7 +94,7 @@ class GMEEK():
         self.defaultConfig()
         
     def cleanFile(self):
-        workspace_path = os.environ.get('GITHUB_WORKSPACE')
+        workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
         if os.path.exists(workspace_path+"/"+self.backup_dir):
             shutil.rmtree(workspace_path+"/"+self.backup_dir)
 
@@ -749,7 +749,7 @@ docListFile.close()
 
 if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
     print("====== update readme file ======")
-    workspace_path = os.environ.get('GITHUB_WORKSPACE')
+    workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
     
     # 计算额外统计信息
     total_pages = len(blog.blogBase["postListJson"]) - 1
