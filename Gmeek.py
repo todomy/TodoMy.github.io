@@ -274,6 +274,18 @@ class GMEEK():
         if '<code class="notranslate">Gmeek-html' in post_body:
             post_body = re.sub(r'<code class="notranslate">Gmeek-html(.*?)</code>', lambda match: html.unescape(match.group(1)), post_body, flags=re.DOTALL)
 
+        # 灯箱按需加载：只有正文可能出现 <img> 时才注入，避免无图文章白下载 11.8KB。
+        # 判断必须放在 Gmeek-html 展开之后，否则代码块里还原出的 <img> 会被漏掉。
+        # 只匹配能真正产出 <img> 的写法；<svg>、background-image 本就不被灯箱接管，
+        # 不能当命中条件——GitHub Markdown 的 alert 图标会带 <svg>，会把大量无图文章误判成有图。
+        image_hint=(
+            '<img' in post_body or '<picture' in post_body or 'data:image/' in post_body
+            or bool(re.search(r'\.(?:jpe?g|png|gif|webp|avif|bmp|svg)(?:[?#"\'])', post_body, re.I))
+        )
+        if (image_hint or issue.get("lightbox", False)) and 'lightbox.js' not in issue["script"]:
+            lightbox_src=self.blogBase["homeUrl"]+"/plugins/lightbox.js"
+            issue["script"]=issue["script"]+'<script src="'+lightbox_src+'"></script>'
+
         postBase["postTitle"]=issue["postTitle"]
         postBase["createdDate"]=issue.get("createdDate","")
         postBase["postUrl"]=self.blogBase["homeUrl"]+"/"+issue["postUrl"]
@@ -572,6 +584,13 @@ class GMEEK():
                 self.blogBase[listJsonName][postNum]["script"]=self.blogBase["script"]+str(postConfig["script"])
             else:
                 self.blogBase[listJsonName][postNum]["script"]=self.blogBase["script"]
+
+            # 灯箱强制开关：postConfig 里写 "lightbox":true 可绕过自动判断，任何时候都加载
+            lb_cfg=postConfig.get("lightbox", False)
+            self.blogBase[listJsonName][postNum]["lightbox"]=(
+                lb_cfg is True or lb_cfg == 1 or
+                (isinstance(lb_cfg, str) and lb_cfg.strip().lower() in ("1", "true", "yes", "on"))
+            )
 
             if "head" in postConfig:
                 self.blogBase[listJsonName][postNum]["head"]=self.blogBase["head"]+str(postConfig["head"])

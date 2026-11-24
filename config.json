@@ -29,7 +29,7 @@
         "meta": {"color": "#6B7280", "bg": "#F1F3F5"}
     },
     "i18n": "CN",
-    "script": "<script src='https://todomy.github.io/plugins/GmeekTOC.js'></script><script src='https://todomy.github.io/plugins/lightbox.js'></script>",
+    "script": "<script src='https://todomy.github.io/plugins/GmeekTOC.js'></script>",
     "nightTheme": "dark_colorblind",
     "bottomText": "❤️ 免责声明：以上内容纯属虚构，瞎写写勿传播 ❤️",
     "iconList": {
