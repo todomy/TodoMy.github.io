@@ -81,7 +81,8 @@ class GMEEK():
                       allowed_methods=frozenset(['GET', 'POST']), respect_retry_after_header=True)
         self.http.mount('https://', HTTPAdapter(max_retries=retry))
 
-        user = Github(self.options.github_token)
+        # per_page=100：GitHub 默认每页 30 条，165 篇要翻 6 页；设为上限后只需 2 页
+        user = Github(self.options.github_token, per_page=100)
         self.repo = self.get_repo(user, options.repo_name)
         self.feed = FeedGenerator()
         self.oldFeedString=''
@@ -517,7 +518,8 @@ class GMEEK():
             self.blogBase[listJsonName][postNum]["postUrl"]=urllib.parse.quote(gen_Html[len(self.root_dir):])
 
             self.blogBase[listJsonName][postNum]["postSourceUrl"]="https://github.com/"+options.repo_name+"/issues/"+str(issue.number)
-            self.blogBase[listJsonName][postNum]["commentNum"]=issue.get_comments().totalCount
+            # 评论数已随 Issue 对象返回，直接读缓存属性，省去每篇一次 get_comments API
+            self.blogBase[listJsonName][postNum]["commentNum"]=issue.comments
 
             if issue.body==None:
                 self.blogBase[listJsonName][postNum]["description"]=''
@@ -535,12 +537,11 @@ class GMEEK():
                 self.blogBase[listJsonName][postNum]["description"]=self.cleanDescription(issue.body, period)
                 self.blogBase[listJsonName][postNum]["content"]=issue.body  # 保存完整内容
                 
-            self.blogBase[listJsonName][postNum]["top"]=0
-            for event in issue.get_events():
-                if event.event=="pinned":
-                    self.blogBase[listJsonName][postNum]["top"]=1
-                elif event.event=="unpinned":
-                    self.blogBase[listJsonName][postNum]["top"]=0
+            # 置顶改用 label：GitHub 已弱化 Pin issue（无 API、上限 3 篇），
+            # 而 labels 本就随 Issue 返回，零额外请求。给 Issue 加「置顶」标签即可置顶。
+            self.blogBase[listJsonName][postNum]["top"]=(
+                1 if '置顶' in [label.name for label in issue.labels] else 0
+            )
 
             try:
                 # 兼容 \n / \r\n 换行，并跳过正文末尾的空行（GitHub 编辑器常在末尾保留换行）
