@@ -199,13 +199,15 @@
 
     handleImageClick(event) {
       const clickedImage = event.target.closest('img');
-      if (clickedImage && !this.isOpen) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.images = Array.from(document.querySelectorAll('.markdown-body img, table img'));
-        this.currentIndex = this.images.indexOf(clickedImage);
-        this.open();
-      }
+      if (!clickedImage || this.isOpen) return;
+      this.images = Array.from(document.querySelectorAll('.markdown-body img, table img'));
+      this.currentIndex = this.images.indexOf(clickedImage);
+      // 正文外的图片（如站点图标）不在收集范围内，交给浏览器默认行为，
+      // 否则 currentIndex=-1 会以 this.images[-1] 打开而抛错。
+      if (this.currentIndex < 0) return;
+      event.preventDefault();
+      event.stopPropagation();
+      this.open();
     }
 
     handleOverlayClick(event) {
@@ -282,7 +284,9 @@
       if (typeof this.options.onClose === 'function') {
         this.options.onClose();
       }
-      this.unbindEvents();
+      // 关闭时不能解绑事件：图片点击监听是常驻的，一旦解绑，
+      // 第二次点图就没人 preventDefault，会直接跳到 <a> 里的图片地址。
+      // 关闭态由 isOpen 守卫（点击/键盘）和 overlay 的 pointer-events:none（滚轮/触摸/遮罩）保证。
     }
 
     showPreviousImage() {
@@ -350,6 +354,7 @@
       this.preloadedImages = {};
     }
 
+    // 仅供将来销毁整个实例时调用；close() 不能调用，否则灯箱无法再次打开
     unbindEvents() {
       document.removeEventListener('click', this._hImageClick, true);
       this.overlay.removeEventListener('click', this._hOverlayClick);
