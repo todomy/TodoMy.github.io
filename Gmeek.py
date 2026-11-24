@@ -65,6 +65,7 @@ def buildLabelColors(labelNames, theme):
 class GMEEK():
     def __init__(self,options):
         self.options=options
+        self.repo_name=options.repo_name
         
         self.root_dir='docs/'
         self.static_dir='static/'
@@ -83,7 +84,7 @@ class GMEEK():
 
         # per_page=100：GitHub 默认每页 30 条，165 篇要翻 6 页；设为上限后只需 2 页
         user = Github(self.options.github_token, per_page=100)
-        self.repo = self.get_repo(user, options.repo_name)
+        self.repo = self.get_repo(user, self.repo_name)
         self.feed = FeedGenerator()
         self.oldFeedString=''
 
@@ -285,7 +286,7 @@ class GMEEK():
         postBase["head"]=issue["head"]
         postBase["top"]=issue["top"]
         postBase["postSourceUrl"]=issue["postSourceUrl"]
-        postBase["repoName"]=options.repo_name
+        postBase["repoName"]=self.repo_name
         
         if issue["labels"][0] in self.blogBase["singlePage"]:
             postBase["bottomText"]=''
@@ -521,7 +522,7 @@ class GMEEK():
             self.blogBase[listJsonName][postNum]["postTitle"]=issue.title
             self.blogBase[listJsonName][postNum]["postUrl"]=urllib.parse.quote(gen_Html[len(self.root_dir):])
 
-            self.blogBase[listJsonName][postNum]["postSourceUrl"]="https://github.com/"+options.repo_name+"/issues/"+str(issue.number)
+            self.blogBase[listJsonName][postNum]["postSourceUrl"]="https://github.com/"+self.repo_name+"/issues/"+str(issue.number)
             # 评论数已随 Issue 对象返回，直接读缓存属性，省去每篇一次 get_comments API
             self.blogBase[listJsonName][postNum]["commentNum"]=issue.comments
 
@@ -683,131 +684,136 @@ class GMEEK():
         return fileName
 
 ######################################################################################
-parser = argparse.ArgumentParser()
-parser.add_argument("github_token", help="github_token")
-parser.add_argument("repo_name", help="repo_name")
-parser.add_argument("--issue_number", help="issue_number", default=0, required=False)
-options = parser.parse_args()
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("github_token", help="github_token")
+    parser.add_argument("repo_name", help="repo_name")
+    parser.add_argument("--issue_number", help="issue_number", default=0, required=False)
+    options = parser.parse_args()
 
-blog=GMEEK(options)
+    blog=GMEEK(options)
 
-if not os.path.exists("blogBase.json"):
-    print("blogBase is not exists, runAll")
-    blog.runAll()
-else:
-    if os.path.exists(blog.root_dir+'rss.xml'):
-        oldFeedFile=open(blog.root_dir+'rss.xml','r',encoding='utf-8')
-        blog.oldFeedString=oldFeedFile.read()
-        oldFeedFile.close()
-    if options.issue_number=="0" or options.issue_number=="":
-        print("issue_number=='0', runAll")
+    if not os.path.exists("blogBase.json"):
+        print("blogBase is not exists, runAll")
         blog.runAll()
     else:
-        f=open("blogBase.json","r")
-        print("blogBase is exists and issue_number!=0, runOne")
-        oldBlogBase=json.loads(f.read())
-        for key, value in oldBlogBase.items():
-            blog.blogBase[key] = value
-        f.close()
-        blog.blogBase["labelColorDict"]=blog.labelColorDict
-        blog.blogBase["labelBgDict"]=blog.labelBgDict
-        blog.blogBase["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
-        blog.runOne(options.issue_number)
+        if os.path.exists(blog.root_dir+'rss.xml'):
+            oldFeedFile=open(blog.root_dir+'rss.xml','r',encoding='utf-8')
+            blog.oldFeedString=oldFeedFile.read()
+            oldFeedFile.close()
+        if options.issue_number=="0" or options.issue_number=="":
+            print("issue_number=='0', runAll")
+            blog.runAll()
+        else:
+            f=open("blogBase.json","r")
+            print("blogBase is exists and issue_number!=0, runOne")
+            oldBlogBase=json.loads(f.read())
+            for key, value in oldBlogBase.items():
+                blog.blogBase[key] = value
+            f.close()
+            blog.blogBase["labelColorDict"]=blog.labelColorDict
+            blog.blogBase["labelBgDict"]=blog.labelBgDict
+            blog.blogBase["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
+            blog.runOne(options.issue_number)
 
-listFile=open("blogBase.json","w")
-listFile.write(json.dumps(blog.blogBase))
-listFile.close()
+    listFile=open("blogBase.json","w")
+    listFile.write(json.dumps(blog.blogBase))
+    listFile.close()
 
-commentNumSum=0
-wordCount=0
-print("====== create postList.json file ======")
-blog.blogBase["postListJson"]=dict(sorted(blog.blogBase["postListJson"].items(),key=lambda x:x[1]["createdAt"],reverse=True))#使列表由时间排序
-for i in blog.blogBase["postListJson"]:
-    del blog.blogBase["postListJson"][i]["description"]
-    del blog.blogBase["postListJson"][i]["postSourceUrl"]
-    del blog.blogBase["postListJson"][i]["htmlDir"]
-    del blog.blogBase["postListJson"][i]["createdAt"]
-    del blog.blogBase["postListJson"][i]["script"]
-    del blog.blogBase["postListJson"][i]["style"]
-    del blog.blogBase["postListJson"][i]["top"]
-    del blog.blogBase["postListJson"][i]["ogImage"]
-    # 注意：这里保留content字段，不删除
+    commentNumSum=0
+    wordCount=0
+    print("====== create postList.json file ======")
+    blog.blogBase["postListJson"]=dict(sorted(blog.blogBase["postListJson"].items(),key=lambda x:x[1]["createdAt"],reverse=True))#使列表由时间排序
+    for i in blog.blogBase["postListJson"]:
+        del blog.blogBase["postListJson"][i]["description"]
+        del blog.blogBase["postListJson"][i]["postSourceUrl"]
+        del blog.blogBase["postListJson"][i]["htmlDir"]
+        del blog.blogBase["postListJson"][i]["createdAt"]
+        del blog.blogBase["postListJson"][i]["script"]
+        del blog.blogBase["postListJson"][i]["style"]
+        del blog.blogBase["postListJson"][i]["top"]
+        del blog.blogBase["postListJson"][i]["ogImage"]
+        # 注意：这里保留content字段，不删除
 
-    if 'head' in blog.blogBase["postListJson"][i]:
-        del blog.blogBase["postListJson"][i]["head"]
+        if 'head' in blog.blogBase["postListJson"][i]:
+            del blog.blogBase["postListJson"][i]["head"]
 
-    if 'commentNum' in blog.blogBase["postListJson"][i]:
-        commentNumSum=commentNumSum+blog.blogBase["postListJson"][i]["commentNum"]
-        del blog.blogBase["postListJson"][i]["commentNum"]
+        if 'commentNum' in blog.blogBase["postListJson"][i]:
+            commentNumSum=commentNumSum+blog.blogBase["postListJson"][i]["commentNum"]
+            del blog.blogBase["postListJson"][i]["commentNum"]
 
-    if 'wordCount' in blog.blogBase["postListJson"][i]:
-        wordCount=wordCount+blog.blogBase["postListJson"][i]["wordCount"]
-        del blog.blogBase["postListJson"][i]["wordCount"]
+        if 'wordCount' in blog.blogBase["postListJson"][i]:
+            wordCount=wordCount+blog.blogBase["postListJson"][i]["wordCount"]
+            del blog.blogBase["postListJson"][i]["wordCount"]
 
-blog.blogBase["postListJson"]["labelColorDict"]=blog.labelColorDict
-blog.blogBase["postListJson"]["labelBgDict"]=blog.labelBgDict
-blog.blogBase["postListJson"]["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
+    blog.blogBase["postListJson"]["labelColorDict"]=blog.labelColorDict
+    blog.blogBase["postListJson"]["labelBgDict"]=blog.labelBgDict
+    blog.blogBase["postListJson"]["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
 
-docListFile=open(blog.root_dir+"postList.json","w")
-docListFile.write(json.dumps(blog.blogBase["postListJson"]))
-docListFile.close()
+    docListFile=open(blog.root_dir+"postList.json","w")
+    docListFile.write(json.dumps(blog.blogBase["postListJson"]))
+    docListFile.close()
 
-if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
-    print("====== update readme file ======")
-    workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
+    if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
+        print("====== update readme file ======")
+        workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
     
-    # 计算额外统计信息
-    total_pages = len(blog.blogBase["postListJson"]) - 1
+        # 计算额外统计信息
+        total_pages = len(blog.blogBase["postListJson"]) - 1
     
-    # 计算标签数量
-    label_count = len(blog.labelColorDict)
+        # 计算标签数量
+        label_count = len(blog.labelColorDict)
     
-    # 生成更专业的README
-    readme="# %s :link: [%s](%s) \r\n\r\n" % (blog.blogBase["title"], blog.blogBase["title"], blog.blogBase["homeUrl"])
-    readme += "🌍 **博客主页**：[%s](%s)\r\n\r\n" % (blog.blogBase["homeUrl"], blog.blogBase["homeUrl"])
+        # 生成更专业的README
+        readme="# %s :link: [%s](%s) \r\n\r\n" % (blog.blogBase["title"], blog.blogBase["title"], blog.blogBase["homeUrl"])
+        readme += "🌍 **博客主页**：[%s](%s)\r\n\r\n" % (blog.blogBase["homeUrl"], blog.blogBase["homeUrl"])
     
-    # 项目简介部分
-    readme += "## 📝 项目简介\r\n"
-    readme += "这是一个基于GitHub Issues的静态博客系统，通过Gmeek自动生成和部署。\r\n\r\n"
+        # 项目简介部分
+        readme += "## 📝 项目简介\r\n"
+        readme += "这是一个基于GitHub Issues的静态博客系统，通过Gmeek自动生成和部署。\r\n\r\n"
     
-    # 统计信息卡片
-    readme += "## 📊 博客统计\r\n"
-    readme += "| 统计项目 | 数量 | | 统计项目 | 数据 |\r\n"
-    readme += "|---------|------|---|---------|------|\r\n"
-    readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (len(blog.blogBase["postListJson"]) - 1, label_count)
-    readme += "| 💬 评论总数 | %d | | 🔗 总页面数 | %d |\r\n" % (commentNumSum, total_pages)
-    readme += "| 📚 总字数 | %d | | ⏰ 最后更新 | %s |\r\n\r\n" % (wordCount, datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
+        # 统计信息卡片
+        readme += "## 📊 博客统计\r\n"
+        readme += "| 统计项目 | 数量 | | 统计项目 | 数据 |\r\n"
+        readme += "|---------|------|---|---------|------|\r\n"
+        readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (len(blog.blogBase["postListJson"]) - 1, label_count)
+        readme += "| 💬 评论总数 | %d | | 🔗 总页面数 | %d |\r\n" % (commentNumSum, total_pages)
+        readme += "| 📚 总字数 | %d | | ⏰ 最后更新 | %s |\r\n\r\n" % (wordCount, datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
     
-    # 功能特点部分
-    readme += "## ✨ 功能特点\r\n"
-    readme += "- 🎯 基于GitHub Issues的内容管理\r\n"
-    readme += "- 🚀 自动化部署与更新\r\n"
-    readme += "- 🌓 支持明暗主题切换\r\n"
-    readme += "- 🌍 多语言支持\r\n"
-    readme += "- 📱 响应式设计，适配各种设备\r\n"
-    readme += "- 📊 文章统计与标签分类\r\n"
-    readme += "- 📝 Markdown格式支持\r\n"
-    readme += "- 📡 RSS订阅功能\r\n\r\n"
+        # 功能特点部分
+        readme += "## ✨ 功能特点\r\n"
+        readme += "- 🎯 基于GitHub Issues的内容管理\r\n"
+        readme += "- 🚀 自动化部署与更新\r\n"
+        readme += "- 🌓 支持明暗主题切换\r\n"
+        readme += "- 🌍 多语言支持\r\n"
+        readme += "- 📱 响应式设计，适配各种设备\r\n"
+        readme += "- 📊 文章统计与标签分类\r\n"
+        readme += "- 📝 Markdown格式支持\r\n"
+        readme += "- 📡 RSS订阅功能\r\n\r\n"
     
-    # 技术栈部分
-    readme += "## 🛠️ 技术栈\r\n"
-    readme += "- 🐍 Python\r\n"
-    readme += "- 📄 GitHub Pages\r\n"
-    readme += "- 🤖 GitHub Actions\r\n"
-    readme += "- 📝 Markdown\r\n"
-    readme += "- 🌐 HTML/CSS/JavaScript\r\n\r\n"
+        # 技术栈部分
+        readme += "## 🛠️ 技术栈\r\n"
+        readme += "- 🐍 Python\r\n"
+        readme += "- 📄 GitHub Pages\r\n"
+        readme += "- 🤖 GitHub Actions\r\n"
+        readme += "- 📝 Markdown\r\n"
+        readme += "- 🌐 HTML/CSS/JavaScript\r\n\r\n"
     
-    # 底部信息
-    readme += "## 💡 提示\r\n"
-    readme += "README由Gmeek自动生成和更新，请勿手动修改。\r\n\r\n"
+        # 底部信息
+        readme += "## 💡 提示\r\n"
+        readme += "README由Gmeek自动生成和更新，请勿手动修改。\r\n\r\n"
     
-    readme += "## 📅 最近活动\r\n"
-    readme += "- 🚀 持续更新中...\r\n\r\n"
+        readme += "## 📅 最近活动\r\n"
+        readme += "- 🚀 持续更新中...\r\n\r\n"
     
-    readme += "## ❤️ 致谢\r\n"
-    readme += "Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek) - A beautiful GitHub Issues based blog generator.\r\n"
+        readme += "## ❤️ 致谢\r\n"
+        readme += "Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek) - A beautiful GitHub Issues based blog generator.\r\n"
     
-    readmeFile=open(workspace_path+"/README.md","w")
-    readmeFile.write(readme)
-    readmeFile.close()
+        readmeFile=open(workspace_path+"/README.md","w")
+        readmeFile.write(readme)
+        readmeFile.close()
+
 ######################################################################################
+
+if __name__ == '__main__':
+    main()
