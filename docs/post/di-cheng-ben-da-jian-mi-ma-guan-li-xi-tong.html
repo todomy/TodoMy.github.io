@@ -512,8 +512,9 @@ A: 由于数据存储在 D1 和 R2 中，你可以随时导出数据迁移到其
         }
     }
     function utterancesTheme(theme){
-        const message={type:'set-theme',theme: theme};
         const iframe=document.getElementsByClassName('utterances-frame')[0];
+        if(!iframe || !iframe.contentWindow){return;}
+        const message={type:'set-theme',theme: theme};
         iframe.contentWindow.postMessage(message,'https://utteranc.es');
     }
     if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
