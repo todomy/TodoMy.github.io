@@ -777,8 +777,11 @@ def main():
         print("====== update readme file ======")
         workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
     
-        # 计算额外统计信息
-        total_pages = len(blog.blogBase["postListJson"]) - 1
+        # 显式统计文章数：只数 P<编号> 形式的真实文章键，排除配色字典等非文章键。
+        # 不能用 len(postListJson)-1：配色键增减会让数字悄悄算错（曾靠 3 个配色键
+        # 与 2 个单页数量相等而"碰巧正确"）。单页面不计入文章总数。
+        article_count = sum(1 for k in blog.blogBase["postListJson"]
+                            if k.startswith("P") and k[1:].isdigit())
     
         # 计算标签数量
         label_count = len(blog.labelColorDict)
@@ -795,9 +798,9 @@ def main():
         readme += "## 📊 博客统计\r\n"
         readme += "| 统计项目 | 数量 | | 统计项目 | 数据 |\r\n"
         readme += "|---------|------|---|---------|------|\r\n"
-        readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (len(blog.blogBase["postListJson"]) - 1, label_count)
-        readme += "| 💬 评论总数 | %d | | 🔗 总页面数 | %d |\r\n" % (commentNumSum, total_pages)
-        readme += "| 📚 总字数 | %d | | ⏰ 最后更新 | %s |\r\n\r\n" % (wordCount, datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S'))
+        readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (article_count, label_count)
+        readme += "| 💬 评论总数 | %d | | 📚 总字数 | %d |\r\n" % (commentNumSum, wordCount)
+        readme += "\r\n> ⏰ 最后更新：%s\r\n\r\n" % datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S')
     
         # 功能特点部分
         readme += "## ✨ 功能特点\r\n"
