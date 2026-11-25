@@ -634,6 +634,51 @@ class GMEEK():
         else:
             print("post not found in blogBase: "+postNum)
 
+    def purgeOrphans(self):
+        """增量构建后用 GitHub open issues 核对 blogBase，清理已删除/已关闭却残留的条目。
+
+        增量构建只处理触发的那一个 Issue；若某次构建失败，它负责的下架操作会永久丢失，
+        后续成功的构建基于旧 blogBase 只删自己那篇，不会补删。这里做一次全局核对，
+        让任何一次成功的构建都能自动补删历史残留（每次增量只多 2 次分页 API）。
+        """
+        try:
+            open_numbers=set()
+            for issue in self.repo.get_issues(state='open'):
+                open_numbers.add("P"+str(issue.number))
+        except Exception as e:
+            print("warn: purgeOrphans skipped, cannot list open issues: %s" % e)
+            return
+
+        total=sum(1 for coll in ('postListJson','singeListJson')
+                  for k in self.blogBase[coll] if k.startswith('P'))
+        # 安全阈值：API 返回异常（空列表/明显偏少）时宁可不清理，避免误删全站文章
+        if not open_numbers or len(open_numbers)<total*0.8:
+            print("warn: purgeOrphans skipped, open issue count abnormal: %d vs %d"
+                  % (len(open_numbers),total))
+            return
+
+        removed=[]
+        for coll in ('postListJson','singeListJson'):
+            for postNum in list(self.blogBase[coll].keys()):
+                if not postNum.startswith('P') or postNum in open_numbers:
+                    continue
+                oldPost=self.blogBase[coll][postNum]
+                htmlDir=oldPost.get('htmlDir','')
+                if htmlDir and os.path.exists(htmlDir):
+                    try:
+                        os.remove(htmlDir)
+                        print("removed orphan html: "+htmlDir)
+                    except OSError as e:
+                        print("warn: cannot remove orphan html %s: %s" % (htmlDir,e))
+                del self.blogBase[coll][postNum]
+                removed.append(postNum)
+
+        if removed:
+            print("purged orphan posts: "+",".join(removed))
+            self.createPlistHtml()
+            self.createFeedXml()
+            self.createSitemapXml()
+
     def runOne(self,number_str):
         print("====== start create static html ======")
         self.syncPlugins()  # 增量构建也同步本地插件，避免只改 plugins 后不生效
@@ -707,6 +752,8 @@ def main():
             blog.blogBase["labelBgDict"]=blog.labelBgDict
             blog.blogBase["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
             blog.runOne(options.issue_number)
+            # 全局核对：补删任何历史构建失败遗留的已删除/已关闭文章
+            blog.purgeOrphans()
 
     listFile=open("blogBase.json","w")
     listFile.write(json.dumps(blog.blogBase))

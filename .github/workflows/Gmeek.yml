@@ -63,17 +63,38 @@ jobs:
           python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
 
       - name: update html
+        env:
+          GMEEK_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GMEEK_REPO: ${{ github.repository }}
         run: |
           git config --local user.email "62632079+todomy@users.noreply.github.com"
           git config --local user.name "${{ github.repository_owner }}"
           git add .
           if git diff --cached --quiet; then
             echo "nothing to commit"
-          else
-            git commit -m '🎉auto update by Gmeek action'
-            git pull --rebase origin main
-            git push
+            exit 0
           fi
+          git commit -m '🎉auto update by Gmeek action'
+          # 产物是整文件重写（README/blogBase/postList/rss），多构建并发时
+          # rebase 无法自动合并，旧写法会整轮失败并丢失下架操作。
+          # 改为先试 push；被拒则丢弃本地产物、回到远端最新，按当前 Issues
+          # 全量重建后重试。冲突即自愈，不会留下半套产物或残留文章。
+          for attempt in 1 2 3; do
+            if git push origin main; then
+              echo "pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt), rebuild from latest remote state"
+            git fetch origin
+            git reset --hard origin/main
+            python Gmeek.py "$GMEEK_TOKEN" "$GMEEK_REPO" --issue_number ""
+            git add .
+            if ! git diff --cached --quiet; then
+              git commit -m '🎉auto update by Gmeek action'
+            fi
+          done
+          echo "push still failing after 3 attempts" >&2
+          exit 1
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
