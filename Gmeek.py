@@ -70,7 +70,6 @@ class GMEEK():
         self.root_dir='docs/'
         self.static_dir='static/'
         self.post_folder='post/'
-        self.backup_dir='backup/'
         self.post_dir=self.root_dir+self.post_folder
 
         # Jinja 环境只建一次，模板带缓存，避免每篇文章重复加载
@@ -96,19 +95,12 @@ class GMEEK():
         
     def cleanFile(self):
         workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
-        if os.path.exists(workspace_path+"/"+self.backup_dir):
-            shutil.rmtree(workspace_path+"/"+self.backup_dir)
-
         if os.path.exists(workspace_path+"/"+self.root_dir):
             shutil.rmtree(workspace_path+"/"+self.root_dir)
 
-        if os.path.exists(self.backup_dir):
-            shutil.rmtree(self.backup_dir)
-            
         if os.path.exists(self.root_dir):
             shutil.rmtree(self.root_dir)
 
-        os.mkdir(self.backup_dir)
         os.mkdir(self.root_dir)
         os.mkdir(self.post_dir)
 
@@ -234,8 +226,7 @@ class GMEEK():
         f.close()
 
     def createPostHtml(self,issue):
-        # 正文直接取 blogBase 的 content 字段（与 issue.body 同源），不再按标题找 backup 文件。
-        # 原实现用标题当文件名，两篇同标题会互相覆盖导致串稿；用内容字段彻底摆脱标题主键。
+        # 正文取 blogBase 的 content 字段（与 issue.body 同源），不依赖任何外部文件。
         post_body=self.markdown2html(issue.get("content", "") or "")
 
         # 图片懒加载：长文不再一次性下载全部图片
@@ -494,8 +485,7 @@ class GMEEK():
 
     def purgePrevious(self, postNum, keepHtml, keepList):
         """增量更新前清理旧产物：跨集合残留、改名/换标签后的旧 HTML。
-        backup 已改为按固定 P<编号> 命名且仅供存档，正文从 content 读，
-        标题变化/换集合都不产生孤儿备份，彻底删除由 removeOnePost 负责。"""
+        彻底删除由 removeOnePost 负责。"""
         for coll in ('postListJson', 'singeListJson'):
             old = self.blogBase.get(coll, {}).get(postNum)
             if not old:
@@ -600,14 +590,6 @@ class GMEEK():
             self.blogBase[listJsonName][postNum]["createdDate"]=thisTime.strftime("%Y-%m-%d")
             self.blogBase[listJsonName][postNum]["dateLabelColor"]=self.blogBase["yearColorList"][int(thisYear)%len(self.blogBase["yearColorList"])]
 
-            # backup 用 P<编号> 命名（不再用标题），避免重名标题互相覆盖
-            f = open(self.backup_dir+postNum+".md", 'w', encoding='UTF-8')
-
-            if issue.body==None:
-                f.write('')
-            else:
-                f.write(issue.body)
-            f.close()
             return listJsonName
 
     def runAll(self):
@@ -639,10 +621,6 @@ class GMEEK():
                 if htmlDir and os.path.exists(htmlDir):
                     os.remove(htmlDir)
                     print("removed html: "+htmlDir)
-                mdPath=self.backup_dir+postNum+".md"
-                if os.path.exists(mdPath):
-                    os.remove(mdPath)
-                    print("removed backup: "+mdPath)
                 del self.blogBase[listJsonName][postNum]
                 removed=True
         if removed:
