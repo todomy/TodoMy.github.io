@@ -234,10 +234,9 @@ class GMEEK():
         f.close()
 
     def createPostHtml(self,issue):
-        mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue["postTitle"])
-        f = open(self.backup_dir+mdFileName+".md", 'r', encoding='UTF-8')
-        post_body=self.markdown2html(f.read())
-        f.close()
+        # 正文直接取 blogBase 的 content 字段（与 issue.body 同源），不再按标题找 backup 文件。
+        # 原实现用标题当文件名，两篇同标题会互相覆盖导致串稿；用内容字段彻底摆脱标题主键。
+        post_body=self.markdown2html(issue.get("content", "") or "")
 
         # 图片懒加载：长文不再一次性下载全部图片
         post_body=re.sub(r'<img (?![^>]*loading=)', '<img loading="lazy" decoding="async" ', post_body)
@@ -494,7 +493,9 @@ class GMEEK():
             candidate = '{}-P{}-{}'.format(base, issue.number, suffix)
 
     def purgePrevious(self, postNum, keepHtml, keepList):
-        """增量更新前清理旧产物：跨集合残留、改名/换标签后的旧 HTML 与旧备份 md。"""
+        """增量更新前清理旧产物：跨集合残留、改名/换标签后的旧 HTML。
+        backup 已改为按固定 P<编号> 命名且仅供存档，正文从 content 读，
+        标题变化/换集合都不产生孤儿备份，彻底删除由 removeOnePost 负责。"""
         for coll in ('postListJson', 'singeListJson'):
             old = self.blogBase.get(coll, {}).get(postNum)
             if not old:
@@ -507,15 +508,6 @@ class GMEEK():
                     print("removed stale html: " + old_html)
                 except OSError as e:
                     print("warn: cannot remove stale html {}: {}".format(old_html, e))
-            old_title = old.get('postTitle', '')
-            if old_title:
-                old_md = self.backup_dir + re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', old_title) + '.md'
-                if os.path.exists(old_md):
-                    try:
-                        os.remove(old_md)
-                        print("removed stale backup: " + old_md)
-                    except OSError as e:
-                        print("warn: cannot remove stale backup {}: {}".format(old_md, e))
             # 旧集合已不再是目标集合 -> 从旧集合中摘除
             if coll != keepList:
                 del self.blogBase[coll][postNum]
@@ -608,9 +600,9 @@ class GMEEK():
             self.blogBase[listJsonName][postNum]["createdDate"]=thisTime.strftime("%Y-%m-%d")
             self.blogBase[listJsonName][postNum]["dateLabelColor"]=self.blogBase["yearColorList"][int(thisYear)%len(self.blogBase["yearColorList"])]
 
-            mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', issue.title)
-            f = open(self.backup_dir+mdFileName+".md", 'w', encoding='UTF-8')
-            
+            # backup 用 P<编号> 命名（不再用标题），避免重名标题互相覆盖
+            f = open(self.backup_dir+postNum+".md", 'w', encoding='UTF-8')
+
             if issue.body==None:
                 f.write('')
             else:
@@ -647,8 +639,7 @@ class GMEEK():
                 if htmlDir and os.path.exists(htmlDir):
                     os.remove(htmlDir)
                     print("removed html: "+htmlDir)
-                mdFileName=re.sub(r'[<>:/\\|?*\"]|[\0-\31]', '-', oldPost["postTitle"])
-                mdPath=self.backup_dir+mdFileName+".md"
+                mdPath=self.backup_dir+postNum+".md"
                 if os.path.exists(mdPath):
                     os.remove(mdPath)
                     print("removed backup: "+mdPath)
