@@ -14,8 +14,6 @@ on:
       - '.github/workflows/Gmeek.yml'
   issues:
     types: [opened, edited, closed, deleted]
-  # schedule:
-  # - cron: "0 16 * * *"
 
 jobs:
   build:
@@ -24,7 +22,6 @@ jobs:
     timeout-minutes: 20
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'schedule' ||
       github.event_name == 'push' ||
       github.event.repository.owner.id == github.event.sender.id
     permissions:
