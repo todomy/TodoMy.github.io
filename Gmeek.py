@@ -191,8 +191,10 @@ class GMEEK():
         if not body:
             return ''
         text = body
-        # 去掉自定义 JSON 配置尾行 ##{...}
-        text = re.sub(r'##\{.*?\}\s*$', '', text, flags=re.S)
+        # 去掉自定义 JSON 配置尾行（兼容 ##{...} 与 <!-- ##{...}## --> 两种写法）。
+        # 不用 re.S：原写法让 . 跨行，正文中间若出现字面量 ##{ 会一路删到末尾；
+        # 只锚定最后一行，且限定单行内匹配。
+        text = re.sub(r'[ \t]*(?:<!--[ \t]*)?##\{[^\n]*?\}[ \t]*(?:##[ \t]*-->)?[ \t]*$', '', text)
         # 去掉围栏代码块与行内代码
         text = re.sub(r'```.*?```', '', text, flags=re.S)
         text = re.sub(r'`[^`]*`', '', text)
@@ -377,6 +379,8 @@ class GMEEK():
             marker='<div class="markdown-body" id="postBody">'
             start=htmlText.find(marker)
             if start<0:
+                # 模板结构变更会静默让 RSS 退回摘要；打日志便于尽早发现
+                print("warn: postBody marker not found for RSS full text: "+str(post.get("htmlDir", "")))
                 return ''
             start+=len(marker)
             end=htmlText.find('<div style="font-size:small;margin-top:8px;float:right;">',start)

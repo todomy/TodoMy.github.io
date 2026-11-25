@@ -264,7 +264,8 @@ function showList(labelsCount){
     for(i in jsonData){
         if(i!='labelColorDict' && i!='labelBgDict' && i!='metaLabelColor' && Array.isArray(jsonData[i]['labels'])){
             let div=document.createElement("div");
-            div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
+            div.setAttribute("class","lists");
+            div.setAttribute("data-labels", JSON.stringify(jsonData[i]['labels']));
             div.setAttribute("data-content", jsonData[i]['content'] || '');
 
             let item=document.createElement("a");
@@ -333,9 +334,12 @@ function setClassDisplay(label){
             lists[i].style.display='none';
         }
 
-        let labels = document.getElementsByClassName(label);
-        for(let i = 0; i < labels.length; i++){
-            labels[i].style.display='block';
+        // 按 data-labels 数组匹配，避免标签名含空格时被拆成多个 class
+        for(let i = 0; i < lists.length; i++){
+            let itemLabels = JSON.parse(lists[i].getAttribute('data-labels') || '[]');
+            if(itemLabels.indexOf(label) !== -1){
+                lists[i].style.display='block';
+            }
         }
         document.getElementsByClassName("notFind")[0].style.display='none';
     }
