@@ -285,7 +285,10 @@ cmButton=document.getElementById("cmButton");
     cmButton.appendChild(span);
 
 
+var utterancesLoading=false;
 function openComments(){
+    if(utterancesLoading){return;}
+    utterancesLoading=true;
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
     cmButton.textContent="loading";
@@ -306,7 +309,7 @@ function openComments(){
     script.setAttribute("async","");
     cm.appendChild(script);
 
-    int=self.setInterval("iFrameLoading()",200);
+    int=self.setInterval(iFrameLoading,200);
 }
 
 function iFrameLoading(){

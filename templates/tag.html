@@ -97,6 +97,10 @@ request.onload=function(){
     console.log(jsonData);
     showList(labelsCount);
     setClassDisplay(decodeURI(window.location.hash.slice(1)));
+    // 前进/后退或手动改 hash 时，重新按 URL 渲染，避免列表与地址栏不同步
+    window.addEventListener("hashchange",function(){
+        setClassDisplay(decodeURI(window.location.hash.slice(1)));
+    });
 }
 
 function showList(labelsCount){

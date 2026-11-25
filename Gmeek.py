@@ -602,6 +602,9 @@ class GMEEK():
 
         issues=self.repo.get_issues()
         for issue in issues:
+            # GitHub 的 /issues 端点同时返回 PR；PR 不是文章，不能发布
+            if getattr(issue, "pull_request", None) is not None:
+                continue
             self.addOnePostJson(issue)
 
         for issue in self.blogBase["postListJson"].values():
@@ -644,6 +647,9 @@ class GMEEK():
         try:
             open_numbers=set()
             for issue in self.repo.get_issues(state='open'):
+                # /issues 端点会混入 PR；PR 编号不能算作「应存在的文章」
+                if getattr(issue, "pull_request", None) is not None:
+                    continue
                 open_numbers.add("P"+str(issue.number))
         except Exception as e:
             print("warn: purgeOrphans skipped, cannot list open issues: %s" % e)

@@ -79,7 +79,9 @@
 {% block script %}
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+{% if blogBase['showPostSource']==1 -%}
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+{% endif -%}
 {% if blogBase['commentNum']>0 -%}
     cmButton=document.getElementById("cmButton");
     span=document.createElement("span");
@@ -89,7 +91,10 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 {%- endif %}
 
 {% if blogBase['needComment']==1 %}
+var utterancesLoading=false;
 function openComments(){
+    if(utterancesLoading){return;}
+    utterancesLoading=true;
     cm=document.getElementById("comments");
     cmButton=document.getElementById("cmButton");
     cmButton.textContent="loading";
@@ -112,7 +117,7 @@ function openComments(){
     script.setAttribute("async","");
     cm.appendChild(script);
 
-    int=self.setInterval("iFrameLoading()",200);
+    int=self.setInterval(iFrameLoading,200);
 }
 
 function iFrameLoading(){
