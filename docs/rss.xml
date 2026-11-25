@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Wed, 25 Nov 2026 07:36:20 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>君子之交淡如水</title><link>https://todomy.github.io/post/jun-zi-zhi-jiao-dan-ru-shui.html</link><description>&lt;h2&gt;小心被赖上&lt;/h2&gt;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Wed, 25 Nov 2026 07:36:57 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>君子之交淡如水</title><link>https://todomy.github.io/post/jun-zi-zhi-jiao-dan-ru-shui.html</link><description>&lt;h2&gt;小心被赖上&lt;/h2&gt;
 &lt;h3&gt;不建议任何建议&lt;/h3&gt;
 &lt;p&gt;有好友找你，说想买房或者买车，问你能不能买这个小区房子，这个牌子车子，你看了一下说最好是不买，他说一定要买，好吧，你说也可以买，后续房子跌了，车子不行了，然后这个朋友就怪你导致了他买这个房子亏钱了，买这个车子质量不行，也都赖你。&lt;/p&gt;
 &lt;h3&gt;不建议任何投资&lt;/h3&gt;
@@ -13106,17 +13106,18 @@ mtd write /tmp/uboot.bin FIP
 &lt;hr&gt;
 &lt;h2&gt;二、即时反击话术库&lt;/h2&gt;
 &lt;h3&gt;🛡️ 万能防御公式&lt;/h3&gt;
-&lt;div class="highlight highlight-text-md"&gt;&lt;pre class="notranslate"&gt;&lt;span class="pl-s"&gt;1&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;复读机模式&lt;span class="pl-s"&gt;**&lt;/span&gt;  
+&lt;pre lang="markdown" class="notranslate"&gt;&lt;code class="notranslate"&gt;1. **复读机模式**  
    👉 对方："你这人真自私！"  
    🔄 回应："你说我自私？"（等待对方解释消耗其能量）  
 
-&lt;span class="pl-s"&gt;2&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;焦点转移术&lt;span class="pl-s"&gt;**&lt;/span&gt;  
+2. **焦点转移术**  
    👉 对方："别人都能加班你怎么不行？"  
    🔄 回应："您似乎对行业加班文化很有研究？"  
 
-&lt;span class="pl-s"&gt;3&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;降维打击法&lt;span class="pl-s"&gt;**&lt;/span&gt;  
+3. **降维打击法**  
    👉 对方："你不听话就分手！"  
-   🔄 回应："用威胁得到的关系你要吗？"（微笑直视）&lt;/pre&gt;&lt;/div&gt;
+   🔄 回应："用威胁得到的关系你要吗？"（微笑直视）
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;📌 分场景应对矩阵&lt;/h3&gt;
 &lt;h4&gt;职场篇&lt;/h4&gt;
 &lt;markdown-accessiblity-table&gt;&lt;table role="table"&gt;
@@ -14923,15 +14924,7 @@ Example：参考小米智能家居产品说明书。
 &lt;h3&gt;选择&lt;/h3&gt;
 &lt;p&gt;当你打小怪升级的时候会越打越顺，因为资金体量，行业经验越来越丰富，你在不断的增值，你从一开始就理解了游戏世界的规则。现实世界太多的人不知道自己肉身世界的规则，影响因素有哪些，哪些行业属于是增长的，而那些是夕阳产业，我们自己选择踏入一个下滑的环境，那么不管你怎么努力，你只能做到保本已实属不易，所以我去判断哪些行业是不断的增长，增长中又有哪些是关键的，积极投入到这些里面，才能有更大的收获。麻绳专挑细处断，厄运专找苦命人，实际上就是找那些没有抵抗风险能力的人，抛开出生你会发现成年里面，有些人是专门将自己往薄弱点去折腾，最后导致一个错误接着一个错误，无法回头。&lt;/p&gt;
 &lt;h3&gt;何时种树&lt;/h3&gt;
-&lt;p&gt;目前我判断区块链投资还是增量，如果不贪心定投btc收益还是巨大（没有人愿意慢慢变富），当静下心来磨练自身的长期投资能力，去掉贪欲，你会发现你的资金体量会越来越大，越来越稳。琢磨清楚自己的战略方向，再慢慢优化战术，大的方向没有错，基本上最后也会比普通人强。我听我朋友说，最好的种树时间是十年前或者是今日。&lt;/p&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/you-xi-yuan-yu-sheng-huo.html</guid><pubDate>Tue, 17 Dec 2024 08:55:53 +0000</pubDate></item><item><title>今年对于死亡事件的感受</title><link>https://todomy.github.io/post/jin-nian-dui-yu-si-wang-shi-jian-de-gan-shou.html</link><description>&lt;div class="markdown-alert markdown-alert-tip"&gt;&lt;p class="markdown-alert-title"&gt;&lt;svg data-component="Octicon" class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"&gt;&lt;path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"&gt;&lt;/path&gt;&lt;/svg&gt;Tip&lt;/p&gt;&lt;p&gt;难受按照1到5分进行打分&lt;/p&gt;
-&lt;/div&gt;
-&lt;ol&gt;
-&lt;li&gt;珠海随机撞人事件（2）&lt;/li&gt;
-&lt;li&gt;母校学弟捅人事件（3）&lt;/li&gt;
-&lt;li&gt;没啥印象的爷爷去世（3）&lt;/li&gt;
-&lt;li&gt;15年的好兄弟去世（5）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;痛苦跟自身密切程度相关，如果是没有交集的人可能根本没有痛苦感，感同身受只有自身才能知道，因为记忆的载体是你。&lt;/p&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/jin-nian-dui-yu-si-wang-shi-jian-de-gan-shou.html</guid><pubDate>Mon, 16 Dec 2024 06:25:06 +0000</pubDate></item><item><title>忆顾兄</title><link>https://todomy.github.io/post/yi-gu-xiong.html</link><description>&lt;div class="markdown-alert markdown-alert-note"&gt;&lt;p class="markdown-alert-title"&gt;&lt;svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"&gt;&lt;path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"&gt;&lt;/path&gt;&lt;/svg&gt;Note&lt;/p&gt;&lt;p&gt;又是一年寒冷冬季的到来，让我想起来以前念书时候跟你一个被窝一起吹牛皮度过寒冷冬季，讨论班级女生哪个妹子好看，哪个屁股大&lt;/p&gt;
+&lt;p&gt;目前我判断区块链投资还是增量，如果不贪心定投btc收益还是巨大（没有人愿意慢慢变富），当静下心来磨练自身的长期投资能力，去掉贪欲，你会发现你的资金体量会越来越大，越来越稳。琢磨清楚自己的战略方向，再慢慢优化战术，大的方向没有错，基本上最后也会比普通人强。我听我朋友说，最好的种树时间是十年前或者是今日。&lt;/p&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/you-xi-yuan-yu-sheng-huo.html</guid><pubDate>Tue, 17 Dec 2024 08:55:53 +0000</pubDate></item><item><title>忆顾兄</title><link>https://todomy.github.io/post/yi-gu-xiong.html</link><description>&lt;div class="markdown-alert markdown-alert-note"&gt;&lt;p class="markdown-alert-title"&gt;&lt;svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"&gt;&lt;path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"&gt;&lt;/path&gt;&lt;/svg&gt;Note&lt;/p&gt;&lt;p&gt;又是一年寒冷冬季的到来，让我想起来以前念书时候跟你一个被窝一起吹牛皮度过寒冷冬季，讨论班级女生哪个妹子好看，哪个屁股大&lt;/p&gt;
 &lt;/div&gt;
 &lt;h3&gt;初次相识&lt;/h3&gt;
 &lt;p&gt;2009年我们一起念高一，咱们被分配到了一个班级，一起军训，在一个班级里没事就一起吹吹牛皮，你还坐在第二排 我坐在倒数排，那时候我就觉得你是个逗比。学校考试，兄弟你数学考了0蛋，要开家长会，成绩父母都能看到，那一刻我觉得你慌了。叔开着摩托车，开完家长会后我感觉他的眼神太恐怖了，看你跟个小鸡崽一样缩着。&lt;/p&gt;
@@ -15162,27 +15155,7 @@ Example：参考小米智能家居产品说明书。
 &lt;li&gt;做这个决定或者投入是否是增量，不是增量的事情不做&lt;/li&gt;
 &lt;li&gt;烦恼都是自己找的，关注心态的变化，少给自己找麻烦&lt;/li&gt;
 &lt;li&gt;己所不欲勿施于人，己所欲勿施于人，尊重个体命运。&lt;/li&gt;
-&lt;/ol&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/dui-zi-ji-xing-wei-de-si-kao.html</guid><pubDate>Tue, 10 Dec 2024 07:04:03 +0000</pubDate></item><item><title>对进击的巨人的思考</title><link>https://todomy.github.io/post/dui-jin-ji-de-ju-ren-de-si-kao.html</link><description>&lt;p&gt;周末在家全面地了解了一下进击的巨人这部动漫，这部动漫可以说是神作。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;被侵略成为奴隶&lt;/li&gt;
-&lt;li&gt;巧遇恶魔之力，拥有了巨人始祖之力&lt;/li&gt;
-&lt;li&gt;投诚人类国王，国王利用始祖之力侵略他国&lt;/li&gt;
-&lt;li&gt;经历战争国王更迭，继承者不愿意战争为和平放弃领土巨人之力划岛为牢笼&lt;/li&gt;
-&lt;li&gt;经历多年和平&lt;/li&gt;
-&lt;li&gt;岛外国家对方想要对方的始祖之力继续自己的霸权天下&lt;/li&gt;
-&lt;li&gt;岛跟他们战斗&lt;/li&gt;
-&lt;li&gt;岛内百姓由于之前国王用始祖之力抹掉了人们的记忆，人们被动对抗入侵&lt;/li&gt;
-&lt;li&gt;岛内百姓反抗以及寻找真相&lt;/li&gt;
-&lt;li&gt;得知真相开启反击&lt;/li&gt;
-&lt;li&gt;掌握始祖之力开启跟岛外对战，消灭岛外入侵者，消灭岛外所有人类&lt;/li&gt;
-&lt;li&gt;岛内部分人也不接受这么残酷的事情&lt;/li&gt;
-&lt;li&gt;岛内一部人去阻止战争&lt;/li&gt;
-&lt;li&gt;岛外人类被消灭只剩下百分之 20，岛内反对者对抗始祖之力成功消灭他们的王&lt;/li&gt;
-&lt;li&gt;人类迎来和平，岛外人感谢他们&lt;/li&gt;
-&lt;li&gt;随着时间迁移，岛外又开启了对岛内的战争&lt;/li&gt;
-&lt;li&gt;最后历史往复&lt;br&gt;
-总结：这部通过一个一个鲜活的角色，塑造了战争的残酷，战争改变了每一个人，让他们不得不去牺牲掉个人的自由，为了所谓的民族主义大义，最终导致每一个个体都是悲剧收场，然后最终也没有结束这场战争，和平一段时间，人类又会开启新的战争，真相又会被掩埋。&lt;/li&gt;
-&lt;/ul&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/dui-jin-ji-de-ju-ren-de-si-kao.html</guid><pubDate>Sun, 08 Dec 2024 07:55:29 +0000</pubDate></item><item><title>增量</title><link>https://todomy.github.io/post/zeng-liang.html</link><description>&lt;p&gt;人这一生光溜溜的到来，也光溜溜的走，什么都带不走。我们一出生就有了家人，成长的过程拥有了朋友，拥有各类其他的体验，在这里我们感受这个世界。&lt;br&gt;
+&lt;/ol&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/dui-zi-ji-xing-wei-de-si-kao.html</guid><pubDate>Tue, 10 Dec 2024 07:04:03 +0000</pubDate></item><item><title>增量</title><link>https://todomy.github.io/post/zeng-liang.html</link><description>&lt;p&gt;人这一生光溜溜的到来，也光溜溜的走，什么都带不走。我们一出生就有了家人，成长的过程拥有了朋友，拥有各类其他的体验，在这里我们感受这个世界。&lt;br&gt;
 人类对于亏损的痛苦高于增加，但是往往正确的是放弃亏损，专注于增量。你不同的时间段会有不同的伙伴，每个人都在不同的时间陪伴着你，而你要乐观的去看待这个事情，不必伤感。&lt;br&gt;
 钱财的增量，让你亏钱的会一直亏钱，所以要止损，选对了品种选对了行业，跟对了人，上对了平台，后面的路都会很舒服，与其痛苦亏损，不如多搞搞，而后细耕，不断筛选，自然实践出真知。&lt;br&gt;
 时间花在增量好的体验上，这样可以激励自己更好的投入，让自己乐在其中。只把时间花在你认为对的事情上，最起码结果不好也是自己选择的，无怨无悔。&lt;/p&gt;&lt;/div&gt;</description><guid isPermaLink="true">https://todomy.github.io/post/zeng-liang.html</guid><pubDate>Fri, 06 Dec 2024 08:04:05 +0000</pubDate></item><item><title>穷则思变</title><link>https://todomy.github.io/post/qiong-ze-si-bian.html</link><description>&lt;p&gt;“穷则思变”这个成语出自《易经·系辞下》：“穷则变，变则通，通则久。”意思是说，当事物发展到极点或者遇到困难时，就需要寻求变化，改变现状。通过变化，可以使事物变得通达，进而能够持续发展。这个成语强调了在困境中寻求创新和改变的重要性，鼓励人们在面对困难和挑战时，要勇于变革，寻找新的方法和出路。&lt;/p&gt;
