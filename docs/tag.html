@@ -99,7 +99,7 @@
             <path id="pathHome" fill-rule="evenodd"></path>
         </svg>
     </a>
-    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="切换主题">
+    <a class="btn btn-invisible circle" role="button" aria-label="切换主题" tabindex="0" onclick="modeSwitch()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();modeSwitch();}" title="切换主题">
         <svg class="octicon" width="16" height="16" >
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>
@@ -117,7 +117,7 @@
 </div>
 
 <!-- 返回顶部按钮 -->
-<div class="circle-button" onclick="scrollToTop()">↑</div>
+<div class="circle-button" role="button" aria-label="返回顶部" tabindex="0" onclick="scrollToTop()">↑</div>
 
 <script>
 (function(){
@@ -139,6 +139,10 @@
 
     // 按钮显隐
     var btn = document.querySelector('.circle-button');
+    // 键盘可达：Enter/Space 触发返回顶部（与返回键写法一致）
+    btn.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToTop(); }
+    });
     window.addEventListener('scroll', function(){
         if (window.scrollY > 300) { btn.classList.add('visible'); }
         else { btn.classList.remove('visible'); }
