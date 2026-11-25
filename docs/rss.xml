@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Wed, 25 Nov 2026 07:37:33 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>君子之交淡如水</title><link>https://todomy.github.io/post/jun-zi-zhi-jiao-dan-ru-shui.html</link><description>&lt;h2&gt;小心被赖上&lt;/h2&gt;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>TodoMy</title><link>https://todomy.github.io</link><description>人生没有绝望的处境，只有对处境绝望的人。</description><copyright>TodoMy</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/62632079?v=4</url><title>avatar</title><link>https://todomy.github.io</link></image><lastBuildDate>Wed, 25 Nov 2026 09:10:28 +0000</lastBuildDate><managingEditor>TodoMy</managingEditor><ttl>60</ttl><webMaster>TodoMy</webMaster><item><title>君子之交淡如水</title><link>https://todomy.github.io/post/jun-zi-zhi-jiao-dan-ru-shui.html</link><description>&lt;h2&gt;小心被赖上&lt;/h2&gt;
 &lt;h3&gt;不建议任何建议&lt;/h3&gt;
 &lt;p&gt;有好友找你，说想买房或者买车，问你能不能买这个小区房子，这个牌子车子，你看了一下说最好是不买，他说一定要买，好吧，你说也可以买，后续房子跌了，车子不行了，然后这个朋友就怪你导致了他买这个房子亏钱了，买这个车子质量不行，也都赖你。&lt;/p&gt;
 &lt;h3&gt;不建议任何投资&lt;/h3&gt;
@@ -13106,18 +13106,17 @@ mtd write /tmp/uboot.bin FIP
 &lt;hr&gt;
 &lt;h2&gt;二、即时反击话术库&lt;/h2&gt;
 &lt;h3&gt;🛡️ 万能防御公式&lt;/h3&gt;
-&lt;pre lang="markdown" class="notranslate"&gt;&lt;code class="notranslate"&gt;1. **复读机模式**  
+&lt;div class="highlight highlight-text-md"&gt;&lt;pre class="notranslate"&gt;&lt;span class="pl-s"&gt;1&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;复读机模式&lt;span class="pl-s"&gt;**&lt;/span&gt;  
    👉 对方："你这人真自私！"  
    🔄 回应："你说我自私？"（等待对方解释消耗其能量）  
 
-2. **焦点转移术**  
+&lt;span class="pl-s"&gt;2&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;焦点转移术&lt;span class="pl-s"&gt;**&lt;/span&gt;  
    👉 对方："别人都能加班你怎么不行？"  
    🔄 回应："您似乎对行业加班文化很有研究？"  
 
-3. **降维打击法**  
+&lt;span class="pl-s"&gt;3&lt;/span&gt;&lt;span class="pl-v"&gt;.&lt;/span&gt; &lt;span class="pl-s"&gt;**&lt;/span&gt;降维打击法&lt;span class="pl-s"&gt;**&lt;/span&gt;  
    👉 对方："你不听话就分手！"  
-   🔄 回应："用威胁得到的关系你要吗？"（微笑直视）
-&lt;/code&gt;&lt;/pre&gt;
+   🔄 回应："用威胁得到的关系你要吗？"（微笑直视）&lt;/pre&gt;&lt;/div&gt;
 &lt;h3&gt;📌 分场景应对矩阵&lt;/h3&gt;
 &lt;h4&gt;职场篇&lt;/h4&gt;
 &lt;markdown-accessiblity-table&gt;&lt;table role="table"&gt;
