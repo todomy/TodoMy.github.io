@@ -65,7 +65,7 @@
             <path id="pathHome" fill-rule="evenodd"></path>
         </svg>
     </a>
-    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
+    <a class="btn btn-invisible circle" role="button" aria-label="{{ i18n['switchTheme'] }}" tabindex="0" onclick="modeSwitch()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();modeSwitch();}" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
         <svg class="octicon" width="16" height="16" >
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>

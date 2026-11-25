@@ -37,6 +37,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # 完整历史，保证产物提交 rebase 时能找到共同祖先
 
       - name: Setup Pages
         id: pages
@@ -72,6 +74,7 @@ jobs:
             echo "nothing to commit"
           else
             git commit -m '🎉auto update by Gmeek action'
+            git pull --rebase origin main
             git push
           fi
 

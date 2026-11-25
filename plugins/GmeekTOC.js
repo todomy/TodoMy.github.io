@@ -6,7 +6,7 @@ function createTOC() {
     const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
     
     if (headings.length === 0) {
-        return;  // 如果没有标题元素，则不创建TOC
+        return false;  // 没有标题不创建 TOC，告知调用方无需注入样式与滚动监听
     }
     
     tocElement.insertAdjacentHTML('afterbegin', '<div class="toc-title">文章目录</div>');
@@ -30,10 +30,11 @@ function createTOC() {
     
     tocElement.insertAdjacentHTML('beforeend', '<a class="toc-end" onclick="window.scrollTo({top:0,behavior: \'smooth\'});">Top</a>');
     contentContainer.prepend(tocElement);
+    return true;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    createTOC();
+    if (!createTOC()) return;  // 无标题页不注入样式、不注册滚动监听
     var css = `
     .toc {
         position:fixed;
@@ -92,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
     style.textContent = css;
     document.head.appendChild(style);
 
-    window.onscroll = function() {
+    window.addEventListener('scroll', function() {
         const backToTopButton = document.querySelector('.toc-end');
         if (!backToTopButton) { return; }
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -100,6 +101,6 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             backToTopButton.style="visibility: hidden;"
         }
-    };
+    });
 
 });
