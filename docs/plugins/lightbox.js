@@ -319,6 +319,7 @@
       newImage.onload = () => {
         this.image.style.transition = `opacity ${this.options.animationDuration}ms ease`;
         this.image.style.transform = 'scale(1)';
+        this.zoomLevel = 1; // 切图后同步复位缩放状态，否则下次滚轮从上一张的倍率继续
         this.image.src = imgSrc;
         this.image.style.opacity = '1';
 

@@ -28,7 +28,9 @@ function createTOC() {
         tocElement.appendChild(link);
     });
     
-    tocElement.insertAdjacentHTML('beforeend', '<a class="toc-end" onclick="window.scrollTo({top:0,behavior: \'smooth\'});">Top</a>');
+    // href 提供原生键盘可达（Tab 聚焦、Enter 触发），role/tabindex 让辅助技术识别为按钮；
+    // preventDefault 阻止 # 跳到页首覆盖平滑滚动，keydown 补上空格键。
+    tocElement.insertAdjacentHTML('beforeend', '<a class="toc-end" href="#" role="button" tabindex="0" onclick="event.preventDefault();window.scrollTo({top:0,behavior:\'smooth\'});" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();window.scrollTo({top:0,behavior:\'smooth\'});}">Top</a>');
     contentContainer.prepend(tocElement);
     return true;
 }

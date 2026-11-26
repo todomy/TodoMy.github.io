@@ -59,8 +59,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Generate new html
+        env:
+          GMEEK_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+          python Gmeek.py "${{ github.repository }}" --issue_number '${{ github.event.issue.number }}'
 
       - name: update html
         env:
@@ -87,7 +89,7 @@ jobs:
             echo "push rejected (attempt $attempt), rebuild from latest remote state"
             git fetch origin
             git reset --hard origin/main
-            python Gmeek.py "$GMEEK_TOKEN" "$GMEEK_REPO" --issue_number ""
+            python Gmeek.py "$GMEEK_REPO" --issue_number ""
             git add .
             if ! git diff --cached --quiet; then
               git commit -m '🎉auto update by Gmeek action'

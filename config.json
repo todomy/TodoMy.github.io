@@ -29,7 +29,7 @@
         "meta": {"color": "#6B7280", "bg": "#F1F3F5"}
     },
     "i18n": "CN",
-    "script": "<script src='https://todomy.github.io/plugins/GmeekTOC.js'></script>",
+    "script": "<script src='/plugins/GmeekTOC.js'></script>",
     "nightTheme": "dark_colorblind",
     "bottomText": "❤️ 免责声明：以上内容纯属虚构，瞎写写勿传播 ❤️",
     "iconList": {
@@ -38,6 +38,6 @@
     "exlink": {
         "Github": "https://github.com/todomy/TodoMy.github.io"
     },
-    "allHead": "<script src='https://todomy.github.io/plugins/GmeekVercount.js' defer></script>",
+    "allHead": "<script src='/plugins/GmeekVercount.js' defer></script>",
     "rssFullText": 1
 }

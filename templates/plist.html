@@ -110,7 +110,7 @@
     <div class="listLabels">
         {% if postListJson[num]['commentNum']>0 %}<span class="Label LabelMeta">{{ postListJson[num]['commentNum'] }}</span>{% endif %}
         {% for label in postListJson[num]['labels'] -%}
-        <span class="Label LabelName" style="color:{{ blogBase['labelColorDict'][label] }};background-color:{{ blogBase['labelBgDict'][label] }}"><object><a href="tag.html#{{ label }}">{{ label }}</a></object></span>
+        <span class="Label LabelName" style="color:{{ blogBase['labelColorDict'][label] }};background-color:{{ blogBase['labelBgDict'][label] }}"><object><a href="tag.html#{{ label|e }}">{{ label|e }}</a></object></span>
         {%- endfor %}
         <span class="Label LabelTime LabelMeta">{{ postListJson[num]['createdDate'] }}</span>
     </div>

@@ -430,7 +430,7 @@ class GMEEK():
             
             if new==old:
                 print("====== rss xml no update ======")
-                feedFile=open(self.root_dir+'rss.xml',"w")
+                feedFile=open(self.root_dir+'rss.xml',"w",encoding='utf-8')
                 feedFile.write(self.oldFeedString)
                 feedFile.close()
                 return
@@ -729,10 +729,19 @@ class GMEEK():
 ######################################################################################
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("github_token", help="github_token")
-    parser.add_argument("repo_name", help="repo_name")
+    parser.add_argument("github_token", nargs="?", default=None, help="repo name, or legacy: token")
+    parser.add_argument("repo_name", nargs="?", default=None, help="legacy: repo name")
     parser.add_argument("--issue_number", help="issue_number", default=0, required=False)
     options = parser.parse_args()
+    # 新调用 python Gmeek.py <repo> --issue_number X：token 走 GMEEK_TOKEN 环境变量，
+    # 不出现在 argv / 进程列表。旧调用 python Gmeek.py <token> <repo> ... 仍兼容本地手动执行。
+    if options.repo_name is None:
+        options.repo_name = options.github_token
+        options.github_token = os.environ.get("GMEEK_TOKEN")
+    if not options.repo_name:
+        parser.error("repo_name required: python Gmeek.py <repo> --issue_number X")
+    if not options.github_token:
+        parser.error("GitHub token required: set GMEEK_TOKEN env (legacy positional token also accepted)")
 
     blog=GMEEK(options)
 
@@ -761,7 +770,7 @@ def main():
             # 全局核对：补删任何历史构建失败遗留的已删除/已关闭文章
             blog.purgeOrphans()
 
-    listFile=open("blogBase.json","w")
+    listFile=open("blogBase.json","w",encoding='utf-8')
     listFile.write(json.dumps(blog.blogBase))
     listFile.close()
 
@@ -795,7 +804,7 @@ def main():
     blog.blogBase["postListJson"]["labelBgDict"]=blog.labelBgDict
     blog.blogBase["postListJson"]["metaLabelColor"]=blog.blogBase.get('labelTheme', {}).get('meta', {})
 
-    docListFile=open(blog.root_dir+"postList.json","w")
+    docListFile=open(blog.root_dir+"postList.json","w",encoding='utf-8')
     docListFile.write(json.dumps(blog.blogBase["postListJson"]))
     docListFile.close()
 
@@ -857,7 +866,7 @@ def main():
         readme += "## ❤️ 致谢\r\n"
         readme += "Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek) - A beautiful GitHub Issues based blog generator.\r\n"
     
-        readmeFile=open(workspace_path+"/README.md","w")
+        readmeFile=open(workspace_path+"/README.md","w",encoding='utf-8')
         readmeFile.write(readme)
         readmeFile.close()
 

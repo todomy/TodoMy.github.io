@@ -27,10 +27,9 @@ var s=document.createElement('style');s.textContent=css;document.head.appendChil
     });
   }
   if(status){
+    // 友链页的 status 在下方会写入「已连接 N 位朋友」，随机文案只对关于页生效
     var aboutLines=['长期主义，慢慢变富','独立思考，持续上涨','欢迎价值投资者长期持有','本金有限，耐心无限','今天也在认真生活'];
-    var linkLines=['朋友圈正在开盘','欢迎各位老板来串门','链接已上线，随时可点','今天的友情指数：持续上涨'];
-    var pool=isLink?linkLines:aboutLines;
-    status.textContent=pool[Math.floor(Math.random()*pool.length)];
+    if(!isLink){status.textContent=aboutLines[Math.floor(Math.random()*aboutLines.length)];}
     status.className='gm-status';
     var wrap=document.createElement('div');wrap.className='gm-chart';
     wrap.innerHTML="<svg viewBox='0 0 420 90'><polyline points='10,72 60,66 100,70 140,56 180,60 225,44 270,48 320,30 370,26 410,14'/><circle cx='410' cy='14' r='5'/></svg>";
