@@ -13,17 +13,30 @@ on:
       - 'plugins/**'
       - '.github/workflows/Gmeek.yml'
   issues:
-    types: [opened, edited, closed, deleted, labeled, unlabeled, reopened, transferred]
+    # 心智模型：标签 = 发布开关；关闭 = 下架；删除 = 真不要。
+    # 生活化流程：先写 Issue（无标签不构建）→ 补标签发布 → 编辑更新 → 关闭下架。
+    # labeled 保留：先写文章保存、后补标签时，它是唯一的发布触发点。
+    # unlabeled 不进触发器：去掉标签不构建；下架统一靠 closed/deleted。
+    types: [opened, edited, closed, deleted, labeled, reopened, transferred]
 
 jobs:
   build:
     name: Generate blog
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # 只让"带标签"的 Issue 事件跑构建：无标签新建/编辑直接跳过。
+    # closed/deleted 例外：下架必须触发，哪怕 payload 里标签已空。
     if: >-
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'push' ||
-      github.event.repository.owner.id == github.event.sender.id
+      (
+        github.event.repository.owner.id == github.event.sender.id &&
+        (
+          github.event.action == 'closed' ||
+          github.event.action == 'deleted' ||
+          github.event.issue.labels[0] != null
+        )
+      )
     permissions:
       contents: write
       issues: read
