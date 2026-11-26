@@ -15,9 +15,11 @@ on:
   issues:
     # 心智模型：标签 = 发布开关；关闭 = 下架；删除 = 真不要。
     # 生活化流程：先写 Issue（无标签不构建）→ 补标签发布 → 编辑更新 → 关闭下架。
-    # labeled 保留：先写文章保存、后补标签时，它是唯一的发布触发点。
+    # opened 不进触发器：创建带标签时 GitHub 会连发 opened + labeled，
+    #   只靠 labeled 发布可避免同篇构建两次（API 创建若不发 labeled 需手动触发）。
+    # labeled 是唯一发布入口：先建后补标签、创建即带标签都靠这一次。
     # unlabeled 不进触发器：去掉标签不构建；下架统一靠 closed/deleted。
-    types: [opened, edited, closed, deleted, labeled, reopened, transferred]
+    types: [edited, closed, deleted, labeled, reopened, transferred]
 
 jobs:
   build:
