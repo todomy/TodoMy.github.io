@@ -154,7 +154,7 @@ class GMEEK():
             self.blogBase["ogImage"]=self.blogBase["avatarUrl"]
 
         if "primerCSS" not in self.blogBase:
-            self.blogBase["primerCSS"]="<link href='%s/plugins/primer.css' rel='stylesheet' />" % self.blogBase["homeUrl"]
+            self.blogBase["primerCSS"]="<link href='/plugins/primer.css' rel='stylesheet' />"
 
         if "homeUrl" not in self.blogBase:
             if str(self.repo.name).lower() == (str(self.repo.owner.login) + ".github.io").lower():
@@ -255,7 +255,7 @@ class GMEEK():
             post_body=re.sub(r'<math-renderer.*?>','',post_body)
             post_body=re.sub(r'</math-renderer>','',post_body)
             # 本地化 MathJax：SVG 输出无需外部字体；关闭菜单以切断 SRE 的惰性 CDN 请求
-            mathjax_src=self.blogBase["homeUrl"]+"/plugins/mathjax/tex-svg-full.js"
+            mathjax_src="/plugins/mathjax/tex-svg-full.js"
             issue["script"]=issue["script"]+'<script>MathJax = {tex: {inlineMath: [["$", "$"]]}, options: {enableMenu: false}, startup: {typeset: true}};</script><script defer src="'+mathjax_src+'"></script>'
         
         if '<p class="markdown-alert-title">' in post_body:
@@ -290,7 +290,7 @@ class GMEEK():
             or bool(re.search(r'\.(?:jpe?g|png|gif|webp|avif|bmp|svg)(?:[?#"\'])', post_body, re.I))
         )
         if (image_hint or issue.get("lightbox", False)) and 'lightbox.js' not in issue["script"]:
-            lightbox_src=self.blogBase["homeUrl"]+"/plugins/lightbox.js"
+            lightbox_src="/plugins/lightbox.js"
             issue["script"]=issue["script"]+'<script src="'+lightbox_src+'"></script>'
 
         postBase["postTitle"]=issue["postTitle"]
@@ -772,7 +772,7 @@ def main():
             print("issue_number=='0', runAll")
             blog.runAll()
         else:
-            f=open("blogBase.json","r")
+            f=open("blogBase.json","r",encoding='utf-8')
             print("blogBase is exists and issue_number!=0, runOne")
             oldBlogBase=json.loads(f.read())
             for key, value in oldBlogBase.items():
@@ -823,67 +823,66 @@ def main():
     docListFile.write(json.dumps(blog.blogBase["postListJson"]))
     docListFile.close()
 
-    if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
-        print("====== update readme file ======")
-        workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
-    
-        # 显式统计文章数：只数 P<编号> 形式的真实文章键，排除配色字典等非文章键。
-        # 不能用 len(postListJson)-1：配色键增减会让数字悄悄算错（曾靠 3 个配色键
-        # 与 2 个单页数量相等而"碰巧正确"）。单页面不计入文章总数。
-        article_count = sum(1 for k in blog.blogBase["postListJson"]
-                            if k.startswith("P") and k[1:].isdigit())
-    
-        # 计算标签数量
-        label_count = len(blog.labelColorDict)
-    
-        # 生成更专业的README
-        readme="# %s :link: [%s](%s) \r\n\r\n" % (blog.blogBase["title"], blog.blogBase["title"], blog.blogBase["homeUrl"])
-        readme += "🌍 **博客主页**：[%s](%s)\r\n\r\n" % (blog.blogBase["homeUrl"], blog.blogBase["homeUrl"])
-    
-        # 项目简介部分
-        readme += "## 📝 项目简介\r\n"
-        readme += "这是一个基于GitHub Issues的静态博客系统，通过Gmeek自动生成和部署。\r\n\r\n"
-    
-        # 统计信息卡片
-        readme += "## 📊 博客统计\r\n"
-        readme += "| 统计项目 | 数量 | | 统计项目 | 数据 |\r\n"
-        readme += "|---------|------|---|---------|------|\r\n"
-        readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (article_count, label_count)
-        readme += "| 💬 评论总数 | %d | | 📚 总字数 | %d |\r\n" % (commentNumSum, wordCount)
-        readme += "\r\n> ⏰ 最后更新：%s\r\n\r\n" % datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S')
-    
-        # 功能特点部分
-        readme += "## ✨ 功能特点\r\n"
-        readme += "- 🎯 基于GitHub Issues的内容管理\r\n"
-        readme += "- 🚀 自动化部署与更新\r\n"
-        readme += "- 🌓 支持明暗主题切换\r\n"
-        readme += "- 🌍 多语言支持\r\n"
-        readme += "- 📱 响应式设计，适配各种设备\r\n"
-        readme += "- 📊 文章统计与标签分类\r\n"
-        readme += "- 📝 Markdown格式支持\r\n"
-        readme += "- 📡 RSS订阅功能\r\n\r\n"
-    
-        # 技术栈部分
-        readme += "## 🛠️ 技术栈\r\n"
-        readme += "- 🐍 Python\r\n"
-        readme += "- 📄 GitHub Pages\r\n"
-        readme += "- 🤖 GitHub Actions\r\n"
-        readme += "- 📝 Markdown\r\n"
-        readme += "- 🌐 HTML/CSS/JavaScript\r\n\r\n"
-    
-        # 底部信息
-        readme += "## 💡 提示\r\n"
-        readme += "README由Gmeek自动生成和更新，请勿手动修改。\r\n\r\n"
-    
-        readme += "## 📅 最近活动\r\n"
-        readme += "- 🚀 持续更新中...\r\n\r\n"
-    
-        readme += "## ❤️ 致谢\r\n"
-        readme += "Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek) - A beautiful GitHub Issues based blog generator.\r\n"
-    
-        readmeFile=open(workspace_path+"/README.md","w",encoding='utf-8')
-        readmeFile.write(readme)
-        readmeFile.close()
+    print("====== update readme file ======")
+    workspace_path = os.environ.get('GITHUB_WORKSPACE') or os.getcwd()
+
+    # 显式统计文章数：只数 P<编号> 形式的真实文章键，排除配色字典等非文章键。
+    # 不能用 len(postListJson)-1：配色键增减会让数字悄悄算错（曾靠 3 个配色键
+    # 与 2 个单页数量相等而"碰巧正确"）。单页面不计入文章总数。
+    article_count = sum(1 for k in blog.blogBase["postListJson"]
+                        if k.startswith("P") and k[1:].isdigit())
+
+    # 计算标签数量
+    label_count = len(blog.labelColorDict)
+
+    # 生成更专业的README
+    readme="# %s :link: [%s](%s) \r\n\r\n" % (blog.blogBase["title"], blog.blogBase["title"], blog.blogBase["homeUrl"])
+    readme += "🌍 **博客主页**：[%s](%s)\r\n\r\n" % (blog.blogBase["homeUrl"], blog.blogBase["homeUrl"])
+
+    # 项目简介部分
+    readme += "## 📝 项目简介\r\n"
+    readme += "这是一个基于GitHub Issues的静态博客系统，通过Gmeek自动生成和部署。\r\n\r\n"
+
+    # 统计信息卡片
+    readme += "## 📊 博客统计\r\n"
+    readme += "| 统计项目 | 数量 | | 统计项目 | 数据 |\r\n"
+    readme += "|---------|------|---|---------|------|\r\n"
+    readme += "| 📄 文章总数 | %d | | 🏷️ 标签数量 | %d |\r\n" % (article_count, label_count)
+    readme += "| 💬 评论总数 | %d | | 📚 总字数 | %d |\r\n" % (commentNumSum, wordCount)
+    readme += "\r\n> ⏰ 最后更新：%s\r\n\r\n" % datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S')
+
+    # 功能特点部分
+    readme += "## ✨ 功能特点\r\n"
+    readme += "- 🎯 基于GitHub Issues的内容管理\r\n"
+    readme += "- 🚀 自动化部署与更新\r\n"
+    readme += "- 🌓 支持明暗主题切换\r\n"
+    readme += "- 🌍 多语言支持\r\n"
+    readme += "- 📱 响应式设计，适配各种设备\r\n"
+    readme += "- 📊 文章统计与标签分类\r\n"
+    readme += "- 📝 Markdown格式支持\r\n"
+    readme += "- 📡 RSS订阅功能\r\n\r\n"
+
+    # 技术栈部分
+    readme += "## 🛠️ 技术栈\r\n"
+    readme += "- 🐍 Python\r\n"
+    readme += "- 📄 GitHub Pages\r\n"
+    readme += "- 🤖 GitHub Actions\r\n"
+    readme += "- 📝 Markdown\r\n"
+    readme += "- 🌐 HTML/CSS/JavaScript\r\n\r\n"
+
+    # 底部信息
+    readme += "## 💡 提示\r\n"
+    readme += "README由Gmeek自动生成和更新，请勿手动修改。\r\n\r\n"
+
+    readme += "## 📅 最近活动\r\n"
+    readme += "- 🚀 持续更新中...\r\n\r\n"
+
+    readme += "## ❤️ 致谢\r\n"
+    readme += "Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek) - A beautiful GitHub Issues based blog generator.\r\n"
+
+    readmeFile=open(workspace_path+"/README.md","w",encoding='utf-8')
+    readmeFile.write(readme)
+    readmeFile.close()
 
 ######################################################################################
 

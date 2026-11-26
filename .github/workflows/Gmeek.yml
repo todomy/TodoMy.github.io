@@ -13,7 +13,7 @@ on:
       - 'plugins/**'
       - '.github/workflows/Gmeek.yml'
   issues:
-    types: [opened, edited, closed, deleted, labeled, unlabeled, reopened]
+    types: [opened, edited, closed, deleted, labeled, unlabeled, reopened, transferred]
 
 jobs:
   build:
@@ -27,7 +27,6 @@ jobs:
     permissions:
       contents: write
       issues: read
-      pages: write
     concurrency:
       group: gmeek-build
       cancel-in-progress: false
@@ -36,10 +35,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0  # 完整历史，保证产物提交 rebase 时能找到共同祖先
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v6
 
       - name: Show config.json
         run: |

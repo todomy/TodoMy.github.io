@@ -4,7 +4,7 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href='https://todomy.github.io/plugins/primer.css' rel='stylesheet' />
+    <link href='/plugins/primer.css' rel='stylesheet' />
     <script src='/plugins/GmeekVercount.js' defer></script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/62632079?v=4"><script>
         let theme = localStorage.getItem("meek_theme") || "auto";
@@ -295,6 +295,20 @@ cmButton=document.getElementById("cmButton");
 
 
 var utterancesLoading=false;
+var utterancesTimer=null;
+var utterancesWatch=null;
+function resetComments(){
+    utterancesLoading=false;
+    if(utterancesWatch){window.clearInterval(utterancesWatch);utterancesWatch=null;}
+    if(utterancesTimer){window.clearTimeout(utterancesTimer);utterancesTimer=null;}
+    var box=document.getElementById("comments");
+    if(box){box.innerHTML="";}
+    var btn=document.getElementById("cmButton");
+    if(btn){
+        btn.textContent="评论";
+        btn.style.display="";
+    }
+}
 function openComments(){
     if(utterancesLoading){return;}
     utterancesLoading=true;
@@ -307,6 +321,7 @@ function openComments(){
 
     script=document.createElement("script");
     script.setAttribute("src","https://utteranc.es/client.js");
+    script.onerror=function(){resetComments();};
     script.setAttribute("repo","todomy/TodoMy.github.io");
     script.setAttribute("issue-term","title");
     
@@ -318,7 +333,8 @@ function openComments(){
     script.setAttribute("async","");
     cm.appendChild(script);
 
-    int=self.setInterval(iFrameLoading,200);
+    utterancesWatch=self.setInterval(iFrameLoading,200);
+    utterancesTimer=self.setTimeout(function(){resetComments();},15000);
 }
 
 function iFrameLoading(){
@@ -326,9 +342,11 @@ function iFrameLoading(){
     if(utterances.length==1){
         if(utterances[0].style.height!=""){
             utterancesLoad=1;
-            int=window.clearInterval(int);
+            window.clearInterval(utterancesWatch);
+            utterancesWatch=null;
+            window.clearTimeout(utterancesTimer);
+            utterancesTimer=null;
             document.getElementById("cmButton").style.display="none";
-            console.log("utterances Load OK");
         }
     }
 }
