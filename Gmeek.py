@@ -175,6 +175,21 @@ class GMEEK():
     def get_repo(self,user:Github, repo:str):
         return user.get_repo(repo)
 
+    @staticmethod
+    def is_pull_request(issue):
+        """判断 /issues 端点混入的 PR，不触发 PyGithub 的惰性补全。
+
+        不能用 issue.pull_request：普通 issue 的原始 JSON 没有该字段，PyGithub 的
+        property 会调用 _complete() 补一次 GET /issues/{n}。遍历上百个 issue 时
+        会多出上百次 API 请求，构建慢一分多钟。_rawData 是初始化时写入的原始
+        JSON dict，直接查键不产生任何网络请求。
+        """
+        raw = getattr(issue, "_rawData", None)
+        if isinstance(raw, dict):
+            return "pull_request" in raw
+        # 兜底：极端情况下没有原始数据时退回属性访问，宁可多一次请求也不能误判
+        return getattr(issue, "pull_request", None) is not None
+
     def markdown2html(self, mdstr):
         payload = {"text": mdstr, "mode": "gfm"}
         headers = {"Authorization": "token {}".format(self.options.github_token)}
@@ -603,7 +618,7 @@ class GMEEK():
         issues=self.repo.get_issues()
         for issue in issues:
             # GitHub 的 /issues 端点同时返回 PR；PR 不是文章，不能发布
-            if getattr(issue, "pull_request", None) is not None:
+            if self.is_pull_request(issue):
                 continue
             self.addOnePostJson(issue)
 
@@ -648,7 +663,7 @@ class GMEEK():
             open_numbers=set()
             for issue in self.repo.get_issues(state='open'):
                 # /issues 端点会混入 PR；PR 编号不能算作「应存在的文章」
-                if getattr(issue, "pull_request", None) is not None:
+                if self.is_pull_request(issue):
                     continue
                 open_numbers.add("P"+str(issue.number))
         except Exception as e:
